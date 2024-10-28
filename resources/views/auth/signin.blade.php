@@ -16,9 +16,16 @@
                     <h4>Sign In</h4>
                 </div>
 
+                @if(session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
                 @if(session('error'))
                     <div class="alert alert-danger">{{ session('error') }}</div>
                 @endif
+
 
                 <form action="{{ route('post.signin') }}" method="POST">
                     @csrf

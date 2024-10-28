@@ -15,6 +15,17 @@
                     <img src="{{ asset('assets/logo.png') }}" alt="TripTock Logo" class="mb-3" style="width: 100px;">
                     <h4>Create Account</h4>
                 </div>
+
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <form action="{{ route('signup.submit') }}" method="POST">
                     @csrf
                     <div class="mb-3">
@@ -44,7 +55,7 @@
                     <button type="submit" class="btn btn-success w-100">Sign Up</button>
                 </form>
                 <div class="text-center mt-3">
-                    <p>Already have an account? <a href="{{ route('signin') }}">Sign In</a></p>
+                    <p>Already have an account? <a href="#">Sign In</a></p>
                 </div>
             </div>
         </div>

@@ -14,10 +14,10 @@ use Illuminate\Support\Facades\DB;
 
 class PageController extends Controller
 {
-    public function home()
-    {
-        return view('home');
-    }
+    // public function home()
+    // {
+    //     return view('home');
+    // }
 
     public function createTrip()
     {
@@ -44,10 +44,10 @@ class PageController extends Controller
         return view('trips.tripDetails');
     }
 
-    public function signIn()
-    {
-        return view('auth.signin');
-    }
+    // public function signIn()
+    // {
+    //     return view('auth.signin');
+    // }
 
     // public function signUp()
     // {
