@@ -3,6 +3,12 @@
 @section('title', 'Itinerary')
 
 @section('content')
+<div class="container">
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
 <div class="container mt-5">
     <h2 class="text-center mb-4">Itinerary for Your Trip</h2>
     <p class="text-center mb-4">Plan your adventure day by day with details of activities, transport, accommodation, and more.</p>
@@ -11,12 +17,13 @@
     <div class="mb-4">
         <label for="tripDay" class="form-label">Select Day of Your Trip:</label>
         <select class="form-select" id="tripDay">
-            <option value="1">Day 1</option>
-            <option value="2">Day 2</option>
-            <option value="3">Day 3</option>
-            <!-- Add dynamic days based on trip duration -->
+            @for ($day = 1; $day <= $trip->total_days; $day++)
+                <option value="{{ $day }}">Day {{ $day }}</option>
+            @endfor
         </select>
     </div>
+
+
 
     <div id="itineraryList" class="mb-4 border rounded p-3">
         <h3 class="section-title">Your Itinerary</h3>
@@ -135,6 +142,11 @@
     <div class="border rounded p-3">
         <h4 class="text-center">Notes</h4>
         <textarea class="form-control" rows="5" placeholder="Write additional notes or reminders here..."></textarea>
+    </div>
+
+    <!-- button save itinarary and button submit itianry Section -->
+    <div>
+
     </div>
 
 </div>

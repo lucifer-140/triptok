@@ -3,21 +3,28 @@
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
-use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\TripController;
 use Illuminate\Support\Facades\Route;
 
-
-
-// Trip routes
-Route::prefix('trip')->group(function () {
+// Trip routes (Require authentication)
+Route::prefix('trip')->middleware('auth')->group(function () {
     Route::get('/create', [PageController::class, 'createTrip'])->name('create-trip');
-    Route::get('/itinerary', [PageController::class, 'itinerary'])->name('itinerary');
+    Route::post('/submit-trip', [TripController::class, 'store'])->name('submit-trip');
+
+    // Route::get('/itinerary', [PageController::class, 'itinerary'])->name('itinerary');
+    Route::get('/itinerary/{tripId}', [TripController::class, 'showItinerary'])->name('itinerary');
+    Route::post('/itineraries/store', [ItineraryController::class, 'store'])->name('itineraries.store');
+
+
+
     Route::get('/information', [PageController::class, 'tripInformation'])->name('tripinformation');
+
     Route::get('/index', [PageController::class, 'tripIndex'])->name('index');
+
     Route::get('/details', [PageController::class, 'tripDetails'])->name('tripDetails');
 });
 
-// User routes
+// User routes (Sign-in and Sign-up do not require authentication)
 Route::prefix('user')->group(function () {
     Route::get('/sign-in', [AuthController::class, 'showSignInForm'])->name('signin');
     Route::post('/signin', [AuthController::class, 'postSignIn'])->name('post.signin');
@@ -31,6 +38,5 @@ Route::prefix('user')->group(function () {
     Route::get('/page', [PageController::class, 'userPage'])->name('user')->middleware('auth');
     Route::get('/edit-profile', [PageController::class, 'edit'])->name('edit')->middleware('auth');
 });
-
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
