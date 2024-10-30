@@ -34,9 +34,9 @@ class PageController extends Controller
         return view('trips.tripinformation');
     }
 
-    public function tripIndex()
+    public function tripList()
     {
-        return view('trips.index');
+        return view('trips.tripList');
     }
 
     public function tripDetails()

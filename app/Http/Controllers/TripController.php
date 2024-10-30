@@ -40,7 +40,22 @@ class TripController extends Controller
         $trip->save();
 
         // Redirect or respond with success message
-        return redirect()->route('index')->with('success', 'Trip created successfully!');
+        return redirect()->route('itinerary')->with('success', 'Trip created successfully!');
+    }
+
+
+    public function index()
+    {
+        // Get trips that belong to the authenticated user
+        $trips = Trip::where('user_id', Auth::id())->get();
+        return view('trips.list', compact('trips'));
+    }
+
+    public function show($id)
+    {
+        // Attempt to find the trip by ID and check if it belongs to the authenticated user
+        $trip = Trip::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
+        return view('trips.details', compact('trip'));
     }
 
 }

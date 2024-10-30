@@ -29,7 +29,7 @@ Route::prefix('trip')->middleware('auth')->group(function () {
 
     Route::get('/itinerary', [PageController::class, 'itinerary'])->name('itinerary');
     Route::get('/information', [PageController::class, 'tripInformation'])->name('tripinformation');
-    Route::get('/index', [PageController::class, 'tripIndex'])->name('index');
+    Route::get('/list', [PageController::class, 'tripList'])->name('tripList');
     Route::get('/details', [PageController::class, 'tripDetails'])->name('tripDetails');
 });
 
