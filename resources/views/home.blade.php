@@ -8,7 +8,7 @@
     <div class="container text-center mt-5 welcome-section">
         <h1 class="welcome-message">Welcome to TripTock</h1>
         <p class="welcome-subtitle">Your journey begins here!</p>
-        <a href="{{ url('trip/create') }}" class="btn btn-primary create-trip-btn">Plan Your Trip</a>
+        <a href="{{ url('trip/create-trip') }}" class="btn btn-primary create-trip-btn">Plan Your Trip</a>
     </div>
 
     <!-- Popular Destinations Section -->

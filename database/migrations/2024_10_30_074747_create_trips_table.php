@@ -16,10 +16,10 @@ class CreateTripsTable extends Migration
             $table->date('tripEndDate');
             $table->decimal('totalBudget', 10, 2);
             $table->string('currency', 3);
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Foreign key
             $table->timestamps();
         });
     }
-
 
     public function down()
     {

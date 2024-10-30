@@ -10,11 +10,11 @@ class Trip extends Model
     use HasFactory;
 
     protected $fillable = [
-        'tripTitle',
-        'tripDestination',
-        'tripStartDate',
-        'tripEndDate',
-        'totalBudget',
+        'title',
+        'destination',
+        'start_date',
+        'end_date',
+        'budget',
         'currency',
     ];
 }
