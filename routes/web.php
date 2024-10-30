@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TripController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -10,7 +11,12 @@ use Illuminate\Support\Facades\Route;
 
 // Trip routes
 Route::prefix('trip')->group(function () {
-    Route::get('/create', [PageController::class, 'createTrip'])->name('create-trip');
+
+    Route::get('/create-trip', [TripController::class, 'create'])->name('trips.create');
+    Route::post('/submit-trip', [TripController::class, 'store'])->name('trips.store');
+
+
+
     Route::get('/itinerary', [PageController::class, 'itinerary'])->name('itinerary');
     Route::get('/information', [PageController::class, 'tripInformation'])->name('tripinformation');
     Route::get('/index', [PageController::class, 'tripIndex'])->name('index');

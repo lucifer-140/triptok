@@ -55,7 +55,7 @@
                     <button type="submit" class="btn btn-success w-100">Sign Up</button>
                 </form>
                 <div class="text-center mt-3">
-                    <p>Already have an account? <a href="#">Sign In</a></p>
+                    <p>Already have an account? <a href="{{ route('signin') }}">Sign In</a></p>
                 </div>
             </div>
         </div>

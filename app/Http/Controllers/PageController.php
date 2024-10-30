@@ -19,10 +19,10 @@ class PageController extends Controller
     //     return view('home');
     // }
 
-    public function createTrip()
-    {
-        return view('trips.create-trip');
-    }
+    // public function createTrip()
+    // {
+    //     return view('trips.create-trip');
+    // }
 
     public function itinerary()
     {
