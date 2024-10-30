@@ -40,7 +40,7 @@ class TripController extends Controller
         $trip->save();
 
         // Redirect or respond with success message
-        return redirect()->route('itinerary')->with('success', 'Trip created successfully!');
+        return redirect()->route('itinerary.create')->with('success', 'Trip created successfully!');
     }
 
 
@@ -57,5 +57,7 @@ class TripController extends Controller
         $trip = Trip::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
         return view('trips.details', compact('trip'));
     }
+
+    
 
 }

@@ -17,4 +17,9 @@ class Trip extends Model
         'budget',
         'currency',
     ];
+
+    public function itineraries()
+    {
+        return $this->hasMany(Itinerary::class);
+    }
 }

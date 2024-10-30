@@ -3,6 +3,7 @@
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TripController;
+use App\Http\Controllers\ItineraryController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,12 @@ Route::prefix('trip')->middleware('auth')->group(function () {
     Route::post('/submit-trip', [TripController::class, 'store'])->name('trips.store');
 
     Route::get('/itinerary', [PageController::class, 'itinerary'])->name('itinerary');
+
+    Route::get('/itinerary/create', [ItineraryController::class, 'create'])->name('itinerary.create'); // Route to create itinerary
+    Route::post('/itinerary/store', [ItineraryController::class, 'store'])->name('itinerary.store'); // Route to store itinerary
+    Route::get('/itinerary/{id}', [ItineraryController::class, 'show'])->name('itinerary.show'); // Route to show an itinerary
+
+
     Route::get('/information', [PageController::class, 'tripInformation'])->name('tripinformation');
     Route::get('/list', [PageController::class, 'tripList'])->name('tripList');
     Route::get('/details', [PageController::class, 'tripDetails'])->name('tripDetails');

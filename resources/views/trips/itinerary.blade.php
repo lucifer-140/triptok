@@ -10,12 +10,15 @@
     <!-- Select Day of the Trip -->
     <div class="mb-4">
         <label for="tripDay" class="form-label">Select Day of Your Trip:</label>
-        <select class="form-select" id="tripDay">
-            <option value="1">Day 1</option>
-            <option value="2">Day 2</option>
-            <option value="3">Day 3</option>
-            <!-- Add dynamic days based on trip duration -->
-        </select>
+        <div class="input-group">
+            <select class="form-select" id="tripDay">
+                <option value="1">Day 1</option>
+                <option value="2">Day 2</option>
+                <option value="3">Day 3</option>
+                <!-- Add dynamic days based on trip duration -->
+            </select>
+            <button type="button" class="btn btn-primary">Save Day Plan</button>
+        </div>
     </div>
 
     <!-- Itinerary List -->
@@ -27,6 +30,7 @@
                     <p class="text-muted">No itinerary items added yet. Please add some!</p>
                 </div>
             </div>
+            <button type="submit" class="btn btn-primary btn-block">Save Itinerary</button>
         </div>
     </div>
 
@@ -61,8 +65,7 @@
         </div>
     </div>
 
-    <!-- Modal Template: Activities, Transport, Accommodation, and Flight -->
-    <!-- Only Activities Modal shown for brevity; repeat similar structure for each -->
+    <!-- Accomodation Modal -->
     <div class="modal fade" id="activitiesModal" tabindex="-1" aria-labelledby="activitiesModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
