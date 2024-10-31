@@ -33,7 +33,7 @@
                     </option>
                 @endfor
             </select>
-            <button type="button" class="btn btn-primary">Save Day Plan</button>
+            <button type="button" class="btn btn-primary" id="saveDayPlanButton">Save Day Plan</button>
         </div>
     </div>
 
@@ -83,178 +83,13 @@
         </div>
     </div>
 
-    <!-- Accomodation Modal -->
-    <div class="modal fade" id="activitiesModal" tabindex="-1" aria-labelledby="activitiesModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="activitiesModalLabel">Add/Edit Activities</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="activitiesForm">
-                        <div class="mb-3">
-                            <label for="activityTitle" class="form-label">Activity Title</label>
-                            <input type="text" class="form-control" id="activityTitle" placeholder="Enter activity title" required>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="startTime" class="form-label">Start Time</label>
-                                <input type="time" class="form-control" id="activityStartTime" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="endTime" class="form-label">End Time</label>
-                                <input type="time" class="form-control" id="activityEndTime" required>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="activityBudget" class="form-label">Estimated Budget</label>
-                            <div class="input-group">
-                                <input type="number" class="form-control" id="activityBudget" placeholder="Enter budget" required>
-                                <span class="input-group-text">{{ $currency }}</span> <!-- Add currency here -->
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="activityDescription" class="form-label">Description</label>
-                            <textarea class="form-control" id="activityDescription" rows="3" placeholder="Add more details about the activity..." required></textarea>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="saveActivityButton">Save Activity</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- Transport Modal -->
-    <div class="modal fade" id="transportModal" tabindex="-1" aria-labelledby="transportModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="transportModalLabel">Add/Edit Transport</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="transportForm">
-                        <div class="mb-3">
-                            <label for="transportType" class="form-label">Transport Type</label>
-                            <input type="text" class="form-control" id="transportType" placeholder="e.g., Train, Bus" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="transportTime" class="form-label">Departure Time</label>
-                            <input type="time" class="form-control" id="transportTime" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="transportCost" class="form-label">Cost</label>
-                            <div class="input-group">
-                                <input type="number" class="form-control" id="transportCost" placeholder="Enter cost" required>
-                                <span class="input-group-text">{{ $currency }}</span> <!-- Add currency here -->
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="transportNotes" class="form-label">Notes</label>
-                            <textarea class="form-control" id="transportNotes" rows="3" placeholder="Additional details..."></textarea>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="saveTransportButton">Save Transport</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- Accommodation Modal -->
-    <div class="modal fade" id="accommodationModal" tabindex="-1" aria-labelledby="accommodationModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="accommodationModalLabel">Add/Edit Accommodation</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="accommodationForm">
-                        <div class="mb-3">
-                            <label for="accommodationName" class="form-label">Accommodation Name</label>
-                            <input type="text" class="form-control" id="accommodationName" placeholder="e.g., Hotel, Hostel" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="accommodationCheckIn" class="form-label">Check-In Date</label>
-                            <input type="date" class="form-control" id="accommodationCheckIn" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="accommodationCheckOut" class="form-label">Check-Out Date</label>
-                            <input type="date" class="form-control" id="accommodationCheckOut" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="accommodationCost" class="form-label">Accommodation Cost</label>
-                            <div class="input-group">
-                                <input type="number" class="form-control" id="accommodationCost" placeholder="Enter Accommodation Cost" required>
-                                <span class="input-group-text">{{ $currency }}</span> <!-- Add currency here -->
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="accommodationNotes" class="form-label">Notes</label>
-                            <textarea class="form-control" id="accommodationNotes" rows="3" placeholder="Additional details..."></textarea>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="saveAccommodationButton">Save Accommodation</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Flight Modal -->
-    <div class="modal fade" id="flightModal" tabindex="-1" aria-labelledby="flightModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="flightModalLabel">Add/Edit Flight</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="flightForm">
-                        <div class="mb-3">
-                            <label for="flightNumber" class="form-label">Flight Number</label>
-                            <input type="text" class="form-control" id="flightNumber" placeholder="Enter flight number" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="flightDate" class="form-label">Flight Date</label>
-                            <input type="date" class="form-control" id="flightDate" required>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="flightDepartureTime" class="form-label">Departure Time</label>
-                                <input type="time" class="form-control" id="flightDepartureTime" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="flightArrivalTime" class="form-label">Estimated Arrival Time</label>
-                                <input type="time" class="form-control" id="flightArrivalTime" required>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="flightCost" class="form-label">Cost</label>
-                            <div class="input-group">
-                                <input type="number" class="form-control" id="flightCost" placeholder="Enter flight cost" required>
-                                <span class="input-group-text">{{ $currency }}</span> <!-- Add currency here -->
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="saveFlightButton">Save Flight</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <!-- Modals for Adding Itinerary Items -->
+    @include('modals.activities') <!-- Include activities modal -->
+    @include('modals.transport') <!-- Include transport modal -->
+    @include('modals.accommodation') <!-- Include accommodation modal -->
+    @include('modals.flight') <!-- Include flight modal -->
 
 
 
@@ -317,7 +152,6 @@ document.getElementById('saveTransportButton').addEventListener('click', functio
     const transportType = document.getElementById('transportType').value;
     const transportTime = document.getElementById('transportTime').value;
     const transportCost = document.getElementById('transportCost').value;
-    const transportNotes = document.getElementById('transportNotes').value;
 
     // Update existing card or add new card
     const existingCard = document.querySelector('.card.border-success');
@@ -325,7 +159,6 @@ document.getElementById('saveTransportButton').addEventListener('click', functio
         existingCard.querySelector('.card-header h5').textContent = transportType;
         existingCard.querySelector('.card-body .card-text:nth-child(1)').textContent = `Time: ${transportTime}`;
         existingCard.querySelector('.card-body .card-text:nth-child(2)').textContent = `Cost: $${transportCost}`;
-        existingCard.querySelector('.card-body .card-text:nth-child(3)').textContent = transportNotes;
     } else {
         // Create a new card if not editing
         if (transportType && transportTime && transportCost) {
@@ -341,7 +174,6 @@ document.getElementById('saveTransportButton').addEventListener('click', functio
                 <div class="card-body text-center">
                     <p class="card-text">Time: ${transportTime}</p>
                     <p class="card-text">Cost: $${transportCost}</p>
-                    <p class="card-text">${transportNotes}</p>
                 </div>
                 <div class="card-footer d-flex justify-content-center">
                     <button class="btn btn-warning btn-sm me-1" onclick="editItem(this)">Edit</button>
@@ -363,7 +195,6 @@ document.getElementById('saveAccommodationButton').addEventListener('click', fun
     const checkIn = document.getElementById('accommodationCheckIn').value;
     const checkOut = document.getElementById('accommodationCheckOut').value;
     const accommodationCost = document.getElementById('accommodationCost').value;
-    const accommodationNotes = document.getElementById('accommodationNotes').value;
 
     // Update existing card or add new card
     const existingCard = document.querySelector('.card.border-info');
@@ -372,7 +203,6 @@ document.getElementById('saveAccommodationButton').addEventListener('click', fun
         existingCard.querySelector('.card-body .card-text:nth-child(1)').textContent = `Check-in: ${checkIn}`;
         existingCard.querySelector('.card-body .card-text:nth-child(2)').textContent = `Check-out: ${checkOut}`;
         existingCard.querySelector('.card-body .card-text:nth-child(3)').textContent = `Accommodation Cost: $${accommodationCost}`;
-        existingCard.querySelector('.card-body .card-text:nth-child(4)').textContent = accommodationNotes;
     } else {
         // Create a new card if not editing
         if (accommodationName && checkIn && checkOut && accommodationCost) {
@@ -389,7 +219,6 @@ document.getElementById('saveAccommodationButton').addEventListener('click', fun
                     <p class="card-text">Check-in: ${checkIn}</p>
                     <p class="card-text">Check-out: ${checkOut}</p>
                     <p class="card-text">Accommodation Cost: $${accommodationCost}</p>
-                    <p class="card-text">${accommodationNotes}</p>
                 </div>
                 <div class="card-footer d-flex justify-content-center">
                     <button class="btn btn-warning btn-sm me-1" onclick="editItem(this)">Edit</button>
@@ -483,7 +312,6 @@ function editItem(button) {
         const [time, cost, notes] = Array.from(timeAndBudget).map(p => p.textContent);
         document.getElementById('transportTime').value = time.replace('Time: ', '');
         document.getElementById('transportCost').value = cost.replace('Cost: $', '');
-        document.getElementById('transportNotes').value = notes;
 
         // Show the transport modal
         const transportModal = new bootstrap.Modal(document.getElementById('transportModal'));
@@ -501,7 +329,6 @@ function editItem(button) {
         document.getElementById('accommodationCheckIn').value = checkIn.replace('Check-in: ', '');
         document.getElementById('accommodationCheckOut').value = checkOut.replace('Check-out: ', '');
         document.getElementById('accommodationCost').value = cost.replace('Accommodation Cost: $', '');
-        document.getElementById('accommodationNotes').value = notes;
 
         // Show the accommodation modal
         const accommodationModal = new bootstrap.Modal(document.getElementById('accommodationModal'));
@@ -544,6 +371,84 @@ function deleteItem(button) {
     }
 }
 
+document.getElementById('saveDayPlanButton').addEventListener('click', function () {
+    const dayId = document.getElementById('tripDay').value;
+
+    // Collect data from Activity cards
+    let activities = [];
+    document.querySelectorAll('.activity-card').forEach(card => {
+        activities.push({
+            title: card.querySelector('.activity-title').textContent,
+            start_time: card.querySelector('.activity-start-time').dataset.time,
+            end_time: card.querySelector('.activity-end-time').dataset.time,
+            estimated_budget: card.querySelector('.activity-budget').dataset.budget,
+            description: card.querySelector('.activity-description').textContent
+        });
+    });
+
+    // Collect data from Transport cards
+    let transports = [];
+    document.querySelectorAll('.transport-card').forEach(card => {
+        transports.push({
+            type: card.querySelector('.transport-type').textContent,
+            departure_time: card.querySelector('.transport-departure-time').dataset.time,
+            arrival_time: card.querySelector('.transport-arrival-time').dataset.time,
+            cost: card.querySelector('.transport-cost').dataset.cost,
+        });
+    });
+
+    // Collect data from Accommodation cards
+    let accommodations = [];
+    document.querySelectorAll('.accommodation-card').forEach(card => {
+        accommodations.push({
+            name: card.querySelector('.accommodation-name').textContent,
+            check_in: card.querySelector('.accommodation-check-in').dataset.time,
+            check_out: card.querySelector('.accommodation-check-out').dataset.time,
+            cost: card.querySelector('.accommodation-cost').dataset.cost,
+        });
+    });
+
+    // Collect data from Flight cards
+    let flights = [];
+    document.querySelectorAll('.flight-card').forEach(card => {
+        flights.push({
+            flight_number: card.querySelector('.flight-number').textContent,
+            departure_time: card.querySelector('.flight-departure-time').dataset.time,
+            arrival_time: card.querySelector('.flight-arrival-time').dataset.time,
+            cost: card.querySelector('.flight-cost').dataset.cost,
+        });
+    });
+
+    // Send AJAX request to Laravel backend
+    fetch('/day/store', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({
+            day_id: dayId,
+            activities: activities,
+            transports: transports,
+            accommodations: accommodations,
+            flights: flights
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Day plan saved successfully!');
+        } else {
+            alert('An error occurred while saving the day plan.');
+        }
+    })
+    .catch(error => console.error('Error:', error));
+
+});
+
+
 
 </script>
+
+
 @endsection
