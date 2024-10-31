@@ -11,6 +11,10 @@
         <p><strong>DEBUG</strong></p>
         <p><strong>Itinerary ID:</strong> {{ $itinerary->id  }}</p>
         <p><strong>Trip ID:</strong> {{ $trip_id }}</p>
+        <div class="mb-4">
+            <label for="tripCurrency" class="form-label">Trip Currency:</label>
+            <input type="text" class="form-control" id="tripCurrency" value="{{ $currency }}" readonly>
+        </div>
     </div>
 
 
@@ -20,12 +24,19 @@
         <div class="input-group">
             <select class="form-select" id="tripDay">
                 @for ($day = 1; $day <= $totalDays; $day++)
-                    <option value="{{ $day }}">Day {{ $day }}</option>
+                    @php
+                        // Calculate the actual date for the current day
+                        $currentDate = $startDate->copy()->addDays($day - 1);
+                    @endphp
+                    <option value="{{ $day }}">
+                        Day {{ $day }} ({{ $currentDate->format('d - m - Y') }})
+                    </option>
                 @endfor
             </select>
             <button type="button" class="btn btn-primary">Save Day Plan</button>
         </div>
     </div>
+
 
 
     <!-- Itinerary List -->
@@ -98,7 +109,10 @@
                         </div>
                         <div class="mb-3">
                             <label for="activityBudget" class="form-label">Estimated Budget</label>
-                            <input type="number" class="form-control" id="activityBudget" placeholder="Enter budget" required>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="activityBudget" placeholder="Enter budget" required>
+                                <span class="input-group-text">{{ $currency }}</span> <!-- Add currency here -->
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="activityDescription" class="form-label">Description</label>
@@ -134,7 +148,10 @@
                         </div>
                         <div class="mb-3">
                             <label for="transportCost" class="form-label">Cost</label>
-                            <input type="number" class="form-control" id="transportCost" placeholder="Enter cost" required>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="transportCost" placeholder="Enter cost" required>
+                                <span class="input-group-text">{{ $currency }}</span> <!-- Add currency here -->
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="transportNotes" class="form-label">Notes</label>
@@ -174,7 +191,10 @@
                         </div>
                         <div class="mb-3">
                             <label for="accommodationCost" class="form-label">Accommodation Cost</label>
-                            <input type="number" class="form-control" id="accommodationCost" placeholder="Enter Accommodation Cost" required>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="accommodationCost" placeholder="Enter Accommodation Cost" required>
+                                <span class="input-group-text">{{ $currency }}</span> <!-- Add currency here -->
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="accommodationNotes" class="form-label">Notes</label>
@@ -214,13 +234,16 @@
                                 <input type="time" class="form-control" id="flightDepartureTime" required>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="flightArrivalTime" class="form-label">Arrival Time</label>
+                                <label for="flightArrivalTime" class="form-label">Estimated Arrival Time</label>
                                 <input type="time" class="form-control" id="flightArrivalTime" required>
                             </div>
                         </div>
                         <div class="mb-3">
                             <label for="flightCost" class="form-label">Cost</label>
-                            <input type="number" class="form-control" id="flightCost" placeholder="Enter flight cost" required>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="flightCost" placeholder="Enter flight cost" required>
+                                <span class="input-group-text">{{ $currency }}</span> <!-- Add currency here -->
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -444,12 +467,34 @@ function editItem(button) {
         document.getElementById('activityEndTime').value = endTime;
         document.getElementById('activityBudget').value = budget.replace('Budget: $', '');
         document.getElementById('activityDescription').value = description;
+
+        // Show the activities modal
+        const activitiesModal = new bootstrap.Modal(document.getElementById('activitiesModal'));
+        activitiesModal.show();
+
+        // Add an event listener to the modal's "hide" event
+        activitiesModal.addEventListener('hide.bs.modal', function () {
+            // Clear the form
+            document.getElementById('activitiesForm').reset();
+        });
+
     } else if (card.classList.contains('border-success')) {
         document.getElementById('transportType').value = header;
         const [time, cost, notes] = Array.from(timeAndBudget).map(p => p.textContent);
         document.getElementById('transportTime').value = time.replace('Time: ', '');
         document.getElementById('transportCost').value = cost.replace('Cost: $', '');
         document.getElementById('transportNotes').value = notes;
+
+        // Show the transport modal
+        const transportModal = new bootstrap.Modal(document.getElementById('transportModal'));
+        transportModal.show();
+
+        // Add an event listener to the modal's "hide" event
+        transportModal.addEventListener('hide.bs.modal', function () {
+            // Clear the form
+            document.getElementById('transportForm').reset();
+        });
+
     } else if (card.classList.contains('border-info')) {
         document.getElementById('accommodationName').value = header;
         const [checkIn, checkOut, cost, notes] = Array.from(timeAndBudget).map(p => p.textContent);
@@ -457,6 +502,17 @@ function editItem(button) {
         document.getElementById('accommodationCheckOut').value = checkOut.replace('Check-out: ', '');
         document.getElementById('accommodationCost').value = cost.replace('Accommodation Cost: $', '');
         document.getElementById('accommodationNotes').value = notes;
+
+        // Show the accommodation modal
+        const accommodationModal = new bootstrap.Modal(document.getElementById('accommodationModal'));
+        accommodationModal.show();
+
+        // Add an event listener to the modal's "hide" event
+        accommodationModal.addEventListener('hide.bs.modal', function () {
+            // Clear the form
+            document.getElementById('accommodationForm').reset();
+        });
+
     } else if (card.classList.contains('border-warning')) {
         document.getElementById('flightNumber').value = header.replace('Flight ', '');
         const [date, departure, arrival, cost] = Array.from(timeAndBudget).map(p => p.textContent);
@@ -464,20 +520,19 @@ function editItem(button) {
         document.getElementById('flightDepartureTime').value = departure.replace('Departure: ', '');
         document.getElementById('flightArrivalTime').value = arrival.replace('Arrival: ', '');
         document.getElementById('flightCost').value = cost.replace('Cost: $', '');
+
+        // Show the flight modal
+        const flightModal = new bootstrap.Modal(document.getElementById('flightModal'));
+        flightModal.show();
+
+        // Add an event listener to the modal's "hide" event
+        flightModal.addEventListener('hide.bs.modal', function () {
+            // Clear the form
+            document.getElementById('flightForm').reset();
+        });
     }
-
-    const activitiesModal = bootstrap.Modal.getInstance(document.getElementById('activitiesModal'));
-    const transportModal = bootstrap.Modal.getInstance(document.getElementById('transportModal'));
-    const accommodationModal = bootstrap.Modal.getInstance(document.getElementById('accommodationModal'));
-    const flightModal = bootstrap.Modal.getInstance(document.getElementById('flightModal'));
-
-    if (card.classList.contains('border-primary')) activitiesModal.show();
-    if (card.classList.contains('border-success')) transportModal.show();
-    if (card.classList.contains('border-info')) accommodationModal.show();
-    if (card.classList.contains('border-warning')) flightModal.show();
-
-    card.remove(); // Remove the card after saving changes
 }
+
 
 // Function to delete an item
 function deleteItem(button) {

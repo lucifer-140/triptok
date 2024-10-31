@@ -33,7 +33,10 @@ class ItineraryController extends Controller
         return view('trips.itinerary', [
             'itinerary' => $itinerary,
             'trip_id' => $trip_id,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
             'totalDays' => $totalDays, // Pass total days to the view if needed
+            'currency' => $trip->currency,
         ]);
     }
 
