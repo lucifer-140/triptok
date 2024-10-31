@@ -28,11 +28,10 @@ Route::prefix('trip')->middleware('auth')->group(function () {
     Route::get('/create-trip', [TripController::class, 'create'])->name('trips.create');
     Route::post('/submit-trip', [TripController::class, 'store'])->name('trips.store');
 
-    Route::get('/itinerary', [PageController::class, 'itinerary'])->name('itinerary');
 
-    Route::get('/itinerary/create', [ItineraryController::class, 'create'])->name('itinerary.create'); // Route to create itinerary
+    Route::get('/itinerary/create/{trip}', [ItineraryController::class, 'create'])->name('itinerary.create');
     Route::post('/itinerary/store', [ItineraryController::class, 'store'])->name('itinerary.store'); // Route to store itinerary
-    Route::get('/itinerary/{id}', [ItineraryController::class, 'show'])->name('itinerary.show'); // Route to show an itinerary
+    // Route::get('/itinerary/{id}', [ItineraryController::class, 'show'])->name('itinerary.show'); // Route to show an itinerary
 
 
     Route::get('/information', [PageController::class, 'tripInformation'])->name('tripinformation');

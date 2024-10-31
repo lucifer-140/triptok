@@ -7,25 +7,32 @@
     <h2 class="text-center mb-4">Itinerary for Your Trip</h2>
     <p class="text-center mb-4">Plan your adventure day by day with details of activities, transport, accommodation, and more.</p>
 
+    <div class="mb-4 border rounded p-3">
+        <p><strong>DEBUG</strong></p>
+        <p><strong>Itinerary ID:</strong> {{ $itinerary->id  }}</p>
+        <p><strong>Trip ID:</strong> {{ $trip_id }}</p>
+    </div>
+
+
     <!-- Select Day of the Trip -->
     <div class="mb-4">
         <label for="tripDay" class="form-label">Select Day of Your Trip:</label>
         <div class="input-group">
             <select class="form-select" id="tripDay">
-                <option value="1">Day 1</option>
-                <option value="2">Day 2</option>
-                <option value="3">Day 3</option>
-                <!-- Add dynamic days based on trip duration -->
+                @for ($day = 1; $day <= $totalDays; $day++)
+                    <option value="{{ $day }}">Day {{ $day }}</option>
+                @endfor
             </select>
             <button type="button" class="btn btn-primary">Save Day Plan</button>
         </div>
     </div>
 
+
     <!-- Itinerary List -->
     <div id="itineraryList" class="mb-4 border rounded p-3">
         <h3 class="section-title">Your Itinerary</h3>
         <div class="row">
-            <div class="col-md-4 mb-3" id="itineraryItems">
+            <div class="col mb-3" id="itineraryItems">
                 <div class="border rounded p-3 text-center" id="emptyItinerary">
                     <p class="text-muted">No itinerary items added yet. Please add some!</p>
                 </div>

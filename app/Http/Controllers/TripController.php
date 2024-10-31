@@ -39,9 +39,12 @@ class TripController extends Controller
         $trip->user_id = Auth::id(); // Associate the trip with the authenticated user
         $trip->save();
 
-        // Redirect or respond with success message
-        return redirect()->route('itinerary.create')->with('success', 'Trip created successfully!');
+        // Redirect to the itinerary creation page with the trip ID
+        return redirect()->route('itinerary.create', ['trip' => $trip->id])
+                        ->with('success', 'Trip created successfully!');
     }
+
+
 
 
     public function index()
@@ -58,6 +61,6 @@ class TripController extends Controller
         return view('trips.details', compact('trip'));
     }
 
-    
+
 
 }

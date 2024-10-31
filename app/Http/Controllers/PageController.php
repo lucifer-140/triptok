@@ -24,10 +24,10 @@ class PageController extends Controller
     //     return view('trips.create-trip');
     // }
 
-    public function itinerary()
-    {
-        return view('trips.itinerary');
-    }
+    // public function itinerary()
+    // {
+    //     return view('trips.itinerary');
+    // }
 
     public function tripInformation()
     {
