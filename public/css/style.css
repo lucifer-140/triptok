@@ -1,0 +1,195 @@
+/* Global Styles - style.css */
+
+/* Root color variables */
+:root {
+    --primary-color: #2B7A63;
+    --primary-text-color: #ffffff;
+    --background-color: #ffffff;
+    --border-color: #dcdcdc;
+}
+
+/* Apply the background color to the whole page */
+body {
+    background-color: var(--background-color);
+    color: var(--primary-color);
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Style for all headings */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--primary-color);
+}
+
+/* Primary button style */
+button, .btn-primary {
+    background-color: var(--primary-color);
+    color: var(--primary-text-color);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover, .btn-primary:hover {
+    background-color: #246351;
+}
+
+/* Form input styling */
+input[type="text"], input[type="email"], input[type="password"] {
+    border: 1px solid var(--border-color);
+    padding: 10px;
+    width: 100%;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    outline: none;
+}
+
+input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 5px rgba(43, 122, 99, 0.5);
+}
+
+.container{
+    padding: 20px;
+}
+
+/* Container for the logo, app name, and title */
+.logo-container {
+    padding-top: 180px; 
+}
+
+/* Spacing between each element (logo container section) */
+.logo, .app-name, .page-title {
+    margin-bottom: 19px;
+}
+
+.logo {
+    width: 100px;
+    height: 100px;
+    object-fit: cover; 
+}
+
+/* Account link */
+.account-link {
+    color: var(--primary-color);
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.account-link:hover {
+    text-decoration: underline; 
+}
+
+/* Welcome Section */
+.welcome-section {
+    background-color: #f8f9fa;
+    padding: 40px 20px;
+    border-radius: 10px;
+}
+
+.welcome-message {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+}
+
+.welcome-subtitle {
+    font-size: 1.25rem;
+    color: #6c757d;
+}
+
+/* Create trip button */
+.create-trip-btn {
+    margin-top: 20px;
+}
+
+/* Section Titles */
+.section-title {
+    color: var(--primary-color);
+    font-size: 1.75rem;
+    margin-bottom: 20px;
+}
+
+/* Trip Cards */
+.trip-card {
+    border: 1px solid #e0e0e0;
+}
+
+/* View All Link */
+.view-all-link {
+    display: block;
+    text-align: right;
+    margin-top: 10px;
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.view-all-link:hover {
+    text-decoration: underline;
+}
+
+/* Popular Destinations Section */
+.destination-card {
+    text-align: center;
+    border: 1px solid #e0e0e0;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #fff;
+}
+
+.destination-name {
+    margin-top: 10px;
+    font-size: 1.2rem;
+    color: var(--primary-color);
+}
+
+/* Logo Section */
+.logo-section {
+    margin-bottom: 20px;
+}
+
+.logo-img {
+    width: 120px;
+    height: auto;
+}
+
+
+/* Navbar Styles */
+.navbar {
+    background-color: var(--background-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand .logo-img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.navbar-nav .nav-link {
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #246351;
+}
+
+.navbar-nav .dropdown-menu {
+    background-color: var(--background-color);
+    border: 1px solid var(--border-color);
+}
+
+.navbar-nav .dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: var(--primary-color);
+}
