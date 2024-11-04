@@ -4,6 +4,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\ItineraryController;
+use App\Http\Controllers\DayController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +30,16 @@ Route::prefix('trip')->middleware('auth')->group(function () {
     Route::post('/submit-trip', [TripController::class, 'store'])->name('trips.store');
 
 
+   // Route to store a new day
+    Route::post('/create-day', [DayController::class, 'store'])->name('day.store');
+
+    // Route to show the day plan page (day.blade.php)
+    Route::get('/day/{day}', [DayController::class, 'show'])->name('day.show');
+
+
+
+
+
     Route::get('/itinerary/create/{trip}', [ItineraryController::class, 'create'])->name('itinerary.create');
     // Route::get('/itinerary/{id}', [ItineraryController::class, 'show'])->name('itinerary.show'); // Route to show an itinerary
     Route::post('/itinerary/store', [ItineraryController::class, 'store'])->name('itinerary.save');
@@ -41,27 +52,3 @@ Route::prefix('trip')->middleware('auth')->group(function () {
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-
-Route::get('/test-save', function () {
-    $request = new \Illuminate\Http\Request();
-    $request->replace([
-        'itinerary_id' => 1, // Replace with a valid ID
-        'days' => [
-            ['day' => 1, 'date' => '2024-11-01']
-        ],
-        'activities' => [
-            ['title' => 'Activity 1', 'start_time' => '08:00:00', 'end_time' => '09:00:00', 'estimated_budget' => 100, 'description' => 'First activity']
-        ],
-        'transports' => [
-            ['type' => 'Bus', 'departure_time' => '10:00:00', 'cost' => 20]
-        ],
-        'accommodations' => [
-            ['name' => 'Hotel', 'check_in_date' => '2024-11-01', 'check_out_date' => '2024-11-02', 'cost' => 150]
-        ],
-        'flights' => [
-            ['flight_number' => 'ABC123', 'date' => '2024-11-01', 'departure_time' => '14:00:00', 'arrival_time' => '16:00:00', 'cost' => 200]
-        ],
-    ]);
-
-    return app(ItineraryController::class)->save($request);
-});

@@ -7,19 +7,25 @@
 <div class="container mt-5">
 
 
-    <h2 class="text-center mb-4">Itinerary for Your Trip</h2>
+    <h2 class="text-center mb-4">Day plan for Your Trip</h2>
     <p class="text-center mb-4">Plan your adventure day by day with details of activities, transport, accommodation, and more.</p>
 
     <div class="mb-4 border rounded p-3">
         <p><strong>DEBUG</strong></p>
-        <h2 class="text-center mb-4">Day {{ $day }} Plan</h2>
+        <h1>Day Plan for Day {{ $day->day }}</h1>
+        <p>Date: {{ $day->date }}</p>
 
-        {{-- <p><strong>Itinerary ID:</strong> {{ $itinerary->id  }}</p> --}}
-        {{-- <p><strong>Trip ID:</strong> {{ $trip_id }}</p> --}}
-        {{-- <div class="mb-4">
-            <label for="tripCurrency" class="form-label">Trip Currency:</label>
+        <h2>Itinerary Details</h2>
+        <p>Trip ID: {{ $itinerary->trip_id }}</p>
+
+        @if($currency)
+            <label for="tripCurrency">Currency:</label>
             <input type="text" class="form-control" id="tripCurrency" value="{{ $currency }}" readonly>
-        </div> --}}
+        @else
+            <p>No currency data available.</p>
+        @endif
+
+
     </div>
 
 
@@ -70,11 +76,11 @@
 
 
 
-    {{-- <!-- Modals for Adding Itinerary Items -->
+    <!-- Modals for Adding Itinerary Items -->
     @include('modals.activities') <!-- Include activities modal -->
     @include('modals.transport') <!-- Include transport modal -->
     @include('modals.accommodation') <!-- Include accommodation modal -->
-    @include('modals.flight') <!-- Include flight modal --> --}}
+    @include('modals.flight') <!-- Include flight modal -->
 
 
 
