@@ -1,7 +1,5 @@
 <?php
 
-// app/Models/Transport.php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,7 +9,14 @@ class Transport extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['day_id', 'type', 'departure_time', 'cost'];
+    protected $fillable = [
+        'day_id',
+        'type',
+        'date',
+        'departure_time',
+        'arrival_time',
+        'cost',
+    ];
 
     public function day()
     {

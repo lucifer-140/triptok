@@ -1,7 +1,5 @@
 <?php
 
-// app/Models/Accommodation.php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,7 +9,13 @@ class Accommodation extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['day_id', 'name', 'check_in_date', 'check_out_date', 'cost'];
+    protected $fillable = [
+        'day_id',
+        'name',
+        'check_in',
+        'check_out',
+        'cost',
+    ];
 
     public function day()
     {

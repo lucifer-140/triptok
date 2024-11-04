@@ -39,14 +39,26 @@ class DayController extends Controller
         }
     }
 
-    public function show($day)
+    public function show($dayId)
     {
-        // Eager load the itinerary and the associated trip
-        $day = Day::with('itinerary.trip')->findOrFail($day); // Retrieve the day with related itinerary and trip
+        // Eager load the day with related itinerary, trip, and other related items
+        $day = Day::with(['itinerary.trip', 'activities', 'accommodations', 'flights', 'transports'])
+                   ->findOrFail($dayId); // Retrieve the day with related data
+
         $itinerary = $day->itinerary; // Get the related itinerary
         $trip = $itinerary ? $itinerary->trip : null; // Get the related trip, if exists
         $currency = $trip ? $trip->currency : null; // Assign currency to the $currency variable
 
-        return view('trips.day', compact('day', 'itinerary', 'trip', 'currency')); // Pass the variables to the view
+        // Retrieve related data directly from the $day object
+        $activities = $day->activities;
+        $accommodations = $day->accommodations;
+        $flights = $day->flights;
+        $transports = $day->transports;
+
+        // Pass the variables to the view
+        return view('trips.day', compact('day', 'itinerary', 'trip', 'currency', 'activities', 'accommodations', 'flights', 'transports'));
     }
+
+
+
 }
