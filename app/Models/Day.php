@@ -13,6 +13,12 @@ class Day extends Model
 
     protected $fillable = ['itinerary_id', 'day', 'date'];
 
+
+    public function itinerary()
+    {
+        return $this->belongsTo(Itinerary::class);
+    }
+
     public function activities()
     {
         return $this->hasMany(Activity::class);

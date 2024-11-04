@@ -17,25 +17,31 @@
         </div>
     </div>
 
-    <!-- Select Day of the Trip -->
-    <div class="mb-4">
-        <input type="hidden" id="itineraryId" value="{{ $itinerary->id }}">
-        <label for="tripDay" class="form-label">Select Day of Your Trip:</label>
-        <div class="input-group">
-            <select class="form-select" id="tripDay">
-                @for ($day = 1; $day <= $totalDays; $day++)
-                    @php
-                        // Calculate the actual date for the current day
-                        $currentDate = $startDate->copy()->addDays($day - 1);
-                    @endphp
-                    <option value="{{ $day }}">
-                        Day {{ $day }} ({{ $currentDate->format('d - m - Y') }})
-                    </option>
-                @endfor
-            </select>
-            <button type="button" class="btn btn-primary" id="saveDayPlanButton">Save Day Plan</button>
+    <form action="{{ route('day.store') }}" method="POST">
+        @csrf
+        <input type="hidden" name="itinerary_id" value="{{ $itinerary->id }}">
+
+        <!-- Select Day of the Trip -->
+        <div class="mb-4">
+            <label for="tripDay" class="form-label">Select Day of Your Trip:</label>
+            <div class="input-group">
+                <select class="form-select" name="day" id="tripDay">
+                    @for ($day = 1; $day <= $totalDays; $day++)
+                        @php
+                            $currentDate = $startDate->copy()->addDays($day - 1);
+                        @endphp
+                        <option value="{{ $day }}" data-date="{{ $currentDate->format('Y-m-d') }}">
+                            Day {{ $day }} ({{ $currentDate->format('d-m-Y') }})
+                        </option>
+                    @endfor
+                </select>
+                <input type="hidden" name="date" id="selectedDate">
+                <button type="submit" class="btn btn-primary">Create Day Plan</button>
+            </div>
         </div>
-    </div>
+    </form>
+
+
 
 
 
@@ -58,8 +64,13 @@
 </div>
 
 <script>
+    document.getElementById('tripDay').addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        document.getElementById('selectedDate').value = selectedOption.getAttribute('data-date');
+    });
 
-
+    // Set the date when the page first loads
+    document.getElementById('tripDay').dispatchEvent(new Event('change'));
 </script>
 
 
