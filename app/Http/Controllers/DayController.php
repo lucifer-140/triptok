@@ -55,8 +55,16 @@ class DayController extends Controller
         $flights = $day->flights;
         $transports = $day->transports;
 
+        // Calculate totals
+        $activityTotal = $activities->sum('budget');
+        $accommodationTotal = $accommodations->sum('cost');
+        $flightTotal = $flights->sum('cost');
+        $transportTotal = $transports->sum('cost');
+
+        $grandTotal = $activityTotal + $accommodationTotal + $flightTotal + $transportTotal;
+
         // Pass the variables to the view
-        return view('trips.day', compact('day', 'itinerary', 'trip', 'currency', 'activities', 'accommodations', 'flights', 'transports'));
+        return view('trips.day', compact('day', 'itinerary', 'trip', 'currency', 'activities', 'accommodations', 'flights', 'transports', 'grandTotal'));
     }
 
 

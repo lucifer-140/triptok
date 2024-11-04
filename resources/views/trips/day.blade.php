@@ -19,8 +19,8 @@
     <div class="mb-4 border rounded p-3 bg-light">
         <h1 class="h4">Day Plan for Day {{ $day->day }}</h1>
         <p class="mb-1">Date: <strong>{{ $day->date }}</strong></p>
-        <h2 class="h6">Itinerary Details</h2>
-        <p>Trip ID: <strong>{{ $itinerary->trip_id }}</strong></p>
+        {{-- <h2 class="h6">Itinerary Details</h2>
+        <p>Trip ID: <strong>{{ $itinerary->trip_id }}</strong></p> --}}
 
         @if($currency)
             <label for="tripCurrency">Currency:</label>
@@ -28,6 +28,12 @@
         @else
             <p class="text-danger">No currency data available.</p>
         @endif
+
+        <!-- Display grand total -->
+        <div class="mb-4 border-top pt-4">
+            <h5 class="text-center fw-bold">Grand Total: {{ $grandTotal }} {{ $currency }}</h5>
+        </div>
+
     </div>
 
     @foreach (['Activities' => $activities, 'Accommodation' => $accommodations, 'Flights' => $flights, 'Transport' => $transports] as $title => $items)
@@ -81,7 +87,7 @@
                         <tbody>
                             @if($items->isEmpty())
                                 <tr>
-                                    <td colspan="{{ $title === 'Transport' ? 4 : 6 }}" class="text-center">No {{ strtolower($title) }} added for this day.</td>
+                                    <td colspan="{{ $title === 'Transport' ? 6 : 6 }}" class="text-center">No {{ strtolower($title) }} added for this day.</td>
                                 </tr>
                             @else
                                 @foreach($items as $item)
