@@ -15,7 +15,7 @@ class CreateFlightsTable extends Migration
             $table->date('date');
             $table->time('departure_time');
             $table->time('arrival_time');
-            $table->decimal('cost', 8, 2);
+            $table->decimal('cost', 15, 2);
             $table->timestamps();
         });
     }

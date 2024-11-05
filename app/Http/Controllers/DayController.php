@@ -63,6 +63,10 @@ class DayController extends Controller
 
         $grandTotal = $activityTotal + $accommodationTotal + $flightTotal + $transportTotal;
 
+        // Save the grand total to the database
+        $day->grand_total = $grandTotal;
+        $day->save();
+
         // Pass the variables to the view
         return view('trips.day', compact('day', 'itinerary', 'trip', 'currency', 'activities', 'accommodations', 'flights', 'transports', 'grandTotal'));
     }

@@ -14,7 +14,7 @@ class CreateActivitiesTable extends Migration
             $table->string('title');
             $table->time('start_time');
             $table->time('end_time');
-            $table->decimal('budget', 8, 2);
+            $table->decimal('budget', 15, 2);
             $table->text('description')->nullable();
             $table->timestamps();
         });

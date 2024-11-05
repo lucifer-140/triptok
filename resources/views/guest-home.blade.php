@@ -1,18 +1,18 @@
-@extends('layouts.app')
+@extends('layouts.guest')
 
-@section('title', 'TripTock - Homepage')
+@section('title', 'TripTock - Welcome')
 
 @section('content')
     <div class="container-fluid hero-section">
         <div class="container text-center">
-            <h1 class="welcome-message">Welcome to TripTock</h1>
-            <p class="welcome-subtitle">Your journey begins here!</p>
-            <a href="{{ url('trip/create-trip') }}" class="btn btn-primary create-trip-btn">Plan Your Trip</a>
+            <h1 class="welcome-message">Explore the World with TripTock</h1>
+            <p class="welcome-subtitle">Plan your dream vacation with ease.</p>
+            <a href="{{ route('signup') }}" class="btn btn-primary">Start Planning</a>
         </div>
     </div>
 
     <div class="container mt-5">
-        <h3 class="section-title">Explore Destinations</h3>
+        <h3 class="section-title">Popular Destinations</h3>
         <div class="row">
             <div class="col-md-4 mb-3">
                 <div class="destination-card">
@@ -45,55 +45,60 @@
     </div>
 
     <div class="container mt-5">
-        <h3 class="section-title">Plan Your Trip</h3>
+        <h3 class="section-title">Why Choose TripTock?</h3>
         <div class="row">
             <div class="col-md-4 mb-3">
                 <div class="feature-card">
                     <i class="bi bi-calendar-heart icon"></i>
-                    <h4>Create a Custom Itinerary</h4>
-                    <p>Plan your trip day by day, adding activities and destinations.</p>
+                    <h4>Personalized Itineraries</h4>
+                    <p>Create custom itineraries tailored to your interests and travel style.</p>
                 </div>
             </div>
             <div class="col-md-4 mb-3">
                 <div class="feature-card">
                     <i class="bi bi-heart icon"></i>
                     <h4>Save Your Favorites</h4>
-                    <p>Bookmark destinations and activities for later.</p>
+                    <p>Bookmark destinations, activities, and accommodations for later.</p>
                 </div>
             </div>
             <div class="col-md-4 mb-3">
                 <div class="feature-card">
                     <i class="bi bi-people icon"></i>
                     <h4>Share with Friends</h4>
-                    <p>Invite friends to collaborate on your trip planning.</p>
+                    <p>Collaborate with friends and family on your travel plans.</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="container mt-5">
-        <h3 class="section-title">Travel Inspiration</h3>
+    <div class="container mt-5 testimonials-section">
+        <h3 class="section-title">What Our Users Say</h3>
         <div class="row">
-            <div class="col-md-6 mb-3">
-                <div class="inspiration-card">
-                    <img src="{{ asset('assets/inspiration-1.jpg') }}" class="img-fluid" alt="Travel Inspiration">
-                    <div class="inspiration-info">
-                        <h4>10 Best Beaches in Europe</h4>
-                        <p>Discover stunning beaches and hidden coves along Europe's coastline.</p>
-                        <a href="#" class="btn btn-outline-primary">Read More</a>
-                    </div>
+            <div class="col-md-4 mb-3">
+                <div class="testimonial-card">
+                    <p>"TripTock made planning my trip so much easier! I loved the ability to create a custom itinerary and share it with my friends."</p>
+                    <p class="testimonial-author">- John Doe</p>
                 </div>
             </div>
-            <div class="col-md-6 mb-3">
-                <div class="inspiration-card">
-                    <img src="{{ asset('assets/inspiration-2.jpg') }}" class="img-fluid" alt="Travel Inspiration">
-                    <div class="inspiration-info">
-                        <h4>Top 5 Hiking Trails in the Alps</h4>
-                        <p>Explore breathtaking mountain scenery on these unforgettable hikes.</p>
-                        <a href="#" class="btn btn-outline-primary">Read More</a>
-                    </div>
+            <div class="col-md-4 mb-3">
+                <div class="testimonial-card">
+                    <p>"I was amazed by how many destinations and activities TripTock had to offer. I found some hidden gems I never would have discovered on my own."</p>
+                    <p class="testimonial-author">- Jane Smith</p>
                 </div>
             </div>
+            <div class="col-md-4 mb-3">
+                <div class="testimonial-card">
+                    <p>"TripTock is the perfect tool for anyone who wants to plan a stress-free vacation. I highly recommend it!"</p>
+                    <p class="testimonial-author">- David Lee</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid cta-section">
+        <div class="container text-center">
+            <h3>Ready to start planning your adventure?</h3>
+            <a href="{{ route('signup') }}" class="btn btn-primary">Sign Up Now</a>
         </div>
     </div>
 @endsection
@@ -158,21 +163,20 @@
         color: #007bff;
     }
 
-    .inspiration-card {
+    .testimonial-card {
         border: 1px solid #ddd;
         border-radius: 5px;
-        overflow: hidden;
+        padding: 2rem;
     }
 
-    .inspiration-card img {
-        transition: transform 0.3s ease;
+    .testimonial-author {
+        font-style: italic;
+        text-align: right;
+        margin-top: 1rem;
     }
 
-    .inspiration-card:hover img {
-        transform: scale(1.1);
-    }
-
-    .inspiration-info {
-        padding: 1rem;
+    .cta-section {
+        background-color: #f8f9fa;
+        padding: 3rem 0;
     }
 </style>
