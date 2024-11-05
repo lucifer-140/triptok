@@ -35,7 +35,7 @@
 
 ## Project Structure
 
-TripTok/
+TripTok/                        
 ├── app/
 │   ├── Http/
 │   │   └── Controllers/        # Core controllers, managing business logic and data flow.

@@ -25,6 +25,18 @@ class ItineraryController extends Controller
             ['trip_id' => $trip_id]   // Values to create if no existing itinerary
         );
 
+        // Fetch the days related to this itinerary
+        $days = $itinerary->days;
+
+        // Calculate the grand total from the days
+        $grandTotal = $days->sum('grand_total');
+
+        // Get the total budget from the trip
+        $totalBudget = $trip->totalBudget; // Make sure 'totalBudget' is the correct field in your database
+
+        // Calculate the leftover budget
+        $leftover = $totalBudget - $grandTotal;
+
         // Fetch the start and end dates and convert them to Carbon instances
         $startDate = Carbon::parse($trip->tripStartDate);
         $endDate = Carbon::parse($trip->tripEndDate);
@@ -32,18 +44,21 @@ class ItineraryController extends Controller
         // Calculate the total number of days between start and end dates
         $totalDays = $startDate->diffInDays($endDate) + 1; // Adding 1 to include the start day
 
-        // You can perform any actions with $totalDays here, like creating default itinerary entries
-
-        // Pass only the itinerary, trip ID, and total days to the view
+        // Pass only the itinerary, trip ID, total days, and grand total to the view
         return view('trips.itinerary', [
             'itinerary' => $itinerary,
             'trip_id' => $trip_id,
             'startDate' => $startDate,
             'endDate' => $endDate,
             'totalDays' => $totalDays, // Pass total days to the view if needed
+            'grandTotal' => $grandTotal, // Pass grand total to the view
             'currency' => $trip->currency,
+            'totalBudget' => $totalBudget, // Pass the total budget to the view
+            'leftover' => $leftover, // Pass the leftover budget to the view
         ]);
     }
+
+
 
 
 
@@ -107,10 +122,4 @@ class ItineraryController extends Controller
 
 
 
-
-    // public function show($id)
-    // {
-    //     $itinerary = Itinerary::with('days')->findOrFail($id);
-    //     return view('itineraries.show', compact('itinerary'));
-    // }
 }

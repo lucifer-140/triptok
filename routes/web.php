@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\GuestController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\ItineraryController;
@@ -78,3 +79,5 @@ Route::prefix('trip')->middleware('auth')->group(function () {
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::get('/', [GuestController::class, 'index'])->name('guest.home');

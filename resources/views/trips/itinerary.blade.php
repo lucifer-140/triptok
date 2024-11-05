@@ -8,13 +8,29 @@
     <p class="text-center mb-4">Plan your adventure day by day with details of activities, transport, accommodation, and more.</p>
 
     <div class="mb-4 border rounded p-3">
-        <p><strong>DEBUG</strong></p>
+        {{-- <p><strong>DEBUG</strong></p>
         <p><strong>Itinerary ID:</strong> {{ $itinerary->id  }}</p>
         <p><strong>Trip ID:</strong> {{ $trip_id }}</p>
         <div class="mb-4">
             <label for="tripCurrency" class="form-label">Trip Currency:</label>
             <input type="text" class="form-control" id="tripCurrency" value="{{ $currency }}" readonly>
-        </div>
+        </div> --}}
+        <!-- Display the grand total -->
+        <h3 class="mt-4">Grand Total: {{ $grandTotal }} {{ $itinerary->trip->currency }}</h3>
+        <h3 class="mt-4">
+            Leftover Budget:
+            <span class="{{ $leftover < 0 ? 'text-danger fw-bold' : '' }}">
+                {{ $leftover }} {{ $currency }}
+            </span>
+        </h3>
+
+        @if ($leftover < 0)
+            <div class="alert alert-warning">
+                Warning: Your budget is exceeded by {{ abs($leftover) }} {{ $currency }}. Please adjust your itinerary accordingly.
+            </div>
+        @endif
+
+
     </div>
 
     <form action="{{ route('day.store') }}" method="POST">

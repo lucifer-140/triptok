@@ -14,7 +14,7 @@ class CreateAccommodationsTable extends Migration
             $table->string('name');
             $table->date('check_in');
             $table->date('check_out');
-            $table->decimal('cost', 8, 2);
+            $table->decimal('cost', 15, 2);
             $table->timestamps();
         });
     }
