@@ -37,43 +37,53 @@
         @csrf
         <input type="hidden" name="itinerary_id" value="{{ $itinerary->id }}">
 
-        <!-- Select Day of the Trip -->
-        <div class="mb-4">
-            <label for="tripDay" class="form-label">Select Day of Your Trip:</label>
-            <div class="input-group">
-                <select class="form-select" name="day" id="tripDay">
-                    @for ($day = 1; $day <= $totalDays; $day++)
-                        @php
-                            $currentDate = $startDate->copy()->addDays($day - 1);
-                        @endphp
-                        <option value="{{ $day }}" data-date="{{ $currentDate->format('Y-m-d') }}">
-                            Day {{ $day }} ({{ $currentDate->format('d-m-Y') }})
-                        </option>
-                    @endfor
-                </select>
-                <input type="hidden" name="date" id="selectedDate">
-                <button type="submit" class="btn btn-primary">Create Day Plan</button>
-            </div>
-        </div>
-    </form>
-
-
-
-
-
-    <!-- Itinerary List -->
-    <div id="itineraryList" class="mb-4 border rounded p-3">
-        <h3 class="section-title">Your Itinerary</h3>
-        <div class="row">
-            <div class="col mb-3" id="itineraryItems">
-                <div class="border rounded p-3 text-center" id="emptyItinerary">
-                    <p class="text-muted">No itinerary items added yet. Please add some!</p>
-                </div>
-            </div>
-            <button type="submit" class="btn btn-primary btn-block">Save Itinerary</button>
+    <!-- Select Day of the Trip -->
+    <div class="mb-4">
+        <label for="tripDay" class="form-label">Select Day of Your Trip:</label>
+        <div class="input-group">
+            <select class="form-select" name="day" id="tripDay" required>
+                <option value="" disabled selected>Select Day...</option> <!-- Default option -->
+                @for ($day = 1; $day <= $totalDays; $day++)
+                    @php
+                        $currentDate = $startDate->copy()->addDays($day - 1);
+                    @endphp
+                    <option value="{{ $day }}" data-date="{{ $currentDate->format('Y-m-d') }}">
+                        Day {{ $day }} ({{ $currentDate->format('d-m-Y') }})
+                    </option>
+                @endfor
+            </select>
+            <input type="hidden" name="date" id="selectedDate">
+            <button type="submit" class="btn btn-primary">Create Day Plan</button>
         </div>
     </div>
 
+
+    <div id="breakdownList" class="mb-4 border rounded p-3">
+        <h3 class="section-title">Trip Breakdown</h3>
+        <div class="row">
+            <div class="col mb-3" id="breakdownItems">
+                <div class="border rounded p-3 text-center" id="emptyBreakdown">
+                    <p class="text-muted">No breakdown items added yet. Please add some!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="d-flex justify-content-center">
+        <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" id="tripActionsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                Trip Actions
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="tripActionsDropdown">
+                <li><a class="dropdown-item" href="#">Save as Final</a></li>
+                <li><a class="dropdown-item" href="#">Save as Draft</a></li>
+                <li><a class="dropdown-item" href="#">Share Trip</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item text-danger" href="#">Delete Trip</a></li>
+            </ul>
+        </div>
+    </div>
 
 
 
