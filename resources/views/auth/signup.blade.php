@@ -6,6 +6,16 @@
     <title>Sign Up - TripTock</title>
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <style>
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+        }
+        .required:after {
+            content: ' *';
+            color: red;
+        }
+    </style>
 </head>
 <body class="bg-light">
     <div class="container d-flex justify-content-center align-items-center min-vh-100">
@@ -26,31 +36,34 @@
                     </div>
                 @endif
 
-                <form action="{{ route('signup.submit') }}" method="POST">
+                <form action="{{ route('signup.submit') }}" method="POST" id="signupForm">
                     @csrf
                     <div class="mb-3">
-                        <label for="first_name" class="form-label">First Name</label>
-                        <input type="text" class="form-control" id="first_name" name="first_name" required>
+                        <label for="first_name" class="form-label required">First Name</label>
+                        <input type="text" class="form-control" id="first_name" name="first_name" maxlength="50" required>
                     </div>
                     <div class="mb-3">
-                        <label for="last_name" class="form-label">Last Name</label>
-                        <input type="text" class="form-control" id="last_name" name="last_name" required>
+                        <label for="last_name" class="form-label required">Last Name</label>
+                        <input type="text" class="form-control" id="last_name" name="last_name" maxlength="50" required>
                     </div>
                     <div class="mb-3">
-                        <label for="phone" class="form-label">Phone Number</label>
-                        <input type="text" class="form-control" id="phone" name="phone" required>
+                        <label for="phone" class="form-label required">Phone Number</label>
+                        <input type="text" class="form-control" id="phone" name="phone" maxlength="15" required>
+                        <div class="error-message" id="phoneError"></div>
                     </div>
                     <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
+                        <label for="email" class="form-label required">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" maxlength="100" required>
                     </div>
                     <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
+                        <label for="password" class="form-label required">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" minlength="8" required>
+                        <div class="error-message" id="passwordError"></div>
                     </div>
                     <div class="mb-3">
-                        <label for="confirm_password" class="form-label">Confirm Password</label>
+                        <label for="confirm_password" class="form-label required">Confirm Password</label>
                         <input type="password" class="form-control" id="confirm_password" name="password_confirmation" required>
+                        <div class="error-message" id="confirmPasswordError"></div>
                     </div>
                     <button type="submit" class="btn btn-success w-100">Sign Up</button>
                 </form>
@@ -60,5 +73,50 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const phoneInput = document.getElementById('phone');
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirm_password');
+
+            // Phone validation
+            phoneInput.addEventListener('input', function () {
+                const phoneError = document.getElementById('phoneError');
+                if (phoneInput.value.length > 15) {
+                    phoneError.textContent = "Phone number can't be longer than 15 characters.";
+                } else {
+                    phoneError.textContent = "";
+                }
+            });
+
+            // Password length validation
+            passwordInput.addEventListener('input', function () {
+                const passwordError = document.getElementById('passwordError');
+                if (passwordInput.value.length < 8) {
+                    passwordError.textContent = "Password must be at least 8 characters long.";
+                } else {
+                    passwordError.textContent = "";
+                }
+            });
+
+            // Confirm password match validation
+            confirmPasswordInput.addEventListener('input', function () {
+                const confirmPasswordError = document.getElementById('confirmPasswordError');
+                if (confirmPasswordInput.value !== passwordInput.value) {
+                    confirmPasswordError.textContent = "Passwords do not match.";
+                } else {
+                    confirmPasswordError.textContent = "";
+                }
+            });
+
+            // Prevent form submission if there are validation errors
+            document.getElementById('signupForm').addEventListener('submit', function (e) {
+                if (phoneInput.value.length > 15 || passwordInput.value.length < 8 || confirmPasswordInput.value !== passwordInput.value) {
+                    e.preventDefault(); // Stop form submission
+                }
+            });
+        });
+    </script>
 </body>
 </html>
