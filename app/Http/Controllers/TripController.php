@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Trip;
 use App\Models\Currency;
+use App\Models\TripStatus;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -73,6 +75,26 @@ class TripController extends Controller
                         ->with('success', 'Trip details updated successfully.');
 
     }
+
+    public function updateStatus($trip_id, $status)
+    {
+        $trip = Trip::findOrFail($trip_id);
+        $validStatuses = ['ongoing', 'pending', 'finished'];
+
+        if (!in_array($status, $validStatuses)) {
+            return redirect()->back()->with('error', 'Invalid status.');
+        }
+
+        // Update or create trip status
+        TripStatus::updateOrCreate(
+            ['trip_id' => $trip->id],
+            ['status' => $status]
+        );
+
+        return redirect()->route('tripList')->with('success', 'Trip status updated to ' . ucfirst($status));
+
+    }
+
 
 
 

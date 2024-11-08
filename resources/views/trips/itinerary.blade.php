@@ -64,21 +64,45 @@
 
     <div class="d-flex justify-content-center">
         <div class="btn-group">
-            <button type="button" class="btn btn-primary">Save as Final</button>
+            <!-- Save as Final (Ongoing) -->
+            <form action="{{ route('trip.updateStatus', ['trip' => $trip_id, 'status' => 'ongoing']) }}" method="POST" style="display:inline;">
+                @csrf
+                <button type="submit" class="btn btn-primary">Save as Final</button>
+            </form>
+
+            <!-- Dropdown button for other actions -->
             <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
                 <span class="visually-hidden">Toggle Dropdown</span>
             </button>
+
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Save as Draft</a></li>
-                <li><a class="dropdown-item" href="#">Share Trip</a></li>
+                <!-- Save as Draft (Pending) -->
+                <li>
+                    <form action="{{ route('trip.updateStatus', ['trip' => $trip_id, 'status' => 'pending']) }}" method="POST" style="display:inline;">
+                        @csrf
+                        <button type="submit" class="dropdown-item">Save as Draft</button>
+                    </form>
+                </li>
+
+                <!-- End Trip (Finished) -->
+                <li>
+                    <form action="{{ route('trip.updateStatus', ['trip' => $trip_id, 'status' => 'finished']) }}" method="POST" style="display:inline;">
+                        @csrf
+                        <button type="submit" class="dropdown-item">End Trip</button>
+                    </form>
+                </li>
+
+                <!-- Additional actions (without status updates) -->
                 <li><a class="dropdown-item" href="#">Duplicate Trip</a></li>
+                <li><a class="dropdown-item" href="#">Share Trip</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item text-danger" href="#">Delete Trip</a></li>
             </ul>
         </div>
     </div>
 
-    
+
+
     <!-- Modal for Editing Trip Details -->
     <div class="modal fade" id="editTripModal" tabindex="-1" aria-labelledby="editTripModalLabel" aria-hidden="true">
         <div class="modal-dialog">

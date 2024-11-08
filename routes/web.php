@@ -76,6 +76,9 @@ Route::prefix('trip')->middleware('auth')->group(function () {
     Route::get('/itinerary/create/{trip}', [ItineraryController::class, 'create'])->name('itinerary.create');
     Route::post('/itinerary/store', [ItineraryController::class, 'store'])->name('itinerary.save');
 
+    Route::post('/{trip}/status/{status}', [TripController::class, 'updateStatus'])->name('trip.updateStatus');
+
+
     Route::get('/information', [PageController::class, 'tripInformation'])->name('tripinformation');
     Route::get('/list', [PageController::class, 'tripList'])->name('tripList');
     Route::get('/details', [PageController::class, 'tripDetails'])->name('tripDetails');
