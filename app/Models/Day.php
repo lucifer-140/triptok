@@ -38,4 +38,9 @@ class Day extends Model
     {
         return $this->hasMany(Flight::class);
     }
+
+    protected $casts = [
+        'date' => 'datetime',
+    ];
 }
+

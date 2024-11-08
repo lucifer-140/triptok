@@ -40,6 +40,9 @@ Route::prefix('trip')->middleware('auth')->group(function () {
     // Route to show the day plan page (day.blade.php)
     Route::get('/day/{day}', [DayController::class, 'show'])->name('day.show');
 
+    // Add the PUT route to update trip details
+    Route::put('/{trip}', [TripController::class, 'update'])->name('trips.update');
+
     // Activity routes
     Route::get('/activities/create/{day}', [ActivityController::class, 'create'])->name('activities.create');
     Route::post('/activities/store/{day}', [ActivityController::class, 'store'])->name('activities.store');
@@ -76,6 +79,8 @@ Route::prefix('trip')->middleware('auth')->group(function () {
     Route::get('/information', [PageController::class, 'tripInformation'])->name('tripinformation');
     Route::get('/list', [PageController::class, 'tripList'])->name('tripList');
     Route::get('/details', [PageController::class, 'tripDetails'])->name('tripDetails');
+
+
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

@@ -44,6 +44,35 @@ class TripController extends Controller
                         ->with('success', 'Trip created successfully!');
     }
 
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'tripTitle' => 'required|string|max:255',
+            'tripDestination' => 'required|string|max:255',
+            'tripStartDate' => 'required|date',
+            'tripEndDate' => 'required|date|after_or_equal:tripStartDate',
+            'totalBudget' => 'required|numeric|min:0',
+            'currency' => 'required|string|max:3',
+        ]);
+
+        $trip = Trip::findOrFail($id);
+
+        // Assign each attribute individually
+        $trip->tripTitle = $request->tripTitle;
+        $trip->tripDestination = $request->tripDestination;
+        $trip->tripStartDate = $request->tripStartDate;
+        $trip->tripEndDate = $request->tripEndDate;
+        $trip->totalBudget = $request->totalBudget;
+        $trip->currency = $request->currency;
+
+        // Save the updated trip to the database
+        $trip->save();
+
+        // Redirect to the itinerary creation page with the trip ID
+        return redirect()->route('itinerary.create', ['trip' => $trip->id])
+                        ->with('success', 'Trip details updated successfully.');
+
+    }
 
 
 
