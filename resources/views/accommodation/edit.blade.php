@@ -18,7 +18,7 @@
     @endif
 
 
-    <form action="{{ route('accommodation.update', [$day, $accommodation]) }}" method="POST">
+    <form action="{{ route('accommodation.update', $accommodation) }}" method="POST">
         @csrf
         @method('PUT')
         <div class="form-group">

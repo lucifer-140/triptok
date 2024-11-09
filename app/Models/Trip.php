@@ -22,4 +22,10 @@ class Trip extends Model
     {
         return $this->hasMany(Itinerary::class);
     }
+
+    public function status()
+    {
+        return $this->hasOne(TripStatus::class);
+    }
+
 }

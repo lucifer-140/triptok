@@ -9,6 +9,7 @@ use App\Models\Activity;
 use App\Models\Transport;
 use App\Models\Accommodation;
 use App\Models\Flight;
+use App\Models\Currency;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,7 +27,12 @@ class ItineraryController extends Controller
         );
 
         // Fetch the days related to this itinerary
-        $days = $itinerary->days;
+        $days = $itinerary->days->sortBy('date');
+
+        // Fetch the grand_total values for each day
+        $dayGrandTotals = $days->map(function($day) {
+            return $day->grand_total; // Return the grand_total for each day
+        });
 
         // Calculate the grand total from the days
         $grandTotal = $days->sum('grand_total');
@@ -44,6 +50,9 @@ class ItineraryController extends Controller
         // Calculate the total number of days between start and end dates
         $totalDays = $startDate->diffInDays($endDate) + 1; // Adding 1 to include the start day
 
+        // Fetch all currencies from the currencies table
+        $currencies = Currency::all();
+
         // Pass only the itinerary, trip ID, total days, and grand total to the view
         return view('trips.itinerary', [
             'itinerary' => $itinerary,
@@ -52,9 +61,12 @@ class ItineraryController extends Controller
             'endDate' => $endDate,
             'totalDays' => $totalDays, // Pass total days to the view if needed
             'grandTotal' => $grandTotal, // Pass grand total to the view
+            'dayGrandTotals' => $dayGrandTotals,
             'currency' => $trip->currency,
             'totalBudget' => $totalBudget, // Pass the total budget to the view
             'leftover' => $leftover, // Pass the leftover budget to the view
+            'days' => $days,
+            'currencies' => $currencies,
         ]);
     }
 
@@ -119,6 +131,8 @@ class ItineraryController extends Controller
 
         return response()->json(['message' => 'Itinerary saved successfully.']);
     }
+
+
 
 
 
