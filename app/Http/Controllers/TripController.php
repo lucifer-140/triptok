@@ -1,11 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Carbon\Carbon;
 use App\Models\Trip;
 use App\Models\Currency;
 use App\Models\TripStatus;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -94,6 +93,59 @@ class TripController extends Controller
         return redirect()->route('tripList')->with('success', 'Trip status updated to ' . ucfirst($status));
 
     }
+
+    public function tripList()
+    {
+        // Retrieve trips for each status
+        $pendingTrips = Trip::whereHas('status', function ($query) {
+            $query->where('status', 'pending');
+        })->get();
+
+        $ongoingTrips = Trip::whereHas('status', function ($query) {
+            $query->where('status', 'ongoing');
+        })->get();
+
+        $finishedTrips = Trip::whereHas('status', function ($query) {
+            $query->where('status', 'finished');
+        })->get();
+
+        // Check if the variables are being passed correctly
+        return view('trips.tripList', compact('pendingTrips', 'ongoingTrips', 'finishedTrips'));
+    }
+
+
+    public function showDetails($trip_id)
+    {
+        // Fetch the trip using the provided trip_id
+        $trip = Trip::findOrFail($trip_id);
+
+        // Retrieve the first itinerary associated with the trip
+        $itinerary = $trip->itineraries()->first();
+
+        // Check if an itinerary is found
+        if (!$itinerary) {
+            return back()->with('error', 'No itinerary found for this trip.');
+        }
+
+        // Fetch days and load all related data (activities, accommodations, transports, flights)
+        $days = $itinerary->days()->with(['activities', 'accommodations', 'transports', 'flights'])->get();
+
+        // Calculate the total days
+        $totalDays = Carbon::parse($trip->start_date)->diffInDays(Carbon::parse($trip->end_date)) + 1;
+
+        // Return the view with all relevant data
+        return view('trips.tripDetails', [
+            'trip' => $trip,
+            'itinerary' => $itinerary,
+            'days' => $days,
+            'totalDays' => $totalDays,
+        ]);
+    }
+
+
+
+
+
 
 
 

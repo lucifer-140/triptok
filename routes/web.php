@@ -78,10 +78,15 @@ Route::prefix('trip')->middleware('auth')->group(function () {
 
     Route::post('/{trip}/status/{status}', [TripController::class, 'updateStatus'])->name('trip.updateStatus');
 
+    //
+    Route::get('/list', [TripController::class, 'tripList'])->name('tripList');
 
-    Route::get('/information', [PageController::class, 'tripInformation'])->name('tripinformation');
-    Route::get('/list', [PageController::class, 'tripList'])->name('tripList');
-    Route::get('/details', [PageController::class, 'tripDetails'])->name('tripDetails');
+    Route::get('/{trip_id}/details', [TripController::class, 'showDetails'])->name('trips.details');
+
+
+
+    // Route::get('/information', [PageController::class, 'tripInformation'])->name('tripinformation');
+    // Route::get('/details', [PageController::class, 'tripDetails'])->name('tripDetails');
 
 
 });
