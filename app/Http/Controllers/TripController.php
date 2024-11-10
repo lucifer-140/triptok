@@ -96,22 +96,23 @@ class TripController extends Controller
 
     public function tripList()
     {
-        // Retrieve trips for each status
+        // Retrieve trips for each status, ordered by the latest first
         $pendingTrips = Trip::whereHas('status', function ($query) {
             $query->where('status', 'pending');
-        })->get();
+        })->orderBy('created_at', 'desc')->get();
 
         $ongoingTrips = Trip::whereHas('status', function ($query) {
             $query->where('status', 'ongoing');
-        })->get();
+        })->orderBy('created_at', 'desc')->get();
 
         $finishedTrips = Trip::whereHas('status', function ($query) {
             $query->where('status', 'finished');
-        })->get();
+        })->orderBy('created_at', 'desc')->get();
 
         // Check if the variables are being passed correctly
         return view('trips.tripList', compact('pendingTrips', 'ongoingTrips', 'finishedTrips'));
     }
+
 
 
     public function showDetails($trip_id)

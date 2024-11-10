@@ -29,20 +29,20 @@ class PageController extends Controller
     //     return view('trips.itinerary');
     // }
 
-    public function tripInformation()
-    {
-        return view('trips.tripinformation');
-    }
+    // public function tripInformation()
+    // {
+    //     return view('trips.tripinformation');
+    // }
 
-    public function tripList()
-    {
-        return view('trips.tripList');
-    }
+    // public function tripList()
+    // {
+    //     return view('trips.tripList');
+    // }
 
-    public function tripDetails()
-    {
-        return view('trips.tripDetails');
-    }
+    // public function tripDetails()
+    // {
+    //     return view('trips.tripDetails');
+    // }
 
     // public function signIn()
     // {

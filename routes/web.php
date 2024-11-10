@@ -10,6 +10,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\AccommodationController;
 use App\Http\Controllers\FlightController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransportController;
 use Illuminate\Support\Facades\Route;
 
@@ -24,10 +25,20 @@ Route::prefix('user')->group(function () {
     Route::get('/sign-up', [AuthController::class, 'showSignUpForm'])->name('signup');
     Route::post('/signup', [AuthController::class, 'registerUser'])->name('signup.submit');
 
-    // Protected routes
-    Route::get('/page', [PageController::class, 'userPage'])->name('user')->middleware('auth');
-    Route::get('/edit-profile', [PageController::class, 'edit'])->name('edit')->middleware('auth');
+    // Profile routes
+    Route::middleware('auth')->group(function () {
+        // Show profile
+        Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+
+        // Show profile edit form
+        Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+
+        // Update profile
+        Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    });
+
 });
+
 
 // Trip routes
 Route::prefix('trip')->middleware('auth')->group(function () {
@@ -81,12 +92,14 @@ Route::prefix('trip')->middleware('auth')->group(function () {
     //
     Route::get('/list', [TripController::class, 'tripList'])->name('tripList');
 
+    Route::get('trips/pending', [TripController::class, 'pendingTrips'])->name('trips.pending');
+    Route::get('trips/ongoing', [TripController::class, 'ongoingTrips'])->name('trips.ongoing');
+    Route::get('trips/finished', [TripController::class, 'finishedTrips'])->name('trips.finished');
+
+
     Route::get('/{trip_id}/details', [TripController::class, 'showDetails'])->name('trips.details');
 
 
-
-    // Route::get('/information', [PageController::class, 'tripInformation'])->name('tripinformation');
-    // Route::get('/details', [PageController::class, 'tripDetails'])->name('tripDetails');
 
 
 });

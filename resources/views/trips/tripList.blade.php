@@ -5,16 +5,19 @@
     <h2 class="mb-4 text-center">Manage Your Trips</h2>
 
     <!-- Search Bar -->
-    <div class="mb-4">
+    <div class="mb-4 position-relative">
         <input type="text" class="form-control" id="searchTrip" placeholder="Search for trips...">
+        <div id="spinner" class="spinner-border text-primary position-absolute end-0 top-50 translate-middle-y d-none" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
     </div>
 
     <!-- Pending Trips Section -->
     <div class="mb-5">
         <h3 class="section-title">Pending Trips</h3>
         <div class="row" id="pendingTrips">
-            @forelse ($pendingTrips as $trip)
-                <div class="col-md-6 mb-4">
+            @forelse ($pendingTrips as $index => $trip)
+                <div class="col-md-6 mb-4 trip-card @if($index >= 2) d-none @endif" data-trip-title="{{ strtolower($trip->tripTitle) }}" data-trip-destination="{{ strtolower($trip->tripDestination) }}">
                     <div class="card shadow-sm" style="border-radius: 15px;">
                         <div class="card-body">
                             <h5 class="card-title">{{ $trip->tripTitle }}</h5>
@@ -27,8 +30,7 @@
 
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <!-- Edit Button: Redirects to itinerary.create route with trip ID -->
-                                    <a href="#" class="btn btn-outline-primary btn-sm me-2">View <i class="fas fa-eye"></i></a>
+                                    <a href="{{ route('trips.details', $trip->id) }}" class="btn btn-outline-primary btn-sm me-2">View <i class="fas fa-eye"></i></a>
                                     <a href="{{ route('itinerary.create', $trip->id) }}" class="btn btn-outline-secondary btn-sm me-2">Edit <i class="fas fa-edit"></i></a>
                                 </div>
                                 <a href="#" class="btn btn-outline-info btn-sm">Share <i class="fas fa-share-alt"></i></a>
@@ -40,14 +42,19 @@
                 <p>No pending trips available.</p>
             @endforelse
         </div>
+        @if(count($pendingTrips) > 2)
+            <div class="text-center">
+                <button class="btn btn-link show-more" data-target="#pendingTrips">Show More</button>
+            </div>
+        @endif
     </div>
 
     <!-- Ongoing Trips Section -->
     <div class="mb-5">
         <h3 class="section-title">Ongoing Trips</h3>
         <div class="row" id="ongoingTrips">
-            @forelse ($ongoingTrips as $trip)
-                <div class="col-md-6 mb-4">
+            @forelse ($ongoingTrips as $index => $trip)
+                <div class="col-md-6 mb-4 trip-card @if($index >= 2) d-none @endif" data-trip-title="{{ strtolower($trip->tripTitle) }}" data-trip-destination="{{ strtolower($trip->tripDestination) }}">
                     <div class="card shadow-sm" style="border-radius: 15px;">
                         <div class="card-body">
                             <h5 class="card-title">{{ $trip->tripTitle }}</h5>
@@ -60,9 +67,7 @@
 
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <!-- Edit Button: Redirects to itinerary.create route with trip ID -->
                                     <a href="{{ route('trips.details', $trip->id) }}" class="btn btn-outline-primary btn-sm me-2">View <i class="fas fa-eye"></i></a>
-
                                     <a href="{{ route('itinerary.create', $trip->id) }}" class="btn btn-outline-secondary btn-sm me-2">Edit <i class="fas fa-edit"></i></a>
                                 </div>
                                 <a href="#" class="btn btn-outline-info btn-sm">Share <i class="fas fa-share-alt"></i></a>
@@ -74,14 +79,19 @@
                 <p>No ongoing trips available.</p>
             @endforelse
         </div>
+        @if(count($ongoingTrips) > 2)
+            <div class="text-center">
+                <button class="btn btn-link show-more" data-target="#ongoingTrips">Show More</button>
+            </div>
+        @endif
     </div>
 
     <!-- Finished Trips Section -->
     <div class="mb-5">
         <h3 class="section-title">Finished Trips</h3>
         <div class="row" id="finishedTrips">
-            @forelse ($finishedTrips as $trip)
-                <div class="col-md-6 mb-4">
+            @forelse ($finishedTrips as $index => $trip)
+                <div class="col-md-6 mb-4 trip-card @if($index >= 2) d-none @endif" data-trip-title="{{ strtolower($trip->tripTitle) }}" data-trip-destination="{{ strtolower($trip->tripDestination) }}">
                     <div class="card shadow-sm" style="border-radius: 15px;">
                         <div class="card-body">
                             <h5 class="card-title">{{ $trip->tripTitle }}</h5>
@@ -94,8 +104,7 @@
 
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <!-- Edit Button: Redirects to itinerary.create route with trip ID -->
-                                    <a href="{{ route('itinerary.create', $trip->id) }}" class="btn btn-outline-secondary btn-sm">Edit <i class="fas fa-edit"></i></a>
+                                    <a href="{{ route('itinerary.create', $trip->id) }}" class="btn btn-outline-secondary btn-sm me-2">Edit <i class="fas fa-edit"></i></a>
                                 </div>
                                 <a href="#" class="btn btn-outline-info btn-sm">Share <i class="fas fa-share-alt"></i></a>
                             </div>
@@ -106,6 +115,11 @@
                 <p>No finished trips available.</p>
             @endforelse
         </div>
+        @if(count($finishedTrips) > 2)
+            <div class="text-center">
+                <button class="btn btn-link show-more" data-target="#finishedTrips">Show More</button>
+            </div>
+        @endif
     </div>
 
     <!-- Plan New Trip Button -->
@@ -126,5 +140,68 @@
         transform: scale(1.02);
         transition: transform 0.3s;
     }
+    .show-more {
+        font-size: 1rem;
+        color: #007bff;
+        cursor: pointer;
+        text-decoration: none;
+        border: none;
+        background: none;
+    }
+    .show-more:hover {
+        text-decoration: underline;
+    }
+    /* Spinner Style */
+    .spinner-border {
+        width: 2rem;
+        height: 2rem;
+        color: grey !important;
+    }
 </style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Search functionality
+        const searchInput = document.getElementById("searchTrip");
+        const spinner = document.getElementById("spinner");
+        const tripCards = document.querySelectorAll(".trip-card");
+
+        searchInput.addEventListener("input", function() {
+            // Show the spinner when typing starts
+            spinner.classList.remove("d-none");
+
+            // Delay to simulate loading time (optional)
+            setTimeout(function() {
+                const searchTerm = searchInput.value.toLowerCase();
+
+                tripCards.forEach(function(card) {
+                    const tripTitle = card.getAttribute("data-trip-title");
+                    const tripDestination = card.getAttribute("data-trip-destination");
+
+                    if (tripTitle.includes(searchTerm) || tripDestination.includes(searchTerm)) {
+                        card.classList.remove("d-none");
+                    } else {
+                        card.classList.add("d-none");
+                    }
+                });
+
+                // Hide the spinner after search is complete
+                spinner.classList.add("d-none");
+            }, 500); // Adjust the timeout as needed
+        });
+
+        // Show more functionality
+        const showMoreButtons = document.querySelectorAll(".show-more");
+        showMoreButtons.forEach(button => {
+            button.addEventListener("click", function() {
+                const target = document.querySelector(button.getAttribute("data-target"));
+                const hiddenCards = target.querySelectorAll(".d-none");
+                hiddenCards.forEach(card => {
+                    card.classList.remove("d-none");
+                });
+                button.classList.add("d-none");
+            });
+        });
+    });
+</script>
 @endsection
