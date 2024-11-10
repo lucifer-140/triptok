@@ -80,34 +80,113 @@ class TripController extends Controller
         $trip = Trip::findOrFail($trip_id);
         $validStatuses = ['ongoing', 'pending', 'finished'];
 
+        // Step 1: Validate that the status is valid
         if (!in_array($status, $validStatuses)) {
             return redirect()->back()->with('error', 'Invalid status.');
         }
 
-        // Update or create trip status
+        // Step 2: Validate that the trip has an associated itinerary
+        $itinerary = $trip->itineraries->first();  // Assuming one itinerary per trip
+
+        if (!$itinerary) {
+            return redirect()->back()->with('error', 'No itinerary found for this trip.');
+        }
+
+        // Step 3: Check if the current status is either 'pending' or null before allowing to finish the trip
+        if ($status === 'finished') {
+            if ($trip->status === null || $trip->status->status === 'pending') {
+                return redirect()->back()->with('error', 'You cannot end the trip when the status is pending or not set.');
+            }
+        }
+
+        // Only perform the following checks if the status is 'ongoing' or 'finished'
+        if ($status === 'ongoing' || $status === 'finished') {
+            // Step 4: Ensure that all days are present in the itinerary and sequential
+            $days = $itinerary->days->sortBy('day');
+            $totalDays = $itinerary->totalDays;
+            $daysMissing = [];
+
+            // Check for missing days and ensure the days are sequential
+            for ($i = 1; $i <= $totalDays; $i++) {
+                if (!$days->contains('day', $i)) {
+                    $daysMissing[] = $i;
+                }
+            }
+
+            // Check for missing days and return error if any
+            if (count($daysMissing) > 0) {
+                return redirect()->back()->with('error', 'Missing day(s): ' . implode(', ', $daysMissing) . '. All days must be present.');
+            }
+
+            // Step 5: Ensure there are exactly the correct number of days
+            if ($days->count() !== $totalDays) {
+                return redirect()->back()->with('error', 'The number of days in the itinerary does not match the expected total days.');
+            }
+
+            // Step 6: Check if each day has at least one activity
+            foreach ($days as $day) {
+                if ($day->activities->count() < 1) {
+                    return redirect()->back()->with('error', 'Each day must have at least one activity.');
+                }
+            }
+
+            // Step 7: If status is 'finished', check if the trip is 'ongoing'
+            if ($status === 'finished' && ($trip->status && $trip->status->status !== 'ongoing')) {
+                return redirect()->back()->with('error', 'Trip must be ongoing to mark it as finished.');
+            }
+        }
+
+        // Step 8: Update or create the trip status
         TripStatus::updateOrCreate(
             ['trip_id' => $trip->id],
             ['status' => $status]
         );
 
+        // Redirect back with success message
         return redirect()->route('tripList')->with('success', 'Trip status updated to ' . ucfirst($status));
-
     }
+
+
+
+    public function destroy($trip_id)
+    {
+        $trip = Trip::findOrFail($trip_id);
+
+        // Optionally, check if the trip has a status that prevents deletion
+        if ($trip->status && $trip->status->status === 'ongoing') {
+            return redirect()->back()->with('error', 'You cannot delete an ongoing trip.');
+        }
+
+        // Delete the trip and associated data (itinerary, days, etc.)
+        $trip->itineraries()->delete();  // Deleting related itineraries
+        $trip->delete();  // Delete the trip itself
+
+        return redirect()->route('tripList')->with('success', 'Trip deleted successfully.');
+    }
+
+
 
     public function tripList()
     {
-        // Retrieve trips for each status, ordered by the latest first
+        // Retrieve trips for each status, ordered by the latest first, and belonging to the authenticated user
+
         $pendingTrips = Trip::whereHas('status', function ($query) {
             $query->where('status', 'pending');
-        })->orderBy('created_at', 'desc')->get();
+        })->where('user_id', Auth::id()) // Only trips belonging to the authenticated user
+        ->orderBy('created_at', 'desc')
+        ->get();
 
         $ongoingTrips = Trip::whereHas('status', function ($query) {
             $query->where('status', 'ongoing');
-        })->orderBy('created_at', 'desc')->get();
+        })->where('user_id', Auth::id()) // Only trips belonging to the authenticated user
+        ->orderBy('created_at', 'desc')
+        ->get();
 
         $finishedTrips = Trip::whereHas('status', function ($query) {
             $query->where('status', 'finished');
-        })->orderBy('created_at', 'desc')->get();
+        })->where('user_id', Auth::id()) // Only trips belonging to the authenticated user
+        ->orderBy('created_at', 'desc')
+        ->get();
 
         // Check if the variables are being passed correctly
         return view('trips.tripList', compact('pendingTrips', 'ongoingTrips', 'finishedTrips'));

@@ -53,6 +53,9 @@ class ItineraryController extends Controller
         // Fetch all currencies from the currencies table
         $currencies = Currency::all();
 
+        // Fetch the trip status (if any) to check its value in the view
+        $tripStatus = $trip->status;
+
         // Pass only the itinerary, trip ID, total days, and grand total to the view
         return view('trips.itinerary', [
             'itinerary' => $itinerary,
@@ -67,6 +70,7 @@ class ItineraryController extends Controller
             'leftover' => $leftover, // Pass the leftover budget to the view
             'days' => $days,
             'currencies' => $currencies,
+            'tripStatus' => $tripStatus,
         ]);
     }
 
