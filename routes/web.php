@@ -81,12 +81,14 @@ Route::prefix('trip')->middleware('auth')->group(function () {
     //
     Route::get('/list', [TripController::class, 'tripList'])->name('tripList');
 
+    Route::get('trips/pending', [TripController::class, 'pendingTrips'])->name('trips.pending');
+    Route::get('trips/ongoing', [TripController::class, 'ongoingTrips'])->name('trips.ongoing');
+    Route::get('trips/finished', [TripController::class, 'finishedTrips'])->name('trips.finished');
+
+
     Route::get('/{trip_id}/details', [TripController::class, 'showDetails'])->name('trips.details');
 
 
-
-    // Route::get('/information', [PageController::class, 'tripInformation'])->name('tripinformation');
-    // Route::get('/details', [PageController::class, 'tripDetails'])->name('tripDetails');
 
 
 });
