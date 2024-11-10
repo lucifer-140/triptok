@@ -109,7 +109,7 @@
                     <a class="nav-link" href="#">Destinations</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/profile') }}">Account</a>
+                    <a class="nav-link" href="{{ url('/user/profile') }}">Account</a>
                 </li>
                 <li class="nav-item">
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
