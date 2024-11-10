@@ -30,6 +30,13 @@
                 Warning: Your budget is exceeded by {{ abs($leftover) }} {{ $currency }}. Please adjust your itinerary accordingly.
             </div>
         @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
     </div>
 
     <form action="{{ route('day.store') }}" method="POST">
@@ -84,20 +91,46 @@
                     </form>
                 </li>
 
-                <!-- End Trip (Finished) -->
-                <li>
-                    <form action="{{ route('trip.updateStatus', ['trip' => $trip_id, 'status' => 'finished']) }}" method="POST" style="display:inline;">
-                        @csrf
-                        <button type="submit" class="dropdown-item">End Trip</button>
-                    </form>
-                </li>
+                <!-- Only show End Trip (Finished) if status is not null -->
+                @if($tripStatus !== null)
+                    <li>
+                        <form action="{{ route('trip.updateStatus', ['trip' => $trip_id, 'status' => 'finished']) }}" method="POST" style="display:inline;">
+                            @csrf
+                            <button type="submit" class="dropdown-item">End Trip</button>
+                        </form>
+                    </li>
 
-                <!-- Additional actions (without status updates) -->
-                <li><a class="dropdown-item" href="#">Duplicate Trip</a></li>
-                <li><a class="dropdown-item" href="#">Share Trip</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item text-danger" href="#">Delete Trip</a></li>
+                    <!-- Additional actions (without status updates) -->
+                    <li><a class="dropdown-item" href="#">Duplicate Trip</a></li>
+                    <li><a class="dropdown-item" href="#">Share Trip</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">Delete Trip</a></li>
+                @endif
             </ul>
+        </div>
+    </div>
+
+
+    <!-- Modal for Confirming Deletion -->
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteConfirmModalLabel">Confirm Deletion</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this trip? This action cannot be undone.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <form id="deleteTripForm" action="{{ route('trip.delete', $trip_id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Delete Trip</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 

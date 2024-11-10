@@ -4,6 +4,18 @@
 <div class="container mt-5" style="background: linear-gradient(to right, #f0f4f8, #e3e9f1); border-radius: 10px; padding: 20px;">
     <h2 class="mb-4 text-center">Manage Your Trips</h2>
 
+    @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+
     <!-- Search Bar -->
     <div class="mb-4 position-relative">
         <input type="text" class="form-control" id="searchTrip" placeholder="Search for trips...">
