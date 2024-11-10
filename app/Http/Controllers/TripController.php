@@ -216,6 +216,7 @@ class TripController extends Controller
         // Return the view with all relevant data
         return view('trips.tripDetails', [
             'trip' => $trip,
+            'trip_id' => $trip->id,
             'itinerary' => $itinerary,
             'days' => $days,
             'totalDays' => $totalDays,
