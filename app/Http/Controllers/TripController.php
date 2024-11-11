@@ -84,63 +84,47 @@ class TripController extends Controller
         $trip = Trip::findOrFail($trip_id);
         $validStatuses = ['ongoing', 'pending', 'finished'];
 
-        // Step 1: Validate that the status is valid
+        // Step 1: Validate the provided status
         if (!in_array($status, $validStatuses)) {
             return redirect()->back()->with('error', 'Invalid status.');
         }
 
-        // Step 2: Validate that the trip has an associated itinerary
-        $itinerary = $trip->itineraries->first();  // Assuming one itinerary per trip
-
+        // Step 2: Ensure the trip has an associated itinerary
+        $itinerary = $trip->itineraries->first();  // Assumes one itinerary per trip
         if (!$itinerary) {
             return redirect()->back()->with('error', 'No itinerary found for this trip.');
         }
 
-        // Step 3: Check if the current status is either 'pending' or null before allowing to finish the trip
-        if ($status === 'finished') {
-            if ($trip->status === null || $trip->status->status === 'pending') {
-                return redirect()->back()->with('error', 'You cannot end the trip when the status is pending or not set.');
-            }
+        // Step 3: Handle 'finished' status requirements
+        if ($status === 'finished' && (!$trip->status || $trip->status->status === 'pending')) {
+            return redirect()->back()->with('error', 'Trip cannot end while status is pending or not set.');
         }
 
-        // Only perform the following checks if the status is 'ongoing' or 'finished'
-        if ($status === 'ongoing' || $status === 'finished') {
-            // Step 4: Ensure that all days are present in the itinerary and sequential
+        // Step 4: For 'ongoing' or 'finished' status, validate days and activities
+        if (in_array($status, ['ongoing', 'finished'])) {
             $days = $itinerary->days->sortBy('day');
-            $totalDays = $itinerary->totalDays;
-            $daysMissing = [];
+            $totalDays = $itinerary->totalDays ?? $days->count(); // Fallback to days count if totalDays is null
 
-            // Check for missing days and ensure the days are sequential
-            for ($i = 1; $i <= $totalDays; $i++) {
-                if (!$days->contains('day', $i)) {
-                    $daysMissing[] = $i;
-                }
+            // Ensure all days are present and sequential
+            $missingDays = $this->getMissingDays($days, $totalDays);
+            if (!empty($missingDays)) {
+                return redirect()->back()->with('error', 'Missing day(s): ' . implode(', ', $missingDays) . '. All days must be present.');
             }
 
-            // Check for missing days and return error if any
-            if (count($daysMissing) > 0) {
-                return redirect()->back()->with('error', 'Missing day(s): ' . implode(', ', $daysMissing) . '. All days must be present.');
-            }
-
-            // Step 5: Ensure there are exactly the correct number of days
-            if ($days->count() !== $totalDays) {
-                return redirect()->back()->with('error', 'The number of days in the itinerary does not match the expected total days.');
-            }
-
-            // Step 6: Check if each day has at least one activity
+            // Verify each day has at least one activity
             foreach ($days as $day) {
-                if ($day->activities->count() < 1) {
+                if ($day->activities->isEmpty()) {
                     return redirect()->back()->with('error', 'Each day must have at least one activity.');
                 }
             }
 
-            // Step 7: If status is 'finished', check if the trip is 'ongoing'
-            if ($status === 'finished' && ($trip->status && $trip->status->status !== 'ongoing')) {
+            // Ensure 'finished' status can only be set from 'ongoing'
+            if ($status === 'finished' && $trip->status->status !== 'ongoing') {
                 return redirect()->back()->with('error', 'Trip must be ongoing to mark it as finished.');
             }
         }
 
-        // Step 8: Update or create the trip status
+        // Step 5: Update or create the trip status
         TripStatus::updateOrCreate(
             ['trip_id' => $trip->id],
             ['status' => $status]
@@ -149,6 +133,26 @@ class TripController extends Controller
         // Redirect back with success message
         return redirect()->route('tripList')->with('success', 'Trip status updated to ' . ucfirst($status));
     }
+
+    /**
+     * Helper function to check for missing days in the itinerary.
+     *
+     * @param Collection $days
+     * @param int $totalDays
+     * @return array
+     */
+    private function getMissingDays($days, $totalDays)
+    {
+        $missingDays = [];
+        for ($i = 1; $i <= $totalDays; $i++) {
+            if (!$days->contains('day', $i)) {
+                $missingDays[] = $i;
+            }
+        }
+        return $missingDays;
+    }
+
+
 
 
 
