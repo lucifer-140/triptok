@@ -27,6 +27,7 @@ class TripController extends Controller
             'tripEndDate' => 'required|date|after_or_equal:tripStartDate',
             'totalBudget' => 'required|numeric|min:0',
             'currency' => 'required|string|size:3',
+            'goals' => 'nullable|string|max:1000',
         ]);
 
         // Create a new trip instance and save it to the database
@@ -37,6 +38,7 @@ class TripController extends Controller
         $trip->tripEndDate = $request->tripEndDate;
         $trip->totalBudget = $request->totalBudget;
         $trip->currency = $request->currency;
+        $trip->goals = $request->goals;
         $trip->user_id = Auth::id(); // Associate the trip with the authenticated user
         $trip->save();
 
@@ -54,6 +56,7 @@ class TripController extends Controller
             'tripEndDate' => 'required|date|after_or_equal:tripStartDate',
             'totalBudget' => 'required|numeric|min:0',
             'currency' => 'required|string|max:3',
+            'goals' => 'nullable|string|max:1000',
         ]);
 
         $trip = Trip::findOrFail($id);
@@ -65,6 +68,7 @@ class TripController extends Controller
         $trip->tripEndDate = $request->tripEndDate;
         $trip->totalBudget = $request->totalBudget;
         $trip->currency = $request->currency;
+        $trip->goals = $request->goals;
 
         // Save the updated trip to the database
         $trip->save();
@@ -216,6 +220,7 @@ class TripController extends Controller
         // Return the view with all relevant data
         return view('trips.tripDetails', [
             'trip' => $trip,
+            'trip_id' => $trip->id,
             'itinerary' => $itinerary,
             'days' => $days,
             'totalDays' => $totalDays,

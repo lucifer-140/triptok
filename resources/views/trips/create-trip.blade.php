@@ -54,6 +54,12 @@
             <div class="error-message text-danger" id="budgetError"></div>
         </div>
 
+        <!-- New Goals Field -->
+        <div class="mb-3">
+            <label for="goals" class="form-label">Trip Goals</label>
+            <textarea class="form-control" id="goals" name="goals" rows="3" placeholder="Enter your goals for this trip"></textarea>
+        </div>
+
         <button type="submit" class="btn btn-primary btn-block">Create Trip</button>
     </form>
 </div>
