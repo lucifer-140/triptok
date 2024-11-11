@@ -12,6 +12,10 @@ use App\Http\Controllers\AccommodationController;
 use App\Http\Controllers\FlightController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransportController;
+
+use App\Mail\TestEmail;
+use Illuminate\Support\Facades\Mail;
+
 use Illuminate\Support\Facades\Route;
 
 // User routes
@@ -109,3 +113,24 @@ Route::prefix('trip')->middleware('auth')->group(function () {
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/', [GuestController::class, 'index'])->name('guest.home');
+
+
+Route::get('/send-email', function () {
+    $toEmail = 'davejansen140@gmail.com'; // Replace with the recipient's email
+    Mail::to($toEmail)->send(new TestEmail());
+    return 'Email sent!';
+});
+
+
+
+// Show the reset password request form
+Route::get('password/reset', [App\Http\Controllers\Auth\PasswordResetController::class, 'showLinkRequestForm'])->name('password.request');
+
+// Send the reset password link
+Route::post('password/email', [App\Http\Controllers\Auth\PasswordResetController::class, 'sendResetLinkEmail'])->name('password.email');
+
+// Show the reset password form
+Route::get('password/reset/{token}', [App\Http\Controllers\Auth\PasswordResetController::class, 'showResetForm'])->name('password.reset');
+
+// Reset the password
+Route::post('password/reset', [App\Http\Controllers\Auth\PasswordResetController::class, 'reset'])->name('password.update');
