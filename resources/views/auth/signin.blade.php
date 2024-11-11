@@ -7,9 +7,74 @@
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <style>
+        /* Use a modern, clean font */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa; /* Light background */
+        }
+
+        /* Card Styling */
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-body {
+            padding: 30px;
+        }
+
+        .text-center h4 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #343a40;
+            margin-bottom: 20px;
+        }
+
         .error-message {
             color: red;
             font-size: 0.9em;
+        }
+
+        /* Input field styles */
+        .form-label {
+            font-weight: 600;
+        }
+
+        .form-control {
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 1rem;
+        }
+
+
+        /* Link Styling */
+        .text-center a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .text-center a:hover {
+            text-decoration: underline;
+        }
+
+        /* Container styling */
+        .container {
+            margin-top: 60px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                margin-top: 20px;
+            }
+
+            .card-body {
+                padding: 20px;
+            }
+
+            .text-center h4 {
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
@@ -46,6 +111,12 @@
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Sign In</button>
                 </form>
+
+                <!-- Reset Password Link -->
+                <div class="text-center mt-3">
+                    <p><a href="{{ route('password.request') }}">Forgot Your Password?</a></p>
+                </div>
+
                 <div class="text-center mt-3">
                     <p>Don't have an account? <a href="{{ route('signup') }}">Sign Up</a></p>
                 </div>
