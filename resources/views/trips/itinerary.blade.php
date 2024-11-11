@@ -9,15 +9,15 @@
     <p class="text-center mb-4">Plan your adventure day by day with details of activities, transport, accommodation, and more.</p>
 
     <div class="mb-4 border rounded p-3">
-        <p><strong>DEBUG</strong></p>
+        {{-- <p><strong>DEBUG</strong></p>
         <p><strong>Itinerary ID:</strong> {{ $itinerary->id  }}</p>
         <p><strong>Trip ID:</strong> {{ $trip_id }}</p>
         <div class="mb-4">
             <label for="tripCurrency" class="form-label">Trip Currency:</label>
             <input type="text" class="form-control" id="tripCurrency" value="{{ $currency }}" readonly>
-        </div>
+        </div> --}}
         <!-- Display the grand total -->
-        <h3 class="mt-4">Grand Total: {{ $grandTotal }} {{ $itinerary->trip->currency }}</h3>
+        <h3 class="" style="color: #1f2937 !important;">Grand Total: {{ $grandTotal }} {{ $itinerary->trip->currency }}</h3>
         <h3 class="mt-4">
             Leftover Budget:
             <span class="{{ $leftover < 0 ? 'text-danger fw-bold' : '' }}">
@@ -38,6 +38,46 @@
         @endif
 
     </div>
+
+    <div class="mb-4 border rounded p-3 bg-gray-50 !important">
+        <h3 class="text-xl font-semibold text-gray-900 !important">Trip Suggestions</h3>
+        <div class="space-y-4 !important">
+            <details class="bg-gray-100 p-2 rounded-md hover:bg-gray-200 transition !important">
+                <summary class="font-semibold text-gray-800 cursor-pointer !important">Budget</summary>
+                <ul class="text-gray-700 list-none pl-5 space-y-1 !important">
+                    @foreach (explode("\n", $budgetTips) as $item)
+                        @if (trim($item) !== "")
+                            <li class="text-sm !important">{{ str_replace(['*', '**', '***'], '', $item) }}</li>
+                        @endif
+                    @endforeach
+                </ul>
+            </details>
+            <details class="bg-gray-100 p-2 rounded-md hover:bg-gray-200 transition !important">
+                <summary class="font-semibold text-gray-800 cursor-pointer !important">Weather</summary>
+                <ul class="text-gray-700 list-none pl-5 space-y-1 !important">
+                    @foreach (explode("\n", str_replace(['*', '**', '***'], '', $weatherInfo)) as $weatherPoint)
+                        @if (trim($weatherPoint) !== "")
+                            <li class="text-sm !important">{{ $weatherPoint }}</li>
+                        @endif
+                    @endforeach
+                </ul>
+            </details>
+            <details class="bg-gray-100 p-2 rounded-md hover:bg-gray-200 transition !important">
+                <summary class="font-semibold text-gray-800 cursor-pointer !important">Culture Tips</summary>
+                <ul class="text-gray-700 list-none pl-5 space-y-1 !important">
+                    @foreach (explode("\n", str_replace('- ', '', $cultureTips)) as $tip)
+                        @if (trim($tip) !== "")
+                            <li class="text-sm !important">{{ str_replace(['*', '**', '***'], '', $tip) }}</li>
+                        @endif
+                    @endforeach
+                </ul>
+            </details>
+        </div>
+    </div>
+
+
+
+
 
     <form action="{{ route('day.store') }}" method="POST">
         @csrf
@@ -180,6 +220,10 @@
                                 @endforeach
                             </select>
                         </div>
+                        <div class="mb-3">
+                            <label for="goals" class="form-label">Goals</label>
+                            <textarea class="form-control" id="goals" name="goals" rows="3">{{ $itinerary->trip->goals }}</textarea>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -189,6 +233,7 @@
             </div>
         </div>
     </div>
+
 
 
 
@@ -212,24 +257,24 @@
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between align-items-center mb-2">
                                         <span class="font-weight-bold text-black">Activities:</span>
-                                        <span class="badge badge-pill badge-primary">{{ $day->activities->count() }}</span>
+                                        <span class="badge badge-pill badge-primary" style="background-color: #007bff; color: white;">{{ $day->activities->count() }}</span>
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center mb-2">
                                         <span class="font-weight-bold text-black">Accommodation:</span>
-                                        <span class="badge badge-pill badge-success">{{ $day->accommodations->count() }}</span>
+                                        <span class="badge badge-pill badge-success" style="background-color: #28a745; color: white;">{{ $day->accommodations->count() }}</span>
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center mb-2">
                                         <span class="font-weight-bold text-black">Transport:</span>
-                                        <span class="badge badge-pill badge-info">{{ $day->transports->count() }}</span>
+                                        <span class="badge badge-pill badge-info" style="background-color: #17a2b8; color: white;">{{ $day->transports->count() }}</span>
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center mb-2">
                                         <span class="font-weight-bold text-black">Flights:</span>
-                                        <span class="badge badge-pill badge-warning">{{ $day->flights->count() }}</span>
+                                        <span class="badge badge-pill badge-warning" style="background-color: #ffc107; color: black;">{{ $day->flights->count() }}</span>
                                     </div>
                                     <hr>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <span class="font-weight-bold text-black">Total Cost:</span>
-                                        <span class="h5 mb-0 text-black">{{ $dayGrandTotals[$key] }} {{ $currency->code }}</span>
+                                        <span class="h5 mb-0 text-black">{{ $dayGrandTotals[$key] ?? 'N/A' }} {{ $trip->currency }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -249,6 +294,131 @@
 
 </div>
 
+<style>
+    .mb-4.border.rounded.p-3.bg-gray-50 {
+        background-color: #f9fafb !important; /* Light gray background for sections */
+    }
+
+    h3.text-xl.font-semibold.text-gray-900 {
+        color: #1f2937 !important; /* Dark gray color for headings */
+    }
+
+    .details.bg-gray-100.p-2.rounded-md.hover\:bg-gray-200.transition {
+        background-color: #f3f4f6 !important; /* Light gray for details background */
+    }
+
+    .details:hover {
+        background-color: #e5e7eb !important; /* Hover effect for details */
+    }
+
+    ul.text-gray-700.list-none.pl-5.space-y-1 li {
+        color: #4b5563 !important; /* Dark gray color for list items */
+        font-size: 0.875rem !important; /* Slightly smaller font size for list items */
+    }
+
+    h3.mt-4, .h5.mb-0, .text-black {
+        color: #1f2937 !important; /* Uniform text color for headings and important text */
+    }
+
+    /* .btn-outline-primary {
+        color: #4f81e2 !important;
+        border-color: #4f81e2 !important;
+    }
+
+    .btn-outline-primary:hover {
+        background-color: #4f81e2 !important;
+        color: #fff !important;
+    }
+
+    .btn-outline-secondary {
+        color: #6c757d !important;
+        border-color: #6c757d !important;
+    }
+
+    .btn-outline-secondary:hover {
+        background-color: #6c757d !important;
+        color: #fff !important;
+    }
+
+    .btn-outline-warning {
+        color: #f0ad4e !important;
+        border-color: #f0ad4e !important;
+    }
+
+    .btn-outline-warning:hover {
+        background-color: #f0ad4e !important;
+        color: #fff !important;
+    }
+
+    .btn-primary {
+        background-color: #007bff !important;
+        border-color: #007bff !important;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3 !important;
+        border-color: #0056b3 !important;
+    } */
+
+    .badge {
+        font-size: 14px;  /* Adjust font size */
+        font-weight: bold;
+    }
+
+    .badge-primary {
+        background-color: #007bff;
+        color: white !important; /* Ensure text inside is white */
+    }
+
+    .badge-success {
+        background-color: #28a745;
+        color: white !important; /* Ensure text inside is white */
+    }
+
+    .badge-info {
+        background-color: #17a2b8;
+        color: white !important; /* Ensure text inside is white */
+    }
+
+    .badge-warning {
+        background-color: #ffc107;
+        color: black !important; /* Ensure text inside is black */
+    }
+
+
+
+    .dropdown-menu {
+        background-color: #f8f9fa !important;
+    }
+
+    .dropdown-item:hover {
+        background-color: #e9ecef !important;
+    }
+
+    .card-header {
+        background-color: #246351 !important; /* Deep teal for card headers */
+        color: #fff !important; /* White text for contrast */
+    }
+
+    .card-body {
+        background-color: #f3f4f6 !important; /* Light gray for the card body */
+    }
+
+    .text-danger {
+        color: #dc3545 !important; /* Red for danger messages */
+    }
+
+    .text-warning {
+        color: #ffc107 !important; /* Yellow for warnings */
+    }
+
+    .text-success {
+        color: #28a745 !important; /* Green for success messages */
+    }
+
+
+</style>
+
 <script>
     document.getElementById('tripDay').addEventListener('change', function() {
         const selectedOption = this.options[this.selectedIndex];
@@ -258,6 +428,10 @@
     // Set the date when the page first loads
     document.getElementById('tripDay').dispatchEvent(new Event('change'));
 
+    function toggleSection(button) {
+        const section = button.nextElementSibling;
+        section.classList.toggle('hidden');
+    }
 
     // Initialize scrollspy
     const dataSpyList = document.querySelector('#dayTabs');

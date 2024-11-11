@@ -16,6 +16,7 @@ class Trip extends Model
         'end_date',
         'budget',
         'currency',
+        'goals',
     ];
 
     public function itineraries()

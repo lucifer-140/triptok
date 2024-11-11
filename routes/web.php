@@ -97,6 +97,7 @@ Route::prefix('trip')->middleware('auth')->group(function () {
     Route::get('trips/finished', [TripController::class, 'finishedTrips'])->name('trips.finished');
 
 
+
     Route::get('/{trip_id}/details', [TripController::class, 'showDetails'])->name('trips.details');
 
     Route::delete('/{trip}', [TripController::class, 'destroy'])->name('trip.delete');

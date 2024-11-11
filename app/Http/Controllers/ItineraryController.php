@@ -13,66 +13,86 @@ use App\Models\Currency;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use Gemini\Laravel\Facades\Gemini;
+use Google\Client;
+use Google\Service\Customsearch;
+use Illuminate\Support\Facades\Log;
+
 class ItineraryController extends Controller
 {
     public function create($trip_id)
     {
-        // Fetch the trip details using the trip ID
+        // Fetch the trip and itinerary details as before
         $trip = Trip::findOrFail($trip_id);
-
-        // Check if an itinerary already exists for this trip
-        $itinerary = Itinerary::firstOrCreate(
-            ['trip_id' => $trip_id],  // Condition to check for an existing itinerary
-            ['trip_id' => $trip_id]   // Values to create if no existing itinerary
-        );
-
-        // Fetch the days related to this itinerary
+        $itinerary = Itinerary::firstOrCreate(['trip_id' => $trip_id], ['trip_id' => $trip_id]);
         $days = $itinerary->days->sortBy('date');
+        $grandTotal = $days->sum('grand_total');
+        $totalBudget = $trip->totalBudget;
+        $leftover = $totalBudget - $grandTotal;
+        $startDate = Carbon::parse($trip->tripStartDate);
+        $endDate = Carbon::parse($trip->tripEndDate);
+        $totalDays = $startDate->diffInDays($endDate) + 1;
+        $currencies = Currency::all();
+        $tripStatus = $trip->status;
+        $tripGoals = $trip->goals;
+
+        // Gemini API call for trip suggestions
+        $destination = $trip->tripDestination;
+        $tripDuration = $totalDays;
 
         // Fetch the grand_total values for each day
         $dayGrandTotals = $days->map(function($day) {
             return $day->grand_total; // Return the grand_total for each day
         });
 
-        // Calculate the grand total from the days
-        $grandTotal = $days->sum('grand_total');
 
-        // Get the total budget from the trip
-        $totalBudget = $trip->totalBudget; // Make sure 'totalBudget' is the correct field in your database
+        $budgetTips = Gemini::geminiPro()->generateContent(
+            "If {$trip->currency}{$totalBudget} is not enough for a {$tripDuration}-day trip to {$destination}, with the goal of {$tripGoals}, provide a concise budget breakdown like this:
 
-        // Calculate the leftover budget
-        $leftover = $totalBudget - $grandTotal;
+        * **Flights:** {$trip->currency}[estimated cost]
+        * **Accommodation:** {$trip->currency}[estimated cost]
+        * **Activities:** {$trip->currency}[estimated cost]
+        * **Food:** {$trip->currency}[estimated cost]
+        * **Total:** {$trip->currency}[estimated total]
 
-        // Fetch the start and end dates and convert them to Carbon instances
-        $startDate = Carbon::parse($trip->tripStartDate);
-        $endDate = Carbon::parse($trip->tripEndDate);
+        Ensure the estimated costs are appropriate for {$destination} and {$tripDuration}."
+        )->text();
 
-        // Calculate the total number of days between start and end dates
-        $totalDays = $startDate->diffInDays($endDate) + 1; // Adding 1 to include the start day
+        $weatherInfo = Gemini::geminiPro()->generateContent(
+            "List the expected weather conditions and season in {$destination} between {$startDate->format('Y-m-d')} and {$endDate->format('Y-m-d')}, considering a {$tripDuration}-day trip with this itinerary:
 
-        // Fetch all currencies from the currencies table
-        $currencies = Currency::all();
+        {$days}
 
-        // Fetch the trip status (if any) to check its value in the view
-        $tripStatus = $trip->status;
+        and the goal of {$tripGoals}."
+        )->text();
 
-        // Pass only the itinerary, trip ID, total days, and grand total to the view
+        $cultureTips = Gemini::geminiPro()->generateContent(
+            "Give 3 essential cultural etiquette tips for {$destination}, in a concise list."
+        )->text();
+
+        // Pass all data, including suggestions, to the view
         return view('trips.itinerary', [
             'itinerary' => $itinerary,
+            'trip' => $trip,
             'trip_id' => $trip_id,
             'startDate' => $startDate,
             'endDate' => $endDate,
-            'totalDays' => $totalDays, // Pass total days to the view if needed
-            'grandTotal' => $grandTotal, // Pass grand total to the view
-            'dayGrandTotals' => $dayGrandTotals,
+            'totalDays' => $totalDays,
+            'grandTotal' => $grandTotal,
             'currency' => $trip->currency,
-            'totalBudget' => $totalBudget, // Pass the total budget to the view
-            'leftover' => $leftover, // Pass the leftover budget to the view
+            'totalBudget' => $totalBudget,
+            'leftover' => $leftover,
             'days' => $days,
             'currencies' => $currencies,
             'tripStatus' => $tripStatus,
+            'budgetTips' => $budgetTips,
+            'weatherInfo' => $weatherInfo,
+            'cultureTips' => $cultureTips,
+            'tripGoals' => $tripGoals,
+            'dayGrandTotals' => $dayGrandTotals,
         ]);
     }
+
 
 
 
