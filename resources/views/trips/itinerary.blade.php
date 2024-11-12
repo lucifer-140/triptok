@@ -192,6 +192,7 @@
                     <!-- Additional actions (without status updates) -->
                     <li><a class="dropdown-item" href="#">Duplicate Trip</a></li>
                     <li><a class="dropdown-item" href="#">Share Trip</a></li>
+                    <li><a class="dropdown-item" href="{{ route('trip.downloadICS', ['itineraryId' => $itinerary->id]) }}">Create Reminder</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">Delete Trip</a></li>
                 @endif

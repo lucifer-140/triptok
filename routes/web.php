@@ -12,6 +12,7 @@ use App\Http\Controllers\AccommodationController;
 use App\Http\Controllers\FlightController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransportController;
+use App\Http\Controllers\CalendarController;
 
 use App\Mail\TestEmail;
 use Illuminate\Support\Facades\Mail;
@@ -106,6 +107,8 @@ Route::prefix('trip')->middleware('auth')->group(function () {
 
     Route::delete('/{trip}', [TripController::class, 'destroy'])->name('trip.delete');
 
+    Route::get('/{itineraryId}/downloadICS', [CalendarController::class, 'downloadICS'])->name('trip.downloadICS');
+
 
 
 });
@@ -134,3 +137,4 @@ Route::get('password/reset/{token}', [App\Http\Controllers\Auth\PasswordResetCon
 
 // Reset the password
 Route::post('password/reset', [App\Http\Controllers\Auth\PasswordResetController::class, 'reset'])->name('password.update');
+
