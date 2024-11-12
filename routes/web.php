@@ -14,6 +14,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransportController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\FriendController;
+use App\Http\Controllers\FriendRequestController;
+
 
 use App\Mail\TestEmail;
 use Illuminate\Support\Facades\Mail;
@@ -43,7 +45,18 @@ Route::prefix('user')->group(function () {
         Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     });
 
-    Route::get('/friends', [FriendController::class, 'index'])->name('friends.index');
+
+
+    Route::middleware('auth')->group(function () {
+        Route::get('/friends', [FriendController::class, 'index'])->name('friends.index');
+        Route::get('/friends/search', [FriendController::class, 'search'])->name('friends.search');
+
+        Route::get('/friends/list', [FriendController::class, 'friendsList'])->name('friends.list');
+        Route::delete('/friends/remove/{friendship}', [FriendController::class, 'remove'])->name('friends.remove');
+        Route::post('/friend-request/{userId}', [FriendRequestController::class, 'sendRequest'])->name('sendRequest');
+        Route::post('/friend-request/accept/{requestId}', [FriendRequestController::class, 'acceptRequest'])->name('acceptRequest');
+        Route::post('/friend-request/reject/{requestId}', [FriendRequestController::class, 'rejectRequest'])->name('rejectRequest');
+    });
 
 });
 
