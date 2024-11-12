@@ -13,6 +13,7 @@ use App\Http\Controllers\FlightController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransportController;
 use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\FriendController;
 
 use App\Mail\TestEmail;
 use Illuminate\Support\Facades\Mail;
@@ -41,6 +42,8 @@ Route::prefix('user')->group(function () {
         // Update profile
         Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     });
+
+    Route::get('/friends', [FriendController::class, 'index'])->name('friends.index');
 
 });
 
@@ -137,4 +140,7 @@ Route::get('password/reset/{token}', [App\Http\Controllers\Auth\PasswordResetCon
 
 // Reset the password
 Route::post('password/reset', [App\Http\Controllers\Auth\PasswordResetController::class, 'reset'])->name('password.update');
+
+
+
 

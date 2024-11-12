@@ -3,11 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Itinerary;
-use App\Models\Day;
-use App\Models\Activity;
-use App\Models\Accommodation;
-use App\Models\Flight;
-use App\Models\Transport;
 use Illuminate\Support\Facades\Response;
 use Carbon\Carbon;
 
@@ -23,27 +18,35 @@ class CalendarController extends Controller
             'days.transports',
         ])->findOrFail($itineraryId);
 
-        // Create ICS content
-        $icsContent = "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//YourApp//EN\r\n";
+        // Fetch the related trip title from the Trip model
+        $tripTitle = $itinerary->trip->tripTitle;
+
+        // Set the filename as the trip title with safe characters
+        $filename = preg_replace('/[^A-Za-z0-9_\-]/', '_', $tripTitle) . ".ics";
+
+        // Start ICS content with app-specific identifier
+        $icsContent = "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Triptok//EN\r\n";
 
         // Loop through each day in the itinerary
         foreach ($itinerary->days as $day) {
-            // Format day date
             $date = Carbon::parse($day->date)->format('Ymd');
 
-            // Add each activity as an event
+            // Add each activity as an event with a Gemini-generated summary
             foreach ($day->activities as $activity) {
                 $startTime = Carbon::parse($activity->start_time)->format('His');
                 $endTime = Carbon::parse($activity->end_time)->format('His');
-                $icsContent .= $this->formatEvent("Activity: {$activity->title}", $activity->description, $date, $startTime, $endTime);
+                $summary = $this->generateGeminiSummary("Activity", $activity->title);
+                $icsContent .= $this->formatEvent($summary, $activity->description, $date, $startTime, $endTime);
             }
 
             // Add each accommodation check-in/check-out as events
             foreach ($day->accommodations as $accommodation) {
                 $checkInTime = Carbon::parse($accommodation->check_in)->format('His');
                 $checkOutTime = Carbon::parse($accommodation->check_out)->format('His');
-                $icsContent .= $this->formatEvent("Accommodation: {$accommodation->name} - Check-in", '', $date, $checkInTime);
-                $icsContent .= $this->formatEvent("Accommodation: {$accommodation->name} - Check-out", '', $date, $checkOutTime);
+                $checkInSummary = $this->generateGeminiSummary("Accommodation Check-in", $accommodation->name);
+                $checkOutSummary = $this->generateGeminiSummary("Accommodation Check-out", $accommodation->name);
+                $icsContent .= $this->formatEvent($checkInSummary, '', $date, $checkInTime);
+                $icsContent .= $this->formatEvent($checkOutSummary, '', $date, $checkOutTime);
             }
 
             // Add each flight as an event
@@ -51,7 +54,8 @@ class CalendarController extends Controller
                 $flightDate = Carbon::parse($flight->date)->format('Ymd');
                 $departureTime = Carbon::parse($flight->departure_time)->format('His');
                 $arrivalTime = Carbon::parse($flight->arrival_time)->format('His');
-                $icsContent .= $this->formatEvent("Flight: {$flight->flight_number}", '', $flightDate, $departureTime, $arrivalTime);
+                $summary = $this->generateGeminiSummary("Flight", $flight->flight_number);
+                $icsContent .= $this->formatEvent($summary, '', $flightDate, $departureTime, $arrivalTime);
             }
 
             // Add each transport as an event
@@ -59,19 +63,32 @@ class CalendarController extends Controller
                 $transportDate = Carbon::parse($transport->date)->format('Ymd');
                 $departureTime = Carbon::parse($transport->departure_time)->format('His');
                 $arrivalTime = Carbon::parse($transport->arrival_time)->format('His');
-                $icsContent .= $this->formatEvent("Transport: {$transport->type}", '', $transportDate, $departureTime, $arrivalTime);
+                $summary = $this->generateGeminiSummary("Transport", $transport->type);
+                $icsContent .= $this->formatEvent($summary, '', $transportDate, $departureTime, $arrivalTime);
             }
         }
 
         // End calendar
         $icsContent .= "END:VCALENDAR";
 
-        // Return ICS file as download
-        return Response::make($icsContent, 200, [
-            'Content-Type' => 'text/calendar',
-            'Content-Disposition' => 'attachment; filename="itinerary.ics"',
-        ]);
+        // Using stream for more explicit control over the download process
+        return response()->stream(
+            function () use ($icsContent) {
+                echo $icsContent;
+            },
+            200,
+            [
+                'Content-Type' => 'text/calendar',
+                'Content-Disposition' => 'attachment; filename="' . urlencode($filename) . '"',
+                'Cache-Control' => 'no-cache, no-store, must-revalidate',
+                'Pragma' => 'no-cache',
+                'Expires' => '0',
+            ]
+        );
     }
+
+
+
 
     private function formatEvent($summary, $description, $date, $startTime, $endTime = null)
     {
@@ -85,5 +102,24 @@ class CalendarController extends Controller
         $event .= "END:VEVENT\r\n";
 
         return $event;
+    }
+
+    private function generateGeminiSummary($type, $title)
+    {
+        // Generate a summary message based on the type of event
+        switch ($type) {
+            case "Activity":
+                return "Upcoming Activity: {$title}";
+            case "Accommodation Check-in":
+                return "Check-in Reminder: {$title}";
+            case "Accommodation Check-out":
+                return "Check-out Reminder: {$title}";
+            case "Flight":
+                return "Flight Alert: {$title}";
+            case "Transport":
+                return "Transport Alert: {$title}";
+            default:
+                return "Upcoming Event: {$title}";
+        }
     }
 }
