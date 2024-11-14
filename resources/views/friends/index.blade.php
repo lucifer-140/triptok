@@ -27,22 +27,22 @@
                     <ul class="nav nav-tabs" id="friendTabs" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="friends-tab" data-bs-toggle="tab" data-bs-target="#friends" type="button" role="tab" aria-controls="friends" aria-selected="true">
-                                <i class="bi bi-people"></i> Friends
+                                <i class="bi bi-people"></i>
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="received-requests-tab" data-bs-toggle="tab" data-bs-target="#received-requests" type="button" role="tab" aria-controls="received-requests" aria-selected="false">
-                                <i class="bi bi-person-plus"></i> Requests
+                                <i class="bi bi-person-plus"></i>
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="sent-requests-tab" data-bs-toggle="tab" data-bs-target="#sent-requests" type="button" role="tab" aria-controls="sent-requests" aria-selected="false">
-                                <i class="bi bi-send"></i> Sent
+                                <i class="bi bi-send"></i>
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="suggestions-tab" data-bs-toggle="tab" data-bs-target="#suggestions" type="button" role="tab" aria-controls="suggestions" aria-selected="false">
-                                <i class="bi bi-person-check"></i> Suggestions
+                                <i class="bi bi-person-check"></i>
                             </button>
                         </li>
                     </ul>
@@ -52,29 +52,41 @@
 
                         <!-- Your Friends Tab -->
                         <div class="tab-pane fade show active" id="friends" role="tabpanel" aria-labelledby="friends-tab">
-                            <div class="d-flex align-items-center justify-content-between mt-3">
-                                <h4>Your Friends</h4>
-                                <input type="text" class="form-control w-50" id="searchFriend" placeholder="Search friends...">
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <h4>Your Friends</h4>
+                                </div>
+                                <div class="col-12">
+                                    <input type="text" class="form-control mt-2" id="searchFriend" placeholder="Search friends...">
+                                </div>
                             </div>
                             <div class="friend-list" id="friendsList">
-                                @foreach($friends as $friend)
+                                @forelse($friends as $friend)
                                     <div class="friend-card p-3 mb-2 rounded shadow-sm text-center text-md-start">
                                         <div class="d-flex align-items-center flex-column flex-md-row">
                                             <img src="{{ $friend->profile_image ? asset('storage/' . $friend->profile_image) : asset('assets/blankprofilepic.jpeg') }}" alt="{{ $friend->first_name }} {{ $friend->last_name }}" class="rounded-circle me-0 me-md-3 mb-2 mb-md-0" width="50" height="50">
                                             <div class="flex-grow-1">
                                                 <strong>{{ $friend->first_name }} {{ $friend->last_name }}</strong>
-                                                <p class="mb-0 text-muted">Email: {{ $friend->email }} | Phone: {{ $friend->phone_number }}</p>
+                                                <p class="mb-0 text-muted">Email: {{ $friend->email }}</p>
+                                                <p class="mb-0 text-muted">Phone: {{ $friend->phone_number }}</p>
                                             </div>
                                             <div class="mt-2 mt-md-0">
-                                                <a href="#" class="btn btn-outline-info btn-sm me-1"><i class="bi bi-chat-dots"></i></a>
                                                 <form action="{{ route('removeFriend', $friend->id) }}" method="POST" class="d-inline-block">
                                                     @csrf
                                                     <button type="submit" class="btn btn-outline-danger btn-sm"><i class="bi bi-person-x"></i></button>
                                                 </form>
+                                                <form action="#" method="POST" class="d-inline-block">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-outline-info btn-sm"><i class="bi bi-chat-dots"></i></button>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
-                                @endforeach
+                                @empty
+                                    <div class="friend-card p-3 mb-2 rounded shadow-sm text-center">
+                                        <p>No friends to display.</p>
+                                    </div>
+                                @endforelse
                             </div>
                         </div>
 
@@ -82,27 +94,32 @@
                         <div class="tab-pane fade" id="received-requests" role="tabpanel" aria-labelledby="received-requests-tab">
                             <h4 class="mt-3">Received Friend Requests</h4>
                             <div class="friend-list" id="receivedRequests">
-                                @foreach($receivedRequests as $request)
+                                @forelse($receivedRequests as $request)
                                     <div class="friend-card p-3 mb-2 rounded shadow-sm text-center text-md-start">
                                         <div class="d-flex align-items-center flex-column flex-md-row">
                                             <img src="{{ $request->sender->profile_image ? asset('storage/' . $request->sender->profile_image) : asset('assets/blankprofilepic.jpeg') }}" alt="{{ $request->sender->first_name }} {{ $request->sender->last_name }}" class="rounded-circle me-0 me-md-3 mb-2 mb-md-0" width="50" height="50">
                                             <div class="flex-grow-1">
                                                 <strong>{{ $request->sender->first_name }} {{ $request->sender->last_name }}</strong>
-                                                <p class="mb-0 text-muted">Email: {{ $request->sender->email }} | Phone: {{ $request->sender->phone_number }}</p>
+                                                <p class="mb-0 text-muted">Email: {{ $request->sender->email }}</p>
+                                                <p class="mb-0 text-muted">Phone: {{ $request->sender->phone_number }}</p>
                                             </div>
                                             <div class="mt-2 mt-md-0">
                                                 <form action="{{ route('acceptRequest', $request->sender->id) }}" method="POST" class="d-inline-block">
                                                     @csrf
-                                                    <button type="submit" class="btn btn-outline-success btn-sm"><i class="bi bi-check2"></i> Accept</button>
+                                                    <button type="submit" class="btn btn-outline-success btn-sm"><i class="bi bi-check2"></i></button>
                                                 </form>
                                                 <form action="{{ route('declineRequest', $request->sender->id) }}" method="POST" class="d-inline-block">
                                                     @csrf
-                                                    <button type="submit" class="btn btn-outline-danger btn-sm"><i class="bi bi-x-lg"></i> Decline</button>
+                                                    <button type="submit" class="btn btn-outline-danger btn-sm"><i class="bi bi-x-lg"></i></button>
                                                 </form>
                                             </div>
                                         </div>
                                     </div>
-                                @endforeach
+                                @empty
+                                    <div class="friend-card p-3 mb-2 rounded shadow-sm text-center">
+                                        <p>No received requests to display.</p>
+                                    </div>
+                                @endforelse
                             </div>
                         </div>
 
@@ -110,34 +127,44 @@
                         <div class="tab-pane fade" id="sent-requests" role="tabpanel" aria-labelledby="sent-requests-tab">
                             <h4 class="mt-3">Sent Friend Requests</h4>
                             <div class="friend-list" id="sentRequests">
-                                @foreach($sentRequests as $request)
+                                @forelse($sentRequests as $request)
                                     <div class="friend-card p-3 mb-2 rounded shadow-sm text-center text-md-start">
                                         <div class="d-flex align-items-center flex-column flex-md-row">
                                             <img src="{{ $request->receiver->profile_image ? asset('storage/' . $request->receiver->profile_image) : asset('assets/blankprofilepic.jpeg') }}" alt="{{ $request->receiver->first_name }} {{ $request->receiver->last_name }}" class="rounded-circle me-0 me-md-3 mb-2 mb-md-0" width="50" height="50">
                                             <div class="flex-grow-1">
                                                 <strong>{{ $request->receiver->first_name }} {{ $request->receiver->last_name }}</strong>
-                                                <p class="mb-0 text-muted">Email: {{ $request->receiver->email }} | Phone: {{ $request->receiver->phone_number }}</p>
+                                                <p class="mb-0 text-muted">Email: {{ $request->receiver->email }}</p>
+                                                <p class="mb-0 text-muted">Phone: {{ $request->receiver->phone_number }}</p>
                                             </div>
                                         </div>
                                     </div>
-                                @endforeach
+                                @empty
+                                    <div class="friend-card p-3 mb-2 rounded shadow-sm text-center">
+                                        <p>No sent requests to display.</p>
+                                    </div>
+                                @endforelse
                             </div>
                         </div>
 
                         <!-- People You May Know Tab -->
                         <div class="tab-pane fade" id="suggestions" role="tabpanel" aria-labelledby="suggestions-tab">
-                            <div class="d-flex align-items-center justify-content-between mt-3">
-                                <h4>People You May Know</h4>
-                                <input type="text" class="form-control w-50" id="searchSuggestions" placeholder="Search people...">
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <h4>People You May Know</h4>
+                                </div>
+                                <div class="col-12">
+                                    <input type="text" class="form-control mt-2" id="searchSuggestions" placeholder="Search people...">
+                                </div>
                             </div>
                             <div class="friend-list" id="potentialFriends">
-                                @foreach($nonFriends as $user)
+                                @forelse($nonFriends as $user)
                                     <div class="friend-card p-3 mb-2 rounded shadow-sm text-center text-md-start">
                                         <div class="d-flex align-items-center flex-column flex-md-row">
                                             <img src="{{ $user->profile_image ? asset('storage/' . $user->profile_image) : asset('assets/blankprofilepic.jpeg') }}" alt="{{ $user->first_name }} {{ $user->last_name }}" class="rounded-circle me-0 me-md-3 mb-2 mb-md-0" width="50" height="50">
                                             <div class="flex-grow-1">
                                                 <strong>{{ $user->first_name }} {{ $user->last_name }}</strong>
-                                                <p class="mb-0 text-muted">Email: {{ $user->email }} | Phone: {{ $user->phone_number }}</p>
+                                                <p class="mb-0 text-muted">Email: {{ $user->email }}</p>
+                                                <p class="mb-0 text-muted">Phone: {{ $user->phone_number }}</p>
                                             </div>
                                             <div class="mt-2 mt-md-0">
                                                 <form action="{{ route('sendRequest', $user->id) }}" method="POST" class="d-inline-block">
@@ -147,7 +174,11 @@
                                             </div>
                                         </div>
                                     </div>
-                                @endforeach
+                                @empty
+                                    <div class="friend-card p-3 mb-2 rounded shadow-sm text-center">
+                                        <p>No suggestions to display.</p>
+                                    </div>
+                                @endforelse
                             </div>
                         </div>
 
@@ -170,7 +201,6 @@
         .friend-card .btn { width: 100%; }
     }
 </style>
-
 
 <script>
     // Function to filter friends list by search query
@@ -195,6 +225,5 @@
         filterList('searchSuggestions', 'potentialFriends'); // For "People You May Know"
     });
 </script>
-
 
 @endsection
