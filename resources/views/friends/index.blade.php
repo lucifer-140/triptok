@@ -31,16 +31,20 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-12">
+                        <!-- Your Friends Section -->
+                        <div class="col-12">
                             <h4>Your Friends</h4>
                             <div class="friend-list" id="friendsList">
                                 @forelse($friends as $friend)
                                     <div class="friend-card mb-3">
-                                        <div class="d-flex align-items-center">
-                                            <div class="flex-grow-1">
-                                                {{ $friend->first_name }} {{ $friend->last_name }}
+                                        <div class="d-flex flex-column flex-sm-row align-items-center">
+                                            <img src="{{ $friend->profile_image ? asset('storage/' . $friend->profile_image) : asset('assets/blankprofilepic.jpeg') }}" alt="{{ $friend->first_name }} {{ $friend->last_name }}" class="rounded-circle" width="50" height="50">
+                                            <div class="flex-grow-1 ms-3" style="min-width: 200px;">
+                                                <strong>{{ $friend->first_name }} {{ $friend->last_name }}</strong><br>
+                                                <small class="text-truncate" style="max-width: 200px;">Email: {{ $friend->email }}</small><br>
+                                                <small class="text-truncate" style="max-width: 200px;">Phone: {{ $friend->phone_number }}</small>
                                             </div>
-                                            <div>
+                                            <div class="mt-3 mt-sm-0 ms-sm-3">
                                                 <form action="{{ route('removeFriend', $friend->id) }}" method="POST" class="d-inline-block">
                                                     @csrf
                                                     <button type="submit" class="btn btn-outline-danger btn-sm">Remove</button>
@@ -55,16 +59,20 @@
                             </div>
                         </div>
 
-                        <div class="col-md-12 mt-4">
+                        <!-- Received Friend Requests Section -->
+                        <div class="col-12 mt-4">
                             <h4>Received Friend Requests</h4>
                             <div class="friend-list" id="receivedRequests">
                                 @forelse($receivedRequests as $request)
                                     <div class="friend-card mb-3">
-                                        <div class="d-flex align-items-center">
-                                            <div class="flex-grow-1">
-                                                {{ $request->sender->first_name }} {{ $request->sender->last_name }}
+                                        <div class="d-flex flex-column flex-sm-row align-items-center">
+                                            <img src="{{ $request->sender->profile_image ? asset('storage/' . $request->sender->profile_image) : asset('assets/blankprofilepic.jpeg') }}" alt="{{ $request->sender->first_name }} {{ $request->sender->last_name }}" class="rounded-circle" width="50" height="50">
+                                            <div class="flex-grow-1 ms-3" style="min-width: 200px;">
+                                                <strong>{{ $request->sender->first_name }} {{ $request->sender->last_name }}</strong><br>
+                                                <small class="text-truncate" style="max-width: 200px;">Email: {{ $request->sender->email }}</small><br>
+                                                <small class="text-truncate" style="max-width: 200px;">Phone: {{ $request->sender->phone_number }}</small>
                                             </div>
-                                            <div>
+                                            <div class="mt-3 mt-sm-0 ms-sm-3">
                                                 <form action="{{ route('acceptRequest', $request->sender->id) }}" method="POST" class="d-inline-block">
                                                     @csrf
                                                     <button type="submit" class="btn btn-outline-success btn-sm">Accept</button>
@@ -82,12 +90,20 @@
                             </div>
                         </div>
 
-                        <div class="col-md-12 mt-4">
+                        <!-- Sent Friend Requests Section -->
+                        <div class="col-12 mt-4">
                             <h4>Sent Friend Requests</h4>
                             <div class="friend-list" id="sentRequests">
                                 @forelse($sentRequests as $request)
                                     <div class="friend-card mb-3">
-                                        {{ $request->receiver->first_name }} {{ $request->receiver->last_name }}
+                                        <div class="d-flex flex-column flex-sm-row align-items-center">
+                                            <img src="{{ $request->receiver->profile_image ? asset('storage/' . $request->receiver->profile_image) : asset('assets/blankprofilepic.jpeg') }}" alt="{{ $request->receiver->first_name }} {{ $request->receiver->last_name }}" class="rounded-circle" width="50" height="50">
+                                            <div class="flex-grow-1 ms-3" style="min-width: 200px;">
+                                                <strong>{{ $request->receiver->first_name }} {{ $request->receiver->last_name }}</strong><br>
+                                                <small class="text-truncate" style="max-width: 200px;">Email: {{ $request->receiver->email }}</small><br>
+                                                <small class="text-truncate" style="max-width: 200px;">Phone: {{ $request->receiver->phone_number }}</small>
+                                            </div>
+                                        </div>
                                     </div>
                                 @empty
                                     <p class="text-center">You have no sent requests.</p>
@@ -95,16 +111,20 @@
                             </div>
                         </div>
 
-                        <div class="col-md-12 mt-4">
+                        <!-- People You May Know Section -->
+                        <div class="col-12 mt-4">
                             <h4>People You May Know</h4>
                             <div class="friend-list" id="potentialFriends">
                                 @forelse($nonFriends as $user)
                                     <div class="friend-card mb-3">
-                                        <div class="d-flex align-items-center">
-                                            <div class="flex-grow-1">
-                                                {{ $user->first_name }} {{ $user->last_name }}
+                                        <div class="d-flex flex-column flex-sm-row align-items-center">
+                                            <img src="{{ $user->profile_image ? asset('storage/' . $user->profile_image) : asset('assets/blankprofilepic.jpeg') }}" alt="{{ $user->first_name }} {{ $user->last_name }}" class="rounded-circle" width="50" height="50">
+                                            <div class="flex-grow-1 ms-3" style="min-width: 200px;">
+                                                <strong>{{ $user->first_name }} {{ $user->last_name }}</strong><br>
+                                                <small class="text-truncate" style="max-width: 200px;">Email: {{ $user->email }}</small><br>
+                                                <small class="text-truncate" style="max-width: 200px;">Phone: {{ $user->phone_number }}</small>
                                             </div>
-                                            <div>
+                                            <div class="mt-3 mt-sm-0 ms-sm-3">
                                                 <form action="{{ route('sendRequest', $user->id) }}" method="POST" class="d-inline-block">
                                                     @csrf
                                                     <button type="submit" class="btn btn-outline-primary btn-sm">Add Friend</button>
@@ -117,6 +137,7 @@
                                 @endforelse
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -130,17 +151,52 @@
         height: 2rem;
         color: grey !important;
     }
+
     .friend-list {
         border: 1px solid #dee2e6;
         border-radius: 10px;
         padding: 15px;
     }
+
     .friend-card {
         border-bottom: 1px solid #dee2e6;
         padding: 10px 0;
     }
+
     .friend-card:last-child {
         border-bottom: none;
+    }
+
+    /* Button adjustments for small screens */
+    @media (max-width: 576px) {
+        .friend-card {
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .friend-card .btn {
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        .friend-card img {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 10px;
+        }
+
+        .friend-card .d-flex {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .friend-card .flex-grow-1 {
+            margin-left: 0;
+        }
+
+        .friend-list {
+            padding: 10px;
+        }
     }
 </style>
 
