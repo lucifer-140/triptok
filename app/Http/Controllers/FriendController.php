@@ -70,10 +70,12 @@ class FriendController extends Controller
             return redirect()->back()->with('error', 'Friend request not found.');
         }
 
-        $request->update(['status' => 'declined']);
+        // Delete the friend request entirely
+        $request->delete();
 
         return redirect()->back()->with('success', 'Friend request declined.');
     }
+
 
     public function removeFriend(User $friend)
     {
@@ -82,6 +84,15 @@ class FriendController extends Controller
         // Remove the friend relationship for both users
         $user->friends()->detach($friend->id);
         $friend->friends()->detach($user->id);
+
+        // Delete any friend requests between the users
+        FriendRequest::where(function ($query) use ($user, $friend) {
+            $query->where('sender_id', $user->id)
+                  ->where('receiver_id', $friend->id);
+        })->orWhere(function ($query) use ($user, $friend) {
+            $query->where('sender_id', $friend->id)
+                  ->where('receiver_id', $user->id);
+        })->delete();
 
         return redirect()->back()->with('success', 'Friend removed successfully.');
     }

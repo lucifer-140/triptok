@@ -204,7 +204,7 @@
 
     <!-- Modal for Confirming Deletion -->
     <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 90%; max-height: 90vh;">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="deleteConfirmModalLabel">Confirm Deletion</h5>
@@ -289,7 +289,7 @@
 
     <!-- Modal for Breakdown -->
     <div class="modal fade" id="breakdownModal" tabindex="-1" aria-labelledby="breakdownModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 90%; max-height: 90vh;">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="breakdownModalLabel">Trip Breakdown</h5>
@@ -297,41 +297,42 @@
                 </div>
 
                 <div class="modal-body">
-                    <div class="row">
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                         @foreach($days as $key => $day)
-                        <div id="day{{ $day->day }}" class="day-breakdown col-md-4 mb-4">
-                            <div class="card">
-                                <div class="card-header" style="background-color: #246351;">
-                                    <h5 class="mb-0 text-white">Day {{ $day->day }} ({{ \Carbon\Carbon::parse($day->date)->format('d-m-Y') }})</h5>
-                                </div>
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <span class="font-weight-bold text-black">Activities:</span>
-                                        <span class="badge badge-pill badge-primary" style="background-color: #007bff; color: white;">{{ $day->activities->count() }}</span>
+                            <div id="day{{ $day->day }}" class="day-breakdown col mb-4">
+                                <div class="card h-100">
+                                    <div class="card-header" style="background-color: #246351;">
+                                        <h5 class="mb-0 text-white">Day {{ $day->day }} ({{ \Carbon\Carbon::parse($day->date)->format('d-m-Y') }})</h5>
                                     </div>
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <span class="font-weight-bold text-black">Accommodation:</span>
-                                        <span class="badge badge-pill badge-success" style="background-color: #28a745; color: white;">{{ $day->accommodations->count() }}</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <span class="font-weight-bold text-black">Transport:</span>
-                                        <span class="badge badge-pill badge-info" style="background-color: #17a2b8; color: white;">{{ $day->transports->count() }}</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <span class="font-weight-bold text-black">Flights:</span>
-                                        <span class="badge badge-pill badge-warning" style="background-color: #ffc107; color: black;">{{ $day->flights->count() }}</span>
-                                    </div>
-                                    <hr>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="font-weight-bold text-black">Total Cost:</span>
-                                        <span class="h5 mb-0 text-black">{{ $dayGrandTotals[$key] ?? 'N/A' }} {{ $trip->currency }}</span>
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="font-weight-bold text-black">Activities:</span>
+                                            <span class="badge badge-pill badge-primary">{{ $day->activities->count() }}</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="font-weight-bold text-black">Accommodation:</span>
+                                            <span class="badge badge-pill badge-success">{{ $day->accommodations->count() }}</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="font-weight-bold text-black">Transport:</span>
+                                            <span class="badge badge-pill badge-info">{{ $day->transports->count() }}</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="font-weight-bold text-black">Flights:</span>
+                                            <span class="badge badge-pill badge-warning">{{ $day->flights->count() }}</span>
+                                        </div>
+                                        <hr>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="font-weight-bold text-black">Total Cost:</span>
+                                            <span class="h5 mb-0 text-black">{{ $dayGrandTotals[$key] ?? 'N/A' }} {{ $trip->currency }}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                         @endforeach
                     </div>
                 </div>
+
 
 
                 <div class="modal-footer">
@@ -345,6 +346,28 @@
 </div>
 
 <style>
+
+    /* Ensure modal body handles overflow correctly */
+    .modal-body {
+        max-height: 80vh;
+        overflow-y: auto;
+        padding-right: 15px; /* Ensure padding doesn't cause horizontal scroll */
+    }
+
+    /* Optional: Modify max-height to fit design */
+    .modal-dialog {
+        max-width: 90%; /* Ensure the modal isn't too wide */
+    }
+
+    .modal-content {
+        border-radius: 0.5rem; /* Optional: Improve the modal's appearance */
+    }
+
+    .card-header {
+        background-color: #246351 !important;
+        color: white !important;
+    }
+
     .mb-4.border.rounded.p-3.bg-gray-50 {
         background-color: #f9fafb !important; /* Light gray background for sections */
     }
