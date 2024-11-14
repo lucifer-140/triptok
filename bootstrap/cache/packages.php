@@ -27,6 +27,13 @@
       0 => 'Laravel\\Tinker\\TinkerServiceProvider',
     ),
   ),
+  'multicaret/laravel-acquaintances' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Multicaret\\Acquaintances\\AcquaintancesServiceProvider',
+    ),
+  ),
   'nesbot/carbon' => 
   array (
     'providers' => 
@@ -53,6 +60,13 @@
     'providers' => 
     array (
       0 => 'Pest\\Laravel\\PestServiceProvider',
+    ),
+  ),
+  'recca0120/laravel-erd' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Recca0120\\LaravelErd\\LaravelErdServiceProvider',
     ),
   ),
 );

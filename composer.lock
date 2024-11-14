@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0aba127e2d0c5a1c544d2dab512a9749",
+    "content-hash": "6e83a33b8588e8857da2fc85891ed737",
     "packages": [
         {
             "name": "brick/math",
@@ -2056,6 +2056,76 @@
                 }
             ],
             "time": "2024-06-28T09:40:51+00:00"
+        },
+        {
+            "name": "multicaret/laravel-acquaintances",
+            "version": "v3.6.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/multicaret/laravel-acquaintances.git",
+                "reference": "ae1c4aebe2137cc5c89072e2124e99e8843cdf64"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/multicaret/laravel-acquaintances/zipball/ae1c4aebe2137cc5c89072e2124e99e8843cdf64",
+                "reference": "ae1c4aebe2137cc5c89072e2124e99e8843cdf64",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0"
+            },
+            "require-dev": {
+                "codeclimate/php-test-reporter": "^0.3.2",
+                "doctrine/dbal": "^2.5",
+                "fzaninotto/faker": "~1.4",
+                "laravel/laravel": "5.*|^9.0|^10.0|^11.0",
+                "mockery/mockery": "1.0.x-dev",
+                "phpunit/phpunit": "5.*"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Multicaret\\Acquaintances\\AcquaintancesServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Multicaret\\Acquaintances\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mohamed Kawsara",
+                    "email": "mkwsra@gmail.com"
+                }
+            ],
+            "description": "This light package, with no dependencies, gives Eloquent models the ability to manage friendships (with groups). And interactions such as: Likes, favorites, votes, subscribe, follow, ..etc. And it includes advanced rating system.",
+            "keywords": [
+                "Followers",
+                "Rate",
+                "Rating",
+                "eloquent",
+                "followships",
+                "friend-system",
+                "friends",
+                "friendships",
+                "interactions",
+                "laravel",
+                "like",
+                "social-media",
+                "wish-list"
+            ],
+            "support": {
+                "issues": "https://github.com/multicaret/laravel-acquaintances/issues",
+                "source": "https://github.com/multicaret/laravel-acquaintances/tree/v3.6.1"
+            },
+            "time": "2024-06-08T13:48:12+00:00"
         },
         {
             "name": "nesbot/carbon",
@@ -7874,6 +7944,66 @@
                 }
             ],
             "time": "2024-10-28T13:07:50+00:00"
+        },
+        {
+            "name": "recca0120/laravel-erd",
+            "version": "0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/recca0120/laravel-erd.git",
+                "reference": "404ced3117344ea6babe25887418034a32176a16"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/recca0120/laravel-erd/zipball/404ced3117344ea6babe25887418034a32176a16",
+                "reference": "404ced3117344ea6babe25887418034a32176a16",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/collections": "^8.0|^9.0|^10.0|^11.0",
+                "illuminate/database": "^8.0|^9.0|^10.0|^11.0",
+                "illuminate/filesystem": "^8.0|^9.0|^10.0|^11.0",
+                "nikic/php-parser": "^5.1.0"
+            },
+            "require-dev": {
+                "doctrine/dbal": "^3.5",
+                "guzzlehttp/guzzle": "^7.5",
+                "mockery/mockery": "^1.5",
+                "orchestra/testbench": "^6.25|^7.13|^8.0|^9.0",
+                "php-http/mock-client": "^1.6",
+                "phpunit/phpunit": "^9.5|^10.0|^11.0",
+                "spatie/laravel-permission": "^5.7|^6.0",
+                "spatie/phpunit-snapshot-assertions": "^4.2|^5.1.6"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Recca0120\\LaravelErd\\LaravelErdServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Recca0120\\LaravelErd\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "recca0120",
+                    "email": "recca0120@gmail.com"
+                }
+            ],
+            "description": "Laravel ERD automatically generates Entity-Relationship Diagrams from your Laravel models and displays them using Vuerd.",
+            "support": {
+                "issues": "https://github.com/recca0120/laravel-erd/issues",
+                "source": "https://github.com/recca0120/laravel-erd/tree/0.1.0"
+            },
+            "time": "2024-08-25T10:48:18+00:00"
         },
         {
             "name": "sebastian/cli-parser",
