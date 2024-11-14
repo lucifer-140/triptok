@@ -13,18 +13,31 @@ class FriendController extends Controller
             return redirect()->back()->with('error', 'You cannot send a friend request to yourself.');
         }
 
-        if (FriendRequest::where('sender_id', auth()->id())->where('receiver_id', $receiver->id)->exists()) {
-            return redirect()->back()->with('error', 'Friend request already sent.');
+        // Check if a friend request exists with "declined" status
+        $existingRequest = FriendRequest::where('sender_id', auth()->id())
+                                        ->where('receiver_id', $receiver->id)
+                                        ->first();
+
+        if ($existingRequest) {
+            if ($existingRequest->status === 'pending') {
+                return redirect()->back()->with('error', 'Friend request already sent.');
+            } elseif ($existingRequest->status === 'declined') {
+                // Update status to "pending" if previously declined
+                $existingRequest->update(['status' => 'pending']);
+                return redirect()->back()->with('success', 'Friend request resent.');
+            }
+        } else {
+            // Create a new friend request if none exists
+            FriendRequest::create([
+                'sender_id' => auth()->id(),
+                'receiver_id' => $receiver->id,
+                'status' => 'pending',
+            ]);
+
+            return redirect()->back()->with('success', 'Friend request sent.');
         }
-
-        FriendRequest::create([
-            'sender_id' => auth()->id(),
-            'receiver_id' => $receiver->id,
-            'status' => 'pending',
-        ]);
-
-        return redirect()->back()->with('success', 'Friend request sent.');
     }
+
 
 
     public function acceptRequest(User $sender)
@@ -61,6 +74,19 @@ class FriendController extends Controller
 
         return redirect()->back()->with('success', 'Friend request declined.');
     }
+
+    public function removeFriend(User $friend)
+    {
+        $user = auth()->user();
+
+        // Remove the friend relationship for both users
+        $user->friends()->detach($friend->id);
+        $friend->friends()->detach($user->id);
+
+        return redirect()->back()->with('success', 'Friend removed successfully.');
+    }
+
+
 
     public function index()
     {

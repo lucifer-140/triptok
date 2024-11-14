@@ -46,6 +46,7 @@ Route::prefix('user')->group(function () {
         Route::post('/send-request/{receiver}', [FriendController::class, 'sendRequest'])->name('sendRequest');
         Route::post('/accept-request/{sender}', [FriendController::class, 'acceptRequest'])->name('acceptRequest');
         Route::post('/decline-request/{sender}', [FriendController::class, 'declineRequest'])->name('declineRequest');
+        Route::post('/remove-friend/{friend}', [FriendController::class, 'removeFriend'])->name('removeFriend');
 
     });
 });

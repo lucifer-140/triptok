@@ -7,9 +7,14 @@
     <h3>Your Friends</h3>
     @forelse($friends as $friend)
         <p>{{ $friend->first_name }} {{ $friend->last_name }}</p>
+        <form action="{{ route('removeFriend', $friend->id) }}" method="POST" style="display:inline;">
+            @csrf
+            <button type="submit" class="btn btn-warning">Remove Friend</button>
+        </form>
     @empty
         <p>You have no friends yet.</p>
     @endforelse
+
 
     <h3>Received Friend Requests</h3>
     @forelse($receivedRequests as $request)
