@@ -100,10 +100,12 @@
                     <!-- Profile Dropdown (Only on Larger Screens) -->
                     <div class="dropdown">
                         <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                            <!-- Display Profile Image -->
+                            <img src="{{ Auth::user()->profile_image ? Storage::url('public/' . Auth::user()->profile_image) : asset('assets/blankprofilepic.jpeg') }}" alt="Profile Picture" width="32" height="32" class="rounded-circle">
                         </a>
                         <ul class="dropdown-menu text-small shadow">
                             <li><a class="dropdown-item" href="{{ url('/user/profile') }}">Profile</a></li>
+                            <li><a class="dropdown-item" href="{{ url('/user/friends') }}">Friends</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Sign out</a></li>
                         </ul>
@@ -126,6 +128,7 @@
                         <li><hr class="dropdown-divider"></li>
                         <!-- Profile and Sign Out Options (Visible Only on Mobile) -->
                         <li><a class="dropdown-item" href="{{ url('/user/profile') }}">Profile</a></li>
+                        <li><a class="dropdown-item" href="{{ url('/user/friends') }}">Friends</a></li>
                         <li><a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Sign out</a></li>
                     </ul>
                 </div>
