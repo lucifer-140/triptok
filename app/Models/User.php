@@ -26,5 +26,19 @@ class User extends Authenticatable // Change this line
         'remember_token',
     ];
 
-    // Add any additional methods or properties as needed
+    public function friends()
+    {
+        return $this->belongsToMany(User::class, 'friends', 'user_id', 'friend_id')->withTimestamps();
+    }
+
+    public function sentRequests()
+    {
+        return $this->hasMany(FriendRequest::class, 'sender_id');
+    }
+
+    public function receivedRequests()
+    {
+        return $this->hasMany(FriendRequest::class, 'receiver_id');
+    }
+
 }

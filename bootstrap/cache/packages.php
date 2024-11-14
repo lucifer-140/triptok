@@ -1,4 +1,15 @@
 <?php return array (
+  'diglactic/laravel-breadcrumbs' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Diglactic\\Breadcrumbs\\ServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Breadcrumbs' => 'Diglactic\\Breadcrumbs\\Breadcrumbs',
+    ),
+  ),
   'google-gemini-php/laravel' => 
   array (
     'providers' => 
@@ -27,6 +38,13 @@
       0 => 'Laravel\\Tinker\\TinkerServiceProvider',
     ),
   ),
+  'multicaret/laravel-acquaintances' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Multicaret\\Acquaintances\\AcquaintancesServiceProvider',
+    ),
+  ),
   'nesbot/carbon' => 
   array (
     'providers' => 
@@ -53,6 +71,13 @@
     'providers' => 
     array (
       0 => 'Pest\\Laravel\\PestServiceProvider',
+    ),
+  ),
+  'recca0120/laravel-erd' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Recca0120\\LaravelErd\\LaravelErdServiceProvider',
     ),
   ),
 );

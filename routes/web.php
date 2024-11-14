@@ -12,6 +12,9 @@ use App\Http\Controllers\AccommodationController;
 use App\Http\Controllers\FlightController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransportController;
+use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\FriendController;
+
 
 use App\Mail\TestEmail;
 use Illuminate\Support\Facades\Mail;
@@ -20,28 +23,35 @@ use Illuminate\Support\Facades\Route;
 
 // User routes
 Route::prefix('user')->group(function () {
+    // Authentication routes
     Route::get('/sign-in', [AuthController::class, 'showSignInForm'])->name('signin');
     Route::post('/signin', [AuthController::class, 'postSignIn'])->name('post.signin');
-
-    // Protecting the user home route
-    Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware('auth');
 
     Route::get('/sign-up', [AuthController::class, 'showSignUpForm'])->name('signup');
     Route::post('/signup', [AuthController::class, 'registerUser'])->name('signup.submit');
 
-    // Profile routes
+    // Protecting the user home route
+    Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware('auth');
+
+    // Profile routes (protected by authentication middleware)
     Route::middleware('auth')->group(function () {
-        // Show profile
         Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
-
-        // Show profile edit form
         Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-
-        // Update profile
         Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     });
 
+    // Friendship routes (protected by authentication middleware)
+    Route::middleware('auth')->group(function () {
+        Route::get('/friends', [FriendController::class, 'index'])->name('friends.index');
+
+        Route::post('/send-request/{receiver}', [FriendController::class, 'sendRequest'])->name('sendRequest');
+        Route::post('/accept-request/{sender}', [FriendController::class, 'acceptRequest'])->name('acceptRequest');
+        Route::post('/decline-request/{sender}', [FriendController::class, 'declineRequest'])->name('declineRequest');
+        Route::post('/remove-friend/{friend}', [FriendController::class, 'removeFriend'])->name('removeFriend');
+
+    });
 });
+
 
 
 // Trip routes
@@ -106,6 +116,8 @@ Route::prefix('trip')->middleware('auth')->group(function () {
 
     Route::delete('/{trip}', [TripController::class, 'destroy'])->name('trip.delete');
 
+    Route::get('/{itineraryId}/downloadICS', [CalendarController::class, 'downloadICS'])->name('trip.downloadICS');
+
 
 
 });
@@ -134,3 +146,7 @@ Route::get('password/reset/{token}', [App\Http\Controllers\Auth\PasswordResetCon
 
 // Reset the password
 Route::post('password/reset', [App\Http\Controllers\Auth\PasswordResetController::class, 'reset'])->name('password.update');
+
+
+
+

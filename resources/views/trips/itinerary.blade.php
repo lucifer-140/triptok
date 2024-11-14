@@ -7,30 +7,77 @@
 <div class="container mt-5">
     <h2 class="text-center mb-4">Itinerary for Your Trip</h2>
     <p class="text-center mb-4">Plan your adventure day by day with details of activities, transport, accommodation, and more.</p>
-
-    <div class="mb-4 border rounded p-3">
-        {{-- <p><strong>DEBUG</strong></p>
+    <div class="mb-4 mb-4 border rounded p-3">
+        <p><strong>DEBUG</strong></p>
         <p><strong>Itinerary ID:</strong> {{ $itinerary->id  }}</p>
         <p><strong>Trip ID:</strong> {{ $trip_id }}</p>
         <div class="mb-4">
             <label for="tripCurrency" class="form-label">Trip Currency:</label>
             <input type="text" class="form-control" id="tripCurrency" value="{{ $currency }}" readonly>
-        </div> --}}
-        <!-- Display the grand total -->
-        <h3 class="" style="color: #1f2937 !important;">Grand Total: {{ $grandTotal }} {{ $itinerary->trip->currency }}</h3>
-        <h3 class="mt-4">
-            Leftover Budget:
-            <span class="{{ $leftover < 0 ? 'text-danger fw-bold' : '' }}">
-                {{ $leftover }} {{ $currency }}
-            </span>
-        </h3>
+        </div>
+    </div>
 
+
+
+    <div class="mb-4 border rounded p-4 bg-light shadow-sm">
+        {{-- Trip Status Section --}}
+        <div class="mb-3">
+            {{-- <label for="tripStatus" class="form-label text-muted">Trip Status</label> --}}
+
+            @if (is_object($tripStatus))  {{-- Check if it's an object --}}
+                <span class="badge rounded-pill px-3 py-2" style="
+                    background-color:
+                        {{ $tripStatus->status == 'ongoing' ? '#28a745' :
+                        ($tripStatus->status == 'pending' ? '#ffc107' :
+                        ($tripStatus->status == 'Status not set yet' ? '#dc3545' :
+                        ($tripStatus->status == 'finished' ? '#6c757d' : '#ffc107'))) }};
+                    color: white;">
+                    {{ $tripStatus->status }}
+                </span>
+            @else  {{-- Otherwise, treat it as a string --}}
+                <span class="badge rounded-pill px-3 py-2" style="
+                    background-color:
+                        {{ $tripStatus == 'ongoing' ? '#28a745' :
+                        ($tripStatus == 'pending' ? '#ffc107' :
+                        ($tripStatus == 'Status not set yet' ? '#dc3545' :
+                        ($tripStatus == 'finished' ? '#6c757d' : '#ffc107'))) }};
+                    color: white;">
+                    {{ $tripStatus }}
+                </span>
+            @endif
+        </div>
+
+
+        <!-- Grand Total Section -->
+        <div class="mb-4">
+            <h3 class="text-dark fw-bold mb-2">Grand Total:</h3>
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <span class="h4 text-primary">{{ $grandTotal }} {{ $itinerary->trip->currency }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Leftover Budget Section -->
+        <div class="mb-4">
+            <h4 class="fw-bold text-dark mt-4">Leftover Budget:</h4>
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <span class="h4 {{ $leftover < 0 ? 'text-danger fw-bold' : 'text-success' }}">
+                        {{ $leftover }} {{ $currency }}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Budget Exceeded Warning -->
         @if ($leftover < 0)
             <div class="alert alert-warning">
-                Warning: Your budget is exceeded by {{ abs($leftover) }} {{ $currency }}. Please adjust your itinerary accordingly.
+                <strong>Warning:</strong> Your budget is exceeded by {{ abs($leftover) }} {{ $currency }}. Please adjust your itinerary accordingly.
             </div>
         @endif
 
+        <!-- Error Alert -->
         @if (session('error'))
             <div class="alert alert-danger">
                 {{ session('error') }}
@@ -38,6 +85,8 @@
         @endif
 
     </div>
+
+
 
     <div class="mb-4 border rounded p-3 bg-gray-50 !important">
         <h3 class="text-xl font-semibold text-gray-900 !important">Trip Suggestions</h3>
@@ -143,6 +192,7 @@
                     <!-- Additional actions (without status updates) -->
                     <li><a class="dropdown-item" href="#">Duplicate Trip</a></li>
                     <li><a class="dropdown-item" href="#">Share Trip</a></li>
+                    <li><a class="dropdown-item" href="{{ route('trip.downloadICS', ['itineraryId' => $itinerary->id]) }}">Create Reminder</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">Delete Trip</a></li>
                 @endif
@@ -319,46 +369,6 @@
     h3.mt-4, .h5.mb-0, .text-black {
         color: #1f2937 !important; /* Uniform text color for headings and important text */
     }
-
-    /* .btn-outline-primary {
-        color: #4f81e2 !important;
-        border-color: #4f81e2 !important;
-    }
-
-    .btn-outline-primary:hover {
-        background-color: #4f81e2 !important;
-        color: #fff !important;
-    }
-
-    .btn-outline-secondary {
-        color: #6c757d !important;
-        border-color: #6c757d !important;
-    }
-
-    .btn-outline-secondary:hover {
-        background-color: #6c757d !important;
-        color: #fff !important;
-    }
-
-    .btn-outline-warning {
-        color: #f0ad4e !important;
-        border-color: #f0ad4e !important;
-    }
-
-    .btn-outline-warning:hover {
-        background-color: #f0ad4e !important;
-        color: #fff !important;
-    }
-
-    .btn-primary {
-        background-color: #007bff !important;
-        border-color: #007bff !important;
-    }
-
-    .btn-primary:hover {
-        background-color: #0056b3 !important;
-        border-color: #0056b3 !important;
-    } */
 
     .badge {
         font-size: 14px;  /* Adjust font size */

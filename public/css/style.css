@@ -113,9 +113,9 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
 }
 
 /* Trip Cards */
-.trip-card {
+/* .trip-card {
     border: 1px solid #e0e0e0;
-}
+} */
 
 /* View All Link */
 .view-all-link {

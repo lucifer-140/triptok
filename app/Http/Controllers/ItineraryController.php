@@ -12,7 +12,7 @@ use App\Models\Flight;
 use App\Models\Currency;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Cache;
 use Gemini\Laravel\Facades\Gemini;
 use Google\Client;
 use Google\Service\Customsearch;
@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\Log;
 
 class ItineraryController extends Controller
 {
+
+
     public function create($trip_id)
     {
         // Fetch the trip and itinerary details as before
@@ -35,40 +37,50 @@ class ItineraryController extends Controller
         $currencies = Currency::all();
         $tripStatus = $trip->status;
         $tripGoals = $trip->goals;
+        $statusMessage = $tripStatus ? $tripStatus : 'Status not set yet';
 
         // Gemini API call for trip suggestions
         $destination = $trip->tripDestination;
         $tripDuration = $totalDays;
 
+        // Cache key for the Gemini API calls
+        $cacheKey = "trip_suggestions_{$trip_id}_{$destination}_{$totalDays}_{$tripGoals}";
+
+        // Check if the suggestion data is cached, otherwise, generate it
+        $budgetTips = Cache::remember("budget_tips_{$cacheKey}", 60, function () use ($trip, $tripDuration, $destination, $tripGoals) {
+            return Gemini::geminiPro()->generateContent(
+                "If {$trip->currency}{$trip->totalBudget} is not enough for a {$tripDuration}-day trip to {$destination}, with the goal of {$tripGoals}, provide a concise short budget breakdown like this:
+
+                * **Flights:** {$trip->currency}[estimated cost]
+                * **Accommodation:** {$trip->currency}[estimated cost]
+                * **Activities:** {$trip->currency}[estimated cost]
+                * **Food:** {$trip->currency}[estimated cost]
+                * **Total:** {$trip->currency}[estimated total]
+
+                Ensure the estimated costs are appropriate for {$destination} and {$tripDuration}."
+            )->text();
+        });
+
+        $weatherInfo = Cache::remember("weather_info_{$cacheKey}", 60, function () use ($startDate, $endDate, $tripDuration, $destination, $days, $tripGoals) {
+            return Gemini::geminiPro()->generateContent(
+                "List the expected weather conditions and season in {$destination} between {$startDate->format('Y-m-d')} and {$endDate->format('Y-m-d')}, considering a {$tripDuration}-day trip with this itinerary:
+
+                {$days}
+
+                and the goal of {$tripGoals}."
+            )->text();
+        });
+
+        $cultureTips = Cache::remember("culture_tips_{$cacheKey}", 60, function () use ($destination) {
+            return Gemini::geminiPro()->generateContent(
+                "Give 3 essential cultural etiquette tips for {$destination}, in a concise list."
+            )->text();
+        });
+
         // Fetch the grand_total values for each day
         $dayGrandTotals = $days->map(function($day) {
             return $day->grand_total; // Return the grand_total for each day
         });
-
-
-        $budgetTips = Gemini::geminiPro()->generateContent(
-            "If {$trip->currency}{$totalBudget} is not enough for a {$tripDuration}-day trip to {$destination}, with the goal of {$tripGoals}, provide a concise budget breakdown like this:
-
-        * **Flights:** {$trip->currency}[estimated cost]
-        * **Accommodation:** {$trip->currency}[estimated cost]
-        * **Activities:** {$trip->currency}[estimated cost]
-        * **Food:** {$trip->currency}[estimated cost]
-        * **Total:** {$trip->currency}[estimated total]
-
-        Ensure the estimated costs are appropriate for {$destination} and {$tripDuration}."
-        )->text();
-
-        $weatherInfo = Gemini::geminiPro()->generateContent(
-            "List the expected weather conditions and season in {$destination} between {$startDate->format('Y-m-d')} and {$endDate->format('Y-m-d')}, considering a {$tripDuration}-day trip with this itinerary:
-
-        {$days}
-
-        and the goal of {$tripGoals}."
-        )->text();
-
-        $cultureTips = Gemini::geminiPro()->generateContent(
-            "Give 3 essential cultural etiquette tips for {$destination}, in a concise list."
-        )->text();
 
         // Pass all data, including suggestions, to the view
         return view('trips.itinerary', [
@@ -90,6 +102,7 @@ class ItineraryController extends Controller
             'cultureTips' => $cultureTips,
             'tripGoals' => $tripGoals,
             'dayGrandTotals' => $dayGrandTotals,
+            'tripStatus' => $statusMessage
         ]);
     }
 

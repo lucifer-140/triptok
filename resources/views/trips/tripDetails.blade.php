@@ -58,16 +58,25 @@
             </div>
         </div>
 
-        <!-- Floating Action Buttons for Edit, Share, Delete -->
         <div class="fixed-bottom d-flex justify-content-center p-3">
             <div class="btn-group w-100">
-                <a href="{{ route('itinerary.create', $trip->id) }}" class="btn btn-primary btn-lg flex-fill"><i class="bi bi-pencil"></i> Edit</a>
-                <a href="#" class="btn btn-success btn-lg flex-fill"><i class="bi bi-share"></i> Share</a>
-                <a href="#" class="btn btn-danger btn-lg flex-fill" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"><i class="bi bi-trash"></i> Delete</a>
+                <a href="{{ route('itinerary.create', $trip->id) }}" class="btn btn-primary btn-lg flex-fill">
+                    <i class="bi bi-pencil"></i> Edit
+                </a>
+                <a href="#" class="btn btn-success btn-lg flex-fill">
+                    <i class="bi bi-share"></i> Share
+                </a>
+                <a href="{{ route('trip.downloadICS', ['itineraryId' => $itinerary->id]) }}" class="btn btn-warning btn-lg flex-fill" style="color: white">
+                    <i class="bi bi-bell"></i> Reminder
+                </a>
+                <a href="#" class="btn btn-danger btn-lg flex-fill" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">
+                    <i class="bi bi-trash"></i> Delete
+                </a>
             </div>
         </div>
     </div>
 </div>
+
 
 <!-- Modal for Confirming Deletion -->
 <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
