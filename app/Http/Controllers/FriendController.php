@@ -114,6 +114,7 @@ class FriendController extends Controller
             })
             ->get();
 
+        // Return the view and pass the data for each section
         return view('friends.index', compact('friends', 'receivedRequests', 'sentRequests', 'nonFriends'));
     }
 

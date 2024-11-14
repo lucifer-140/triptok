@@ -24,17 +24,18 @@
     20 => 'Illuminate\\Translation\\TranslationServiceProvider',
     21 => 'Illuminate\\Validation\\ValidationServiceProvider',
     22 => 'Illuminate\\View\\ViewServiceProvider',
-    23 => 'Gemini\\Laravel\\ServiceProvider',
-    24 => 'Laravel\\Pail\\PailServiceProvider',
-    25 => 'Laravel\\Sail\\SailServiceProvider',
-    26 => 'Laravel\\Tinker\\TinkerServiceProvider',
-    27 => 'Multicaret\\Acquaintances\\AcquaintancesServiceProvider',
-    28 => 'Carbon\\Laravel\\ServiceProvider',
-    29 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
-    30 => 'Termwind\\Laravel\\TermwindServiceProvider',
-    31 => 'Pest\\Laravel\\PestServiceProvider',
-    32 => 'Recca0120\\LaravelErd\\LaravelErdServiceProvider',
-    33 => 'App\\Providers\\AppServiceProvider',
+    23 => 'Diglactic\\Breadcrumbs\\ServiceProvider',
+    24 => 'Gemini\\Laravel\\ServiceProvider',
+    25 => 'Laravel\\Pail\\PailServiceProvider',
+    26 => 'Laravel\\Sail\\SailServiceProvider',
+    27 => 'Laravel\\Tinker\\TinkerServiceProvider',
+    28 => 'Multicaret\\Acquaintances\\AcquaintancesServiceProvider',
+    29 => 'Carbon\\Laravel\\ServiceProvider',
+    30 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
+    31 => 'Termwind\\Laravel\\TermwindServiceProvider',
+    32 => 'Pest\\Laravel\\PestServiceProvider',
+    33 => 'Recca0120\\LaravelErd\\LaravelErdServiceProvider',
+    34 => 'App\\Providers\\AppServiceProvider',
   ),
   'eager' => 
   array (
@@ -208,6 +209,7 @@
     'validator' => 'Illuminate\\Validation\\ValidationServiceProvider',
     'validation.presence' => 'Illuminate\\Validation\\ValidationServiceProvider',
     'Illuminate\\Contracts\\Validation\\UncompromisedVerifier' => 'Illuminate\\Validation\\ValidationServiceProvider',
+    'Diglactic\\Breadcrumbs\\Manager' => 'Diglactic\\Breadcrumbs\\ServiceProvider',
     'Gemini\\Client' => 'Gemini\\Laravel\\ServiceProvider',
     'Gemini\\Contracts\\ClientContract' => 'Gemini\\Laravel\\ServiceProvider',
     'gemini' => 'Gemini\\Laravel\\ServiceProvider',
@@ -254,6 +256,9 @@
     array (
     ),
     'Illuminate\\Validation\\ValidationServiceProvider' => 
+    array (
+    ),
+    'Diglactic\\Breadcrumbs\\ServiceProvider' => 
     array (
     ),
     'Gemini\\Laravel\\ServiceProvider' => 

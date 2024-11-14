@@ -43,6 +43,7 @@ Route::prefix('user')->group(function () {
     // Friendship routes (protected by authentication middleware)
     Route::middleware('auth')->group(function () {
         Route::get('/friends', [FriendController::class, 'index'])->name('friends.index');
+
         Route::post('/send-request/{receiver}', [FriendController::class, 'sendRequest'])->name('sendRequest');
         Route::post('/accept-request/{sender}', [FriendController::class, 'acceptRequest'])->name('acceptRequest');
         Route::post('/decline-request/{sender}', [FriendController::class, 'declineRequest'])->name('declineRequest');
