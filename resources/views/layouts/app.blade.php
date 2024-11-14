@@ -6,12 +6,10 @@
     <title>TripTock - @yield('title')</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
-    <!-- Modern Fonts (Google Fonts) -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap" rel="stylesheet">
 
     <style>
@@ -23,11 +21,6 @@
         .navbar {
             background-color: #ffffff;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .navbar-brand {
-            font-weight: bold;
-            font-size: 1.5rem;
         }
 
         /* Navbar Links Styling */
@@ -87,47 +80,70 @@
 </head>
 <body>
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="{{ url('/user/home') }}">
-            <img src="{{ asset('assets/logo.png') }}" alt="Logo" class="logo-img" style="max-height: 40px;">
-            TripTock
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/user/home') }}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/trip/list') }}">Trips</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Destinations</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/user/profile') }}">Account</a>
-                </li>
-                <li class="nav-item">
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                        @csrf
-                    </form>
-                    <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+    <header class="py-3 mb-3 border-bottom">
+        <div class="container-fluid d-grid gap-3 align-items-center" style="grid-template-columns: 1fr;">
+            <!-- Larger Screens (Above Mobile) -->
+            <div class="d-none d-md-flex justify-content-between align-items-center">
+                <!-- Logo and Navigation Links -->
+                <div class="d-flex align-items-center">
+                    <a href="{{ url('/user/home') }}" class="link-body-emphasis text-decoration-none">
+                        <img src="{{ asset('assets/logo.png') }}" alt="Logo" class="logo-img me-3" style="max-height: 70px; width: auto;">
+                        <span class="fs-4">TripTock</span>
+                    </a>
+                </div>
 
-<!-- Main Content -->
+                <div class="d-flex align-items-center gap-3">
+                    <a href="{{ url('/user/home') }}" class="link-body-emphasis text-decoration-none">Home</a>
+                    <a href="{{ url('/trip/list') }}" class="link-body-emphasis text-decoration-none">Trips</a>
+                    <a href="#" class="link-body-emphasis text-decoration-none">Destinations</a>
+
+                    <!-- Profile Dropdown (Only on Larger Screens) -->
+                    <div class="dropdown">
+                        <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                        </a>
+                        <ul class="dropdown-menu text-small shadow">
+                            <li><a class="dropdown-item" href="{{ url('/user/profile') }}">Profile</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Sign out</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile/Small Screens (Below Medium Screens) -->
+            <div class="d-md-none">
+                <div class="dropdown">
+                    <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="{{ asset('assets/logo.png') }}" alt="Logo" class="logo-img me-3" style="max-height: 70px; width: auto;">
+                        <span class="fs-4">TripTock</span>
+                    </a>
+                    <ul class="dropdown-menu text-small shadow">
+                        <!-- Navigation Links for Mobile -->
+                        <li><a class="dropdown-item" href="{{ url('/user/home') }}" aria-current="page">Home</a></li>
+                        <li><a class="dropdown-item" href="{{ url('/trip/list') }}">Trips</a></li>
+                        <li><a class="dropdown-item" href="#">Destinations</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <!-- Profile and Sign Out Options (Visible Only on Mobile) -->
+                        <li><a class="dropdown-item" href="{{ url('/user/profile') }}">Profile</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Sign out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+
+
 <div class="container mt-5">
     @yield('content')
 </div>
 
-<!-- Bootstrap JS and dependencies -->
+<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+    @csrf
+</form>
+
 <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
 <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
 </body>
