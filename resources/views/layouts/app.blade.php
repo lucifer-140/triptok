@@ -104,6 +104,8 @@
                             <img src="{{ Auth::user()->profile_image ? Storage::url('public/' . Auth::user()->profile_image) : asset('assets/blankprofilepic.jpeg') }}" alt="Profile Picture" width="32" height="32" class="rounded-circle">
                         </a>
                         <ul class="dropdown-menu text-small shadow">
+                            <li><span class="dropdown-item text-muted">Hello, {{ Auth::user()->first_name }}</span></li>
+                            <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="{{ url('/user/profile') }}">Profile</a></li>
                             <li><a class="dropdown-item" href="{{ url('/user/friends') }}">Friends</a></li>
                             <li><hr class="dropdown-divider"></li>
@@ -121,6 +123,8 @@
                         <span class="fs-4">TripTock</span>
                     </a>
                     <ul class="dropdown-menu text-small shadow">
+                        <li><span class="dropdown-item text-muted">Hello, {{ Auth::user()->first_name }}</span></li>
+                        <li><hr class="dropdown-divider"></li>
                         <!-- Navigation Links for Mobile -->
                         <li><a class="dropdown-item" href="{{ url('/user/home') }}" aria-current="page">Home</a></li>
                         <li><a class="dropdown-item" href="{{ url('/trip/list') }}">Trips</a></li>
