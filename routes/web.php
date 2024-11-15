@@ -14,6 +14,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransportController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\FriendController;
+use App\Http\Controllers\TripShareController;
+use App\Http\Controllers\NotificationController;
+
 
 
 use App\Mail\TestEmail;
@@ -50,6 +53,14 @@ Route::prefix('user')->group(function () {
         Route::post('/remove-friend/{friend}', [FriendController::class, 'removeFriend'])->name('removeFriend');
 
     });
+
+    Route::middleware('auth')->group(function () {
+        Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index');
+        Route::get('/trips/share/accept/{sharedTrip}', [NotificationController::class, 'accept'])->name('notifications.accept');
+        Route::get('/trips/share/reject/{sharedTrip}', [NotificationController::class, 'reject'])->name('notifications.reject');
+
+    });
+
 });
 
 
@@ -147,9 +158,27 @@ Route::get('password/reset/{token}', [App\Http\Controllers\Auth\PasswordResetCon
 // Reset the password
 Route::post('password/reset', [App\Http\Controllers\Auth\PasswordResetController::class, 'reset'])->name('password.update');
 
-Route::post('/register', [AuthController::class, 'registerUser'])->name('register');
+// Route::post('/register', [AuthController::class, 'registerUser'])->name('register');
 Route::get('/verify-email', [AuthController::class, 'showVerificationForm'])->name('verify-email');
 Route::post('/verify-email', [AuthController::class, 'verifyEmail'])->name('verify-email.post');
 
 
+// Route to show the share trip modal (if needed, you can remove this if using the modal on every trip view)
+Route::get('/trips/{trip_id}/share', [TripShareController::class, 'create'])->name('trips.share.form');
 
+// Route to handle the sharing action
+// Route::post('/trips/share', [TripShareController::class, 'share'])->name('trips.share');
+
+
+Route::post('/trips/{trip_id}/share', [TripShareController::class, 'share'])->name('trips.share');
+
+
+// Route::get('/shared-trips', [TripShareController::class, 'notifications'])->name('notifications');
+
+
+
+// // Route to accept a shared trip
+// Route::get('/trips/share/accept/{sharedTrip}', [TripShareController::class, 'accept'])->name('trips.share.accept');
+
+// // Route to reject a shared trip
+// Route::get('/trips/share/reject/{sharedTrip}', [TripShareController::class, 'reject'])->name('trips.share.reject');

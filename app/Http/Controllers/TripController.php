@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use Carbon\Carbon;
+use App\Models\SharedTrip;
 use App\Models\Trip;
 use App\Models\Currency;
 use App\Models\TripStatus;
@@ -158,11 +159,20 @@ class TripController extends Controller
 
     public function destroy($trip_id)
     {
+        // Find the trip that is going to be deleted
         $trip = Trip::findOrFail($trip_id);
 
         // Optionally, check if the trip has a status that prevents deletion
         if ($trip->status && $trip->status->status === 'ongoing') {
             return redirect()->back()->with('error', 'You cannot delete an ongoing trip.');
+        }
+
+        // Check if this trip is a "new_trip" in the shared_trips table
+        $sharedTrip = SharedTrip::where('new_trip', $trip_id)->first();
+
+        // If the trip exists in the shared_trips table, delete the shared trip record
+        if ($sharedTrip) {
+            $sharedTrip->delete();
         }
 
         // Delete the trip and associated data (itinerary, days, etc.)
@@ -196,6 +206,7 @@ class TripController extends Controller
         ->orderBy('created_at', 'desc')
         ->get();
 
+
         // Check if the variables are being passed correctly
         return view('trips.tripList', compact('pendingTrips', 'ongoingTrips', 'finishedTrips'));
     }
@@ -206,6 +217,8 @@ class TripController extends Controller
     {
         // Fetch the trip using the provided trip_id
         $trip = Trip::findOrFail($trip_id);
+        $friends = Auth::user()->friends;
+
 
         // Retrieve the first itinerary associated with the trip
         $itinerary = $trip->itineraries()->first();
@@ -228,30 +241,83 @@ class TripController extends Controller
             'itinerary' => $itinerary,
             'days' => $days,
             'totalDays' => $totalDays,
+            'friends' => $friends
         ]);
     }
 
+    // public function shareTrip(Request $request, $trip_id)
+    // {
+    //     // Validate the selected friends (ensure they are users, and prevent sharing with self)
+    //     $request->validate([
+    //         'friends' => 'required|array',
+    //         'friends.*' => 'exists:users,id|distinct',  // Ensure each ID corresponds to an existing user
+    //     ]);
 
+    //     // Fetch the trip
+    //     $trip = Trip::findOrFail($trip_id);
 
+    //     // Check if the user is the owner of the trip
+    //     if ($trip->user_id !== Auth::id()) {
+    //         return redirect()->back()->with('error', 'You can only share your own trips.');
+    //     }
 
+    //     // Loop through selected friends and assign the trip to them
+    //     foreach ($request->friends as $friend_id) {
+    //         // Fetch the friend
+    //         $friend = User::find($friend_id);
 
+    //         // Ensure the user is not trying to share the trip with themselves
+    //         if ($friend->id === Auth::id()) {
+    //             continue;
+    //         }
 
+    //         // Duplicate the trip and assign it to the friend
+    //         $newTrip = $trip->replicate();
+    //         $newTrip->user_id = $friend->id;
+    //         $newTrip->save();
 
+    //         // Copy related data (e.g., itineraries, days, activities, etc.)
+    //         $trip->itineraries->each(function ($itinerary) use ($newTrip) {
+    //             $newItinerary = $itinerary->replicate();
+    //             $newItinerary->trip_id = $newTrip->id;
+    //             $newItinerary->save();
 
+    //             // Copy days, activities, transports, accommodations, flights
+    //             $itinerary->days->each(function ($day) use ($newItinerary) {
+    //                 $newDay = $day->replicate();
+    //                 $newDay->itinerary_id = $newItinerary->id;
+    //                 $newDay->save();
 
-    public function index()
-    {
-        // Get trips that belong to the authenticated user
-        $trips = Trip::where('user_id', Auth::id())->get();
-        return view('trips.list', compact('trips'));
-    }
+    //                 $day->activities->each(function ($activity) use ($newDay) {
+    //                     $newActivity = $activity->replicate();
+    //                     $newActivity->day_id = $newDay->id;
+    //                     $newActivity->save();
+    //                 });
 
-    public function show($id)
-    {
-        // Attempt to find the trip by ID and check if it belongs to the authenticated user
-        $trip = Trip::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
-        return view('trips.details', compact('trip'));
-    }
+    //                 $day->transports->each(function ($transport) use ($newDay) {
+    //                     $newTransport = $transport->replicate();
+    //                     $newTransport->day_id = $newDay->id;
+    //                     $newTransport->save();
+    //                 });
+
+    //                 $day->accommodations->each(function ($accommodation) use ($newDay) {
+    //                     $newAccommodation = $accommodation->replicate();
+    //                     $newAccommodation->day_id = $newDay->id;
+    //                     $newAccommodation->save();
+    //                 });
+
+    //                 $day->flights->each(function ($flight) use ($newDay) {
+    //                     $newFlight = $flight->replicate();
+    //                     $newFlight->day_id = $newDay->id;
+    //                     $newFlight->save();
+    //                 });
+    //             });
+    //         });
+    //     }
+
+    //     return redirect()->back()->with('success', 'Trip successfully shared with your friends!');
+    // }
+
 
 
 

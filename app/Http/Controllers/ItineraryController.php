@@ -38,6 +38,7 @@ class ItineraryController extends Controller
         $tripStatus = $trip->status;
         $tripGoals = $trip->goals;
         $statusMessage = $tripStatus ? $tripStatus : 'Status not set yet';
+        $friends = Auth::user()->friends;
 
         // Gemini API call for trip suggestions
         $destination = $trip->tripDestination;
@@ -102,7 +103,8 @@ class ItineraryController extends Controller
             'cultureTips' => $cultureTips,
             'tripGoals' => $tripGoals,
             'dayGrandTotals' => $dayGrandTotals,
-            'tripStatus' => $statusMessage
+            'tripStatus' => $statusMessage,
+            'friends' => $friends
         ]);
     }
 

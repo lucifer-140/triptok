@@ -29,4 +29,15 @@ class Trip extends Model
         return $this->hasOne(TripStatus::class);
     }
 
+    public function sharedWith()
+    {
+        return $this->belongsToMany(User::class, 'shared_trips', 'trip_id', 'user_id');
+    }
+    public function sharedTrips()
+    {
+        return $this->hasMany(SharedTrip::class);
+    }
+
+
+
 }

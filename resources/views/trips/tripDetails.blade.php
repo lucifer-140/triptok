@@ -64,7 +64,7 @@
                     <i class="bi bi-pencil"></i> Edit
                 </a>
                 <a href="#" class="btn btn-success btn-lg flex-fill">
-                    <i class="bi bi-share"></i> Share
+                    <i class="bi bi-share" data-toggle="modal" data-target="#shareModal" data-trip-id="{{ $trip->id }}"></i> Share
                 </a>
                 <a href="{{ route('trip.downloadICS', ['itineraryId' => $itinerary->id]) }}" class="btn btn-warning btn-lg flex-fill" style="color: white">
                     <i class="bi bi-bell"></i> Reminder
@@ -76,6 +76,10 @@
         </div>
     </div>
 </div>
+
+
+<!-- Include the modal component -->
+@include('components.share-trip-modal', ['friends' => $friends])
 
 
 <!-- Modal for Confirming Deletion -->

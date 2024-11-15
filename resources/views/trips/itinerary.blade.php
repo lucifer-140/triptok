@@ -84,6 +84,13 @@
             </div>
         @endif
 
+        @if (session('message'))
+            <div class="alert alert-success">
+                {{ session('message') }}
+            </div>
+        @endif
+
+
     </div>
 
 
@@ -191,7 +198,7 @@
 
                     <!-- Additional actions (without status updates) -->
                     <li><a class="dropdown-item" href="#">Duplicate Trip</a></li>
-                    <li><a class="dropdown-item" href="#">Share Trip</a></li>
+                    <li><a class="dropdown-item" href="#" data-toggle="modal" data-target="#shareModal" data-trip-id="{{ $trip->id }}">Share Trip</a></li>
                     <li><a class="dropdown-item" href="{{ route('trip.downloadICS', ['itineraryId' => $itinerary->id]) }}">Create Reminder</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">Delete Trip</a></li>
@@ -199,7 +206,14 @@
             </ul>
         </div>
     </div>
+{{--
+    <!-- Example of share button in your trip page -->
+    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#shareModal" data-trip-id="{{ $trip->id }}">
+        Share Trip
+    </button> --}}
 
+    <!-- Include the modal component -->
+    @include('components.share-trip-modal', ['friends' => $friends])
 
 
     <!-- Modal for Confirming Deletion -->
@@ -466,12 +480,22 @@
         section.classList.toggle('hidden');
     }
 
+    $('#shareModal').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var tripId = button.data('trip-id'); // Extract the trip_id from the data-trip-id attribute
+
+        var modal = $(this);
+        modal.find('#trip_id').val(tripId); // Set the trip_id input field with the trip ID
+    });
+
     // Initialize scrollspy
     const dataSpyList = document.querySelector('#dayTabs');
                     const scrollSpy = new bootstrap.ScrollSpy(document.body, {
                         target: '#dayTabs',
                         offset: 100
                     });
+
+
 </script>
 
 
