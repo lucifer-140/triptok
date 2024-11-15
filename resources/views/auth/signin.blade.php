@@ -6,14 +6,15 @@
     <title>Sign In - TripTock</title>
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+
     <style>
-        /* Use a modern, clean font */
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f8f9fa; /* Light background */
+            background-color: #f8f9fa;
         }
 
-        /* Card Styling */
         .card {
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -35,7 +36,6 @@
             font-size: 0.9em;
         }
 
-        /* Input field styles */
         .form-label {
             font-weight: 600;
         }
@@ -46,8 +46,6 @@
             font-size: 1rem;
         }
 
-
-        /* Link Styling */
         .text-center a {
             color: #007bff;
             text-decoration: none;
@@ -57,12 +55,10 @@
             text-decoration: underline;
         }
 
-        /* Container styling */
         .container {
             margin-top: 60px;
         }
 
-        /* Responsive design */
         @media (max-width: 768px) {
             .container {
                 margin-top: 20px;
@@ -112,7 +108,6 @@
                     <button type="submit" class="btn btn-primary w-100">Sign In</button>
                 </form>
 
-                <!-- Reset Password Link -->
                 <div class="text-center mt-3">
                     <p><a href="{{ route('password.request') }}">Forgot Your Password?</a></p>
                 </div>
@@ -120,6 +115,11 @@
                 <div class="text-center mt-3">
                     <p>Don't have an account? <a href="{{ route('signup') }}">Sign Up</a></p>
                 </div>
+
+                <div class="text-center mt-3">
+                    <a href="{{ url('/') }}" class="btn btn-link">Back to Home</a>
+                </div>
+
             </div>
         </div>
     </div>
@@ -129,7 +129,6 @@
             const emailInput = document.getElementById('email');
             const passwordInput = document.getElementById('password');
 
-            // Email validation
             emailInput.addEventListener('input', function () {
                 const emailError = document.getElementById('emailError');
                 const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
@@ -140,7 +139,6 @@
                 }
             });
 
-            // Password required validation
             passwordInput.addEventListener('input', function () {
                 const passwordError = document.getElementById('passwordError');
                 if (passwordInput.value.trim() === "") {
@@ -150,10 +148,9 @@
                 }
             });
 
-            // Prevent form submission if there are validation errors
             document.getElementById('signinForm').addEventListener('submit', function (e) {
                 if (!emailInput.value.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/) || passwordInput.value.trim() === "") {
-                    e.preventDefault(); // Stop form submission
+                    e.preventDefault();
                 }
             });
         });

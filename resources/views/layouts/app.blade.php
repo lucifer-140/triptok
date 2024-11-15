@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap" rel="stylesheet">
 
@@ -68,6 +69,9 @@
             height: 3px;
             background-color: #007bff;
         }
+        .notification-icon {
+            font-weight: 700 !important;
+        }
 
         @media (max-width: 768px) {
             .page-heading {
@@ -96,6 +100,10 @@
                     <a href="{{ url('/user/home') }}" class="link-body-emphasis text-decoration-none">Home</a>
                     <a href="{{ url('/trip/list') }}" class="link-body-emphasis text-decoration-none">Trips</a>
                     <a href="#" class="link-body-emphasis text-decoration-none">Destinations</a>
+                    <a href="{{ url('/user/notifications') }}" class="link-body-emphasis text-decoration-none" aria-label="Notifications">
+                        <i class="bi bi-bell notification-icon"></i>
+                    </a>
+
 
                     <!-- Profile Dropdown (Only on Larger Screens) -->
                     <div class="dropdown">
@@ -104,6 +112,8 @@
                             <img src="{{ Auth::user()->profile_image ? Storage::url('public/' . Auth::user()->profile_image) : asset('assets/blankprofilepic.jpeg') }}" alt="Profile Picture" width="32" height="32" class="rounded-circle">
                         </a>
                         <ul class="dropdown-menu text-small shadow">
+                            <li><span class="dropdown-item text-muted">Hello, {{ Auth::user()->first_name }}</span></li>
+                            <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="{{ url('/user/profile') }}">Profile</a></li>
                             <li><a class="dropdown-item" href="{{ url('/user/friends') }}">Friends</a></li>
                             <li><hr class="dropdown-divider"></li>
@@ -121,6 +131,8 @@
                         <span class="fs-4">TripTock</span>
                     </a>
                     <ul class="dropdown-menu text-small shadow">
+                        <li><span class="dropdown-item text-muted">Hello, {{ Auth::user()->first_name }}</span></li>
+                        <li><hr class="dropdown-divider"></li>
                         <!-- Navigation Links for Mobile -->
                         <li><a class="dropdown-item" href="{{ url('/user/home') }}" aria-current="page">Home</a></li>
                         <li><a class="dropdown-item" href="{{ url('/trip/list') }}">Trips</a></li>
@@ -129,6 +141,7 @@
                         <!-- Profile and Sign Out Options (Visible Only on Mobile) -->
                         <li><a class="dropdown-item" href="{{ url('/user/profile') }}">Profile</a></li>
                         <li><a class="dropdown-item" href="{{ url('/user/friends') }}">Friends</a></li>
+                        <li><a class="dropdown-item" href="{{ url('/user/notifications') }}">Notifications</a></li>
                         <li><a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Sign out</a></li>
                     </ul>
                 </div>
@@ -147,7 +160,28 @@
     @csrf
 </form>
 
+<script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then(function(registration) {
+          console.log('Service Worker registered with scope:', registration.scope);
+        })
+        .catch(function(error) {
+          console.log('Service Worker registration failed:', error);
+        });
+    }
+</script>
+
 <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
+<!-- Popper.js -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
 <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
 </body>
 </html>

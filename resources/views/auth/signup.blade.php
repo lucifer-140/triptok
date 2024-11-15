@@ -6,6 +6,8 @@
     <title>Sign Up - TripTock</title>
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
     <style>
         .error-message {
             color: red;
@@ -15,13 +17,11 @@
             content: ' *';
             color: red;
         }
-        /* Use a modern, clean font */
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f8f9fa; /* Light background */
+            background-color: #f8f9fa;
         }
 
-        /* Card Styling */
         .card {
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -38,7 +38,6 @@
             margin-bottom: 20px;
         }
 
-        /* Input field styles */
         .form-label {
             font-weight: 600;
         }
@@ -49,8 +48,6 @@
             font-size: 1rem;
         }
 
-
-        /* Link Styling */
         .text-center a {
             color: #007bff;
             text-decoration: none;
@@ -60,12 +57,10 @@
             text-decoration: underline;
         }
 
-        /* Container styling */
         .container {
             margin-top: 60px;
         }
 
-        /* Responsive design */
         @media (max-width: 768px) {
             .container {
                 margin-top: 20px;
@@ -134,6 +129,10 @@
                 <div class="text-center mt-3">
                     <p>Already have an account? <a href="{{ route('signin') }}">Sign In</a></p>
                 </div>
+
+                <div class="text-center mt-3">
+                    <a href="{{ url('/') }}" class="btn btn-link">Back to Home</a>
+                </div>
             </div>
         </div>
     </div>
@@ -144,7 +143,6 @@
             const passwordInput = document.getElementById('password');
             const confirmPasswordInput = document.getElementById('confirm_password');
 
-            // Phone validation
             phoneInput.addEventListener('input', function () {
                 const phoneError = document.getElementById('phoneError');
                 if (phoneInput.value.length > 15) {
@@ -154,7 +152,6 @@
                 }
             });
 
-            // Password length validation
             passwordInput.addEventListener('input', function () {
                 const passwordError = document.getElementById('passwordError');
                 if (passwordInput.value.length < 8) {
@@ -164,7 +161,6 @@
                 }
             });
 
-            // Confirm password match validation
             confirmPasswordInput.addEventListener('input', function () {
                 const confirmPasswordError = document.getElementById('confirmPasswordError');
                 if (confirmPasswordInput.value !== passwordInput.value) {
@@ -174,10 +170,9 @@
                 }
             });
 
-            // Prevent form submission if there are validation errors
             document.getElementById('signupForm').addEventListener('submit', function (e) {
                 if (phoneInput.value.length > 15 || passwordInput.value.length < 8 || confirmPasswordInput.value !== passwordInput.value) {
-                    e.preventDefault(); // Stop form submission
+                    e.preventDefault();
                 }
             });
         });

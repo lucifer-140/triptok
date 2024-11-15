@@ -1,0 +1,28 @@
+{
+    "name": "TripTok",
+    "short_name": "triptok",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#4A90E2",
+    "icons": [
+      {
+        "src": "assets/logo.png",
+        "sizes": "404x404",
+        "type": "image/png"
+      }
+    ],
+    "screenshots": [
+      {
+        "src": "assets/screenshot-wide.png",
+        "sizes": "2478x1414",
+        "type": "image/png",
+        "form_factor": "wide"
+      },
+      {
+        "src": "assets/screenshot-portrait.png",
+        "sizes": "760x1402",
+        "type": "image/png"
+      }
+    ]
+  }
