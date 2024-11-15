@@ -147,6 +147,9 @@ Route::get('password/reset/{token}', [App\Http\Controllers\Auth\PasswordResetCon
 // Reset the password
 Route::post('password/reset', [App\Http\Controllers\Auth\PasswordResetController::class, 'reset'])->name('password.update');
 
+Route::post('/register', [AuthController::class, 'registerUser'])->name('register');
+Route::get('/verify-email', [AuthController::class, 'showVerificationForm'])->name('verify-email');
+Route::post('/verify-email', [AuthController::class, 'verifyEmail'])->name('verify-email.post');
 
 
 

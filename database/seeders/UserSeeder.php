@@ -24,6 +24,7 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'created_at' => now(),
                 'updated_at' => now(),
+                'is_verified' => 1,
                 'profile_image' => null,
             ],
             [
@@ -34,6 +35,7 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'created_at' => now(),
                 'updated_at' => now(),
+                'is_verified' => 1,
                 'profile_image' => null,
             ],
             [
@@ -44,6 +46,7 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'created_at' => now(),
                 'updated_at' => now(),
+                'is_verified' => 1,
                 'profile_image' => null,
             ],
             [
@@ -54,6 +57,7 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'created_at' => now(),
                 'updated_at' => now(),
+                'is_verified' => 1,
                 'profile_image' => null,
             ],
             [
@@ -64,6 +68,7 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'created_at' => now(),
                 'updated_at' => now(),
+                'is_verified' => 1,
                 'profile_image' => null,
             ],
             [
@@ -74,6 +79,7 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'created_at' => now(),
                 'updated_at' => now(),
+                'is_verified' => 1,
                 'profile_image' => null,
             ],
             [
@@ -84,6 +90,7 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'created_at' => now(),
                 'updated_at' => now(),
+                'is_verified' => 1,
                 'profile_image' => null,
             ],
             [
@@ -94,6 +101,7 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'created_at' => now(),
                 'updated_at' => now(),
+                'is_verified' => 1,
                 'profile_image' => null,
             ],
             [
@@ -104,6 +112,7 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'created_at' => now(),
                 'updated_at' => now(),
+                'is_verified' => 1,
                 'profile_image' => null,
             ],
             [
@@ -114,6 +123,7 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'created_at' => now(),
                 'updated_at' => now(),
+                'is_verified' => 1,
                 'profile_image' => null,
             ],
         ];
