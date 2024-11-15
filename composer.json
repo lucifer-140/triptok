@@ -9,6 +9,7 @@
         "diglactic/laravel-breadcrumbs": "*",
         "google-gemini-php/laravel": "*",
         "guzzlehttp/guzzle": "*",
+        "ladumor/laravel-pwa": "*",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
         "multicaret/laravel-acquaintances": "*"
