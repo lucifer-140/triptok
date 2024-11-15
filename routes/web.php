@@ -177,8 +177,8 @@ Route::post('/trips/{trip_id}/share', [TripShareController::class, 'share'])->na
 
 
 
-// // Route to accept a shared trip
-// Route::get('/trips/share/accept/{sharedTrip}', [TripShareController::class, 'accept'])->name('trips.share.accept');
+// Route to accept a shared trip
+Route::get('/trips/share/accept/{sharedTrip}', [TripShareController::class, 'accept'])->name('trips.share.accept');
 
-// // Route to reject a shared trip
-// Route::get('/trips/share/reject/{sharedTrip}', [TripShareController::class, 'reject'])->name('trips.share.reject');
+// Route to reject a shared trip
+Route::get('/trips/share/reject/{sharedTrip}', [TripShareController::class, 'reject'])->name('trips.share.reject');

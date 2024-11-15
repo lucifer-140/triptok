@@ -45,7 +45,7 @@
                                     <a href="{{ route('trips.details', $trip->id) }}" class="btn btn-outline-primary btn-sm me-2">View <i class="fas fa-eye"></i></a>
                                     <a href="{{ route('itinerary.create', $trip->id) }}" class="btn btn-outline-secondary btn-sm me-2">Edit <i class="fas fa-edit"></i></a>
                                 </div>
-                                <a href="#" class="btn btn-outline-info btn-sm">Share <i class="fas fa-share-alt"></i></a>
+                                <a href="#" class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#shareModal" data-trip-id="{{ $trip->id }}">Share <i class="fas fa-share-alt"></i></a>
                             </div>
                         </div>
                     </div>
@@ -60,6 +60,11 @@
             </div>
         @endif
     </div>
+
+
+
+
+
 
     <!-- Ongoing Trips Section -->
     <div class="mb-5">
@@ -82,7 +87,7 @@
                                     <a href="{{ route('trips.details', $trip->id) }}" class="btn btn-outline-primary btn-sm me-2">View <i class="fas fa-eye"></i></a>
                                     <a href="{{ route('itinerary.create', $trip->id) }}" class="btn btn-outline-secondary btn-sm me-2">Edit <i class="fas fa-edit"></i></a>
                                 </div>
-                                <a href="#" class="btn btn-outline-info btn-sm">Share <i class="fas fa-share-alt"></i></a>
+                                <a href="#" class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#shareModal" data-trip-id="{{ $trip->id }}">Share <i class="fas fa-share-alt"></i></a>
                             </div>
                         </div>
                     </div>
@@ -118,7 +123,7 @@
                                 <div>
                                     <a href="{{ route('itinerary.create', $trip->id) }}" class="btn btn-outline-secondary btn-sm me-2">Edit <i class="fas fa-edit"></i></a>
                                 </div>
-                                <a href="#" class="btn btn-outline-info btn-sm">Share <i class="fas fa-share-alt"></i></a>
+                                <a href="#" class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#shareModal" data-trip-id="{{ $trip->id }}">Share <i class="fas fa-share-alt"></i></a>
                             </div>
                         </div>
                     </div>
@@ -138,6 +143,10 @@
     <div class="text-center mt-4">
         <a href="{{ route('trips.create') }}" class="btn btn-lg btn-success shadow-lg">Plan New Trip <i class="fas fa-plus-circle"></i></a>
     </div>
+
+
+    <!-- Include the modal component -->
+    @include('components.share-trip-modal', ['friends' => $friends])
 </div>
 
 <style>

@@ -206,9 +206,11 @@ class TripController extends Controller
         ->orderBy('created_at', 'desc')
         ->get();
 
+        $friends = Auth::user()->friends;
+
 
         // Check if the variables are being passed correctly
-        return view('trips.tripList', compact('pendingTrips', 'ongoingTrips', 'finishedTrips'));
+        return view('trips.tripList', compact('pendingTrips', 'ongoingTrips', 'finishedTrips', 'friends'));
     }
 
 
@@ -241,82 +243,82 @@ class TripController extends Controller
             'itinerary' => $itinerary,
             'days' => $days,
             'totalDays' => $totalDays,
-            'friends' => $friends
+            'friends' => $friends,
         ]);
     }
 
-    // public function shareTrip(Request $request, $trip_id)
-    // {
-    //     // Validate the selected friends (ensure they are users, and prevent sharing with self)
-    //     $request->validate([
-    //         'friends' => 'required|array',
-    //         'friends.*' => 'exists:users,id|distinct',  // Ensure each ID corresponds to an existing user
-    //     ]);
+    public function shareTrip(Request $request, $trip_id)
+    {
+        // Validate the selected friends (ensure they are users, and prevent sharing with self)
+        $request->validate([
+            'friends' => 'required|array',
+            'friends.*' => 'exists:users,id|distinct',  // Ensure each ID corresponds to an existing user
+        ]);
 
-    //     // Fetch the trip
-    //     $trip = Trip::findOrFail($trip_id);
+        // Fetch the trip
+        $trip = Trip::findOrFail($trip_id);
 
-    //     // Check if the user is the owner of the trip
-    //     if ($trip->user_id !== Auth::id()) {
-    //         return redirect()->back()->with('error', 'You can only share your own trips.');
-    //     }
+        // Check if the user is the owner of the trip
+        if ($trip->user_id !== Auth::id()) {
+            return redirect()->back()->with('error', 'You can only share your own trips.');
+        }
 
-    //     // Loop through selected friends and assign the trip to them
-    //     foreach ($request->friends as $friend_id) {
-    //         // Fetch the friend
-    //         $friend = User::find($friend_id);
+        // Loop through selected friends and assign the trip to them
+        foreach ($request->friends as $friend_id) {
+            // Fetch the friend
+            $friend = User::find($friend_id);
 
-    //         // Ensure the user is not trying to share the trip with themselves
-    //         if ($friend->id === Auth::id()) {
-    //             continue;
-    //         }
+            // Ensure the user is not trying to share the trip with themselves
+            if ($friend->id === Auth::id()) {
+                continue;
+            }
 
-    //         // Duplicate the trip and assign it to the friend
-    //         $newTrip = $trip->replicate();
-    //         $newTrip->user_id = $friend->id;
-    //         $newTrip->save();
+            // Duplicate the trip and assign it to the friend
+            $newTrip = $trip->replicate();
+            $newTrip->user_id = $friend->id;
+            $newTrip->save();
 
-    //         // Copy related data (e.g., itineraries, days, activities, etc.)
-    //         $trip->itineraries->each(function ($itinerary) use ($newTrip) {
-    //             $newItinerary = $itinerary->replicate();
-    //             $newItinerary->trip_id = $newTrip->id;
-    //             $newItinerary->save();
+            // Copy related data (e.g., itineraries, days, activities, etc.)
+            $trip->itineraries->each(function ($itinerary) use ($newTrip) {
+                $newItinerary = $itinerary->replicate();
+                $newItinerary->trip_id = $newTrip->id;
+                $newItinerary->save();
 
-    //             // Copy days, activities, transports, accommodations, flights
-    //             $itinerary->days->each(function ($day) use ($newItinerary) {
-    //                 $newDay = $day->replicate();
-    //                 $newDay->itinerary_id = $newItinerary->id;
-    //                 $newDay->save();
+                // Copy days, activities, transports, accommodations, flights
+                $itinerary->days->each(function ($day) use ($newItinerary) {
+                    $newDay = $day->replicate();
+                    $newDay->itinerary_id = $newItinerary->id;
+                    $newDay->save();
 
-    //                 $day->activities->each(function ($activity) use ($newDay) {
-    //                     $newActivity = $activity->replicate();
-    //                     $newActivity->day_id = $newDay->id;
-    //                     $newActivity->save();
-    //                 });
+                    $day->activities->each(function ($activity) use ($newDay) {
+                        $newActivity = $activity->replicate();
+                        $newActivity->day_id = $newDay->id;
+                        $newActivity->save();
+                    });
 
-    //                 $day->transports->each(function ($transport) use ($newDay) {
-    //                     $newTransport = $transport->replicate();
-    //                     $newTransport->day_id = $newDay->id;
-    //                     $newTransport->save();
-    //                 });
+                    $day->transports->each(function ($transport) use ($newDay) {
+                        $newTransport = $transport->replicate();
+                        $newTransport->day_id = $newDay->id;
+                        $newTransport->save();
+                    });
 
-    //                 $day->accommodations->each(function ($accommodation) use ($newDay) {
-    //                     $newAccommodation = $accommodation->replicate();
-    //                     $newAccommodation->day_id = $newDay->id;
-    //                     $newAccommodation->save();
-    //                 });
+                    $day->accommodations->each(function ($accommodation) use ($newDay) {
+                        $newAccommodation = $accommodation->replicate();
+                        $newAccommodation->day_id = $newDay->id;
+                        $newAccommodation->save();
+                    });
 
-    //                 $day->flights->each(function ($flight) use ($newDay) {
-    //                     $newFlight = $flight->replicate();
-    //                     $newFlight->day_id = $newDay->id;
-    //                     $newFlight->save();
-    //                 });
-    //             });
-    //         });
-    //     }
+                    $day->flights->each(function ($flight) use ($newDay) {
+                        $newFlight = $flight->replicate();
+                        $newFlight->day_id = $newDay->id;
+                        $newFlight->save();
+                    });
+                });
+            });
+        }
 
-    //     return redirect()->back()->with('success', 'Trip successfully shared with your friends!');
-    // }
+        return redirect()->back()->with('success', 'Trip successfully shared with your friends!');
+    }
 
 
 

@@ -10,6 +10,16 @@
                 <a href="{{ url('/trip/list') }}" class="btn btn-secondary btn-sm me-3"><i class="bi bi-arrow-left-circle"></i></a>
                 <h1 class="mb-0">{{ $trip->tripTitle }} - Trip Details</h1>
             </div>
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
         </div>
 
         <!-- Carousel for Days (No Indicator) -->
@@ -63,8 +73,8 @@
                 <a href="{{ route('itinerary.create', $trip->id) }}" class="btn btn-primary btn-lg flex-fill">
                     <i class="bi bi-pencil"></i> Edit
                 </a>
-                <a href="#" class="btn btn-success btn-lg flex-fill">
-                    <i class="bi bi-share" data-toggle="modal" data-target="#shareModal" data-trip-id="{{ $trip->id }}"></i> Share
+                <a href="#" class="btn btn-success btn-lg flex-fill"  data-toggle="modal" data-target="#shareModal" data-trip-id="{{ $trip->id }}">
+                    <i class="bi bi-share"></i> Share
                 </a>
                 <a href="{{ route('trip.downloadICS', ['itineraryId' => $itinerary->id]) }}" class="btn btn-warning btn-lg flex-fill" style="color: white">
                     <i class="bi bi-bell"></i> Reminder
