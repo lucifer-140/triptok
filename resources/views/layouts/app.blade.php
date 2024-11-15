@@ -68,12 +68,9 @@
             height: 3px;
             background-color: #007bff;
         }
-        .position-relative .badge {
-            font-size: 0.75rem;
-            padding: 0.35em 0.5em;
-            line-height: 1;
+        .notification-icon {
+            font-weight: 700 !important;
         }
-
 
         @media (max-width: 768px) {
             .page-heading {
@@ -102,16 +99,9 @@
                     <a href="{{ url('/user/home') }}" class="link-body-emphasis text-decoration-none">Home</a>
                     <a href="{{ url('/trip/list') }}" class="link-body-emphasis text-decoration-none">Trips</a>
                     <a href="#" class="link-body-emphasis text-decoration-none">Destinations</a>
-                    <a href="{{ url('/user/notifications') }}" class="link-body-emphasis text-decoration-none position-relative">
-                        <i class="bi bi-bell"></i>
-                        @if(Auth::user()->notification_count > 0)
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                {{ Auth::user()->notification_count }}
-                                <span class="visually-hidden">unread notifications</span>
-                            </span>
-                        @endif
+                    <a href="{{ url('/user/notifications') }}" class="link-body-emphasis text-decoration-none" aria-label="Notifications">
+                        <i class="bi bi-bell notification-icon"></i>
                     </a>
-
 
 
                     <!-- Profile Dropdown (Only on Larger Screens) -->
