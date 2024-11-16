@@ -53,14 +53,14 @@ class PageController extends Controller
     // {
     //     return view('auth.signup');
     // }
-    public function userPage()
-    {
-        return view('profile.user');
-    }
-    public function edit()
-    {
-        return view('profile.edit');
-    }
+    // public function userPage()
+    // {
+    //     return view('profile.user');
+    // }
+    // public function edit()
+    // {
+    //     return view('profile.edit');
+    // }
 
 }
 

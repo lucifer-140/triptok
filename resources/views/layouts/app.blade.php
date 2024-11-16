@@ -69,8 +69,45 @@
             height: 3px;
             background-color: #007bff;
         }
+        /* Profile Image Styling */
+        .profile-img {
+            width: 50px;  /* Increase the size */
+            height: 50px; /* Ensure the height matches the width for a circle */
+            object-fit: cover; /* Ensure the image maintains aspect ratio and doesn't stretch */
+            border: 2px solid #a0a0a0;  /* Optional: Add a border to match the notification icon style */
+        }
+
+        /* Notification Icon Container */
+        .notification {
+            position: relative;
+            display: inline-block;
+            font-size: 2rem;  /* Icon size */
+        }
+
+        /* Icon Styling (Bell Icon) */
         .notification-icon {
-            font-weight: 700 !important;
+            font-size: 2rem; /* Adjust size as needed */
+        }
+
+        /* Badge Styling */
+        .notification .badge {
+            position: absolute;
+            top: -5px;  /* Move the badge a little closer to the icon */
+            right: -5px;  /* Move the badge a little closer to the icon */
+            padding: 5px 10px;
+            border-radius: 50%;
+            background-color: red;
+            color: white;
+            font-size: 0.75rem;  /* Adjust the size of the badge number */
+        }
+
+        /* Hover effect on notification */
+        .notification:hover .badge {
+            background: darkred;
+        }
+
+        .dropdown-toggle::after {
+            display: none;
         }
 
         @media (max-width: 768px) {
@@ -78,6 +115,7 @@
                 font-size: 2rem;
             }
         }
+
 
     </style>
 
@@ -100,16 +138,26 @@
                     <a href="{{ url('/user/home') }}" class="link-body-emphasis text-decoration-none">Home</a>
                     <a href="{{ url('/trip/list') }}" class="link-body-emphasis text-decoration-none">Trips</a>
                     <a href="#" class="link-body-emphasis text-decoration-none">Destinations</a>
-                    <a href="{{ url('/user/notifications') }}" class="link-body-emphasis text-decoration-none" aria-label="Notifications">
+                    <a href="{{ url('/user/notifications') }}" class="notification link-body-emphasis text-decoration-none" aria-label="Notifications">
+                        <!-- Notification Icon -->
                         <i class="bi bi-bell notification-icon"></i>
+
+                        <!-- Display the notification counts -->
+                        @if ($receivedRequestsCount > 0 || $sharedTripsCount > 0)
+                            <span class="badge">{{ $receivedRequestsCount + $sharedTripsCount }}</span>
+                        @endif
                     </a>
+
+
+
+
 
 
                     <!-- Profile Dropdown (Only on Larger Screens) -->
                     <div class="dropdown">
                         <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                             <!-- Display Profile Image -->
-                            <img src="{{ Auth::user()->profile_image ? Storage::url('public/' . Auth::user()->profile_image) : asset('assets/blankprofilepic.jpeg') }}" alt="Profile Picture" width="32" height="32" class="rounded-circle">
+                            <img src="{{ Auth::user()->profile_image ? Storage::url('public/' . Auth::user()->profile_image) : asset('assets/blankprofilepic.jpeg') }}" alt="Profile Picture" class="rounded-circle profile-img">
                         </a>
                         <ul class="dropdown-menu text-small shadow">
                             <li><span class="dropdown-item text-muted">Hello, {{ Auth::user()->first_name }}</span></li>
@@ -141,7 +189,18 @@
                         <!-- Profile and Sign Out Options (Visible Only on Mobile) -->
                         <li><a class="dropdown-item" href="{{ url('/user/profile') }}">Profile</a></li>
                         <li><a class="dropdown-item" href="{{ url('/user/friends') }}">Friends</a></li>
-                        <li><a class="dropdown-item" href="{{ url('/user/notifications') }}">Notifications</a></li>
+                        <li>
+                            <a class="dropdown-item d-flex justify-content-between align-items-center" href="{{ url('/user/notifications') }}">
+                                Notifications
+                                @if ($receivedRequestsCount > 0 || $sharedTripsCount > 0)
+                                    <!-- Notification badge -->
+                                    <span class="badge bg-danger rounded-pill ms-2">
+                                        {{ $receivedRequestsCount + $sharedTripsCount }}
+                                    </span>
+                                @endif
+                            </a>
+                        </li>
+
                         <li><a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Sign out</a></li>
                     </ul>
                 </div>
