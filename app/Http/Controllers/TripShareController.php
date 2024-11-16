@@ -42,7 +42,7 @@ class TripShareController extends Controller
             ]);
         }
 
-        return back()->with('message', 'Trip shared successfully!');
+        return back()->with('success', 'Trip shared successfully!');
     }
 
     public function accept($sharedTripId)
