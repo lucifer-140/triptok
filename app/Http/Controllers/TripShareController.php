@@ -14,11 +14,15 @@ use Illuminate\Support\Facades\DB;
 
 class TripShareController extends Controller
 {
-    // Method to show the sharing modal
     public function create($trip_id)
     {
-        // Fetch the trip and user's friends
-        $trip = Trip::findOrFail($trip_id);
+        // Check if the trip exists
+        $trip = Trip::find($trip_id);
+        if (!$trip) {
+            return back()->with('error', 'The trip does not exist.');
+        }
+
+        // Fetch the user's friends
         $friends = Auth::user()->friends;
 
         // Pass the trip data and friends to the modal view
@@ -30,7 +34,12 @@ class TripShareController extends Controller
 
     public function share(Request $request, $trip_id)
     {
-        $trip = Trip::findOrFail($trip_id);
+        // Validate that the trip exists
+        $trip = Trip::find($trip_id);
+        if (!$trip) {
+            return back()->with('error', 'The trip does not exist.');
+        }
+
         $friends = User::find($request->friends);  // The friends selected to share the trip
 
         foreach ($friends as $friend) {
@@ -44,6 +53,7 @@ class TripShareController extends Controller
 
         return back()->with('success', 'Trip shared successfully!');
     }
+
 
     public function accept($sharedTripId)
     {
