@@ -16,21 +16,26 @@ class TripShareController extends Controller
 {
     public function create($trip_id)
     {
-        // Check if the trip exists
+        // Attempt to find the trip
         $trip = Trip::find($trip_id);
+
+        // Initialize an error message if the trip is not found
+        $errorMessage = null;
         if (!$trip) {
-            return back()->with('error', 'The trip does not exist.');
+            $errorMessage = 'The trip does not exist.';
         }
 
-        // Fetch the user's friends
-        $friends = Auth::user()->friends;
+        // Fetch the user's friends, or an empty array if you prefer
+        $friends = Auth::user()->friends ?? [];
 
-        // Pass the trip data and friends to the modal view
+        // Pass the trip, friends, and an optional error message to the modal view
         return view('components.share-trip-modal', [
             'trip' => $trip,
-            'friends' => $friends
+            'friends' => $friends,
+            'errorMessage' => $errorMessage,
         ]);
     }
+
 
     public function share(Request $request, $trip_id)
     {
