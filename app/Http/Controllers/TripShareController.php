@@ -39,16 +39,17 @@ class TripShareController extends Controller
 
     public function share(Request $request, $trip_id)
     {
-        // Validate that the trip exists
+        \Log::info('Trip ID:', ['trip_id' => $trip_id]);
+        \Log::info('Friends:', ['friends' => $request->friends]);
+
         $trip = Trip::find($trip_id);
         if (!$trip) {
             return back()->with('error', 'The trip does not exist.');
         }
 
-        $friends = User::find($request->friends);  // The friends selected to share the trip
+        $friends = User::find($request->friends);
 
         foreach ($friends as $friend) {
-            // Create a new entry in the shared_trips table with the status "pending"
             SharedTrip::create([
                 'user_id' => $friend->id,
                 'trip_id' => $trip_id,
@@ -58,6 +59,7 @@ class TripShareController extends Controller
 
         return back()->with('success', 'Trip shared successfully!');
     }
+
 
 
     public function accept($sharedTripId)

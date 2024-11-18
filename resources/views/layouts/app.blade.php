@@ -157,7 +157,7 @@
                     <div class="dropdown">
                         <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                             <!-- Display Profile Image -->
-                            <img src="{{ Auth::user()->profile_image ? Storage::url('public/' . Auth::user()->profile_image) : asset('assets/blankprofilepic.jpeg') }}" alt="Profile Picture" class="rounded-circle profile-img">
+                            <img src="{{ Auth::user()->profile_image ? Storage::url('public/' . Auth::user()->profile_image) : asset('assets/blankprofilepic.jpeg') }}" alt="Profile Picture" class="rounded-circle profile-img"  style="width: 50px !important; height: 50px !important; object-fit: cover !important; border: 2px solid #a0a0a0 !important">
                         </a>
                         <ul class="dropdown-menu text-small shadow">
                             <li><span class="dropdown-item text-muted">Hello, {{ Auth::user()->first_name }}</span></li>
