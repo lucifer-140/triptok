@@ -62,15 +62,19 @@ class ItineraryController extends Controller
             )->text();
         });
 
-        $weatherInfo = Cache::remember("weather_info_{$cacheKey}", 60, function () use ($startDate, $endDate, $tripDuration, $destination, $days, $tripGoals) {
+        $weatherInfo = Cache::remember("weather_info_{$cacheKey}", 60, function () use ($startDate, $endDate, $destination) {
+            // Get the month from the start and end dates
+            $startMonth = $startDate->format('F'); // Full month name (e.g., "March")
+            $endMonth = $endDate->format('F'); // Full month name (e.g., "May")
+
             return Gemini::geminiPro()->generateContent(
-                "List the expected weather conditions and season in {$destination} between {$startDate->format('Y-m-d')} and {$endDate->format('Y-m-d')}, considering a {$tripDuration}-day trip with this itinerary:
-
-                {$days}
-
-                and the goal of {$tripGoals}."
+                "Give the expected weather conditions for {$destination} in the {$destination} hemisphere from {$startMonth} to {$endMonth}, based on your own data."
             )->text();
         });
+
+
+
+
 
         $cultureTips = Cache::remember("culture_tips_{$cacheKey}", 60, function () use ($destination) {
             return Gemini::geminiPro()->generateContent(

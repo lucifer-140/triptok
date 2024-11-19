@@ -116,11 +116,76 @@
             }
         }
 
+        /* Loading screen styling */
+        #loadingScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0.3s, opacity 0.3s;
+        }
+
+        #loadingScreen.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .dots {
+        display: inline-block;
+        animation: blink 1.5s infinite steps(1);
+        }
+
+        .dots:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .dots:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        .dots:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        /* Create the blinking dots animation */
+        @keyframes blink {
+            0%, 100% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
 
     </style>
 
 </head>
 <body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.8);
+        z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column;
+        backdrop-filter: blur(10px); /* Blur background */">
+        <div class="d-flex flex-column align-items-center">
+            <!-- Logo -->
+            <img src="{{ asset('assets/logo.png') }}" alt="Logo" class="logo-img mt-3" style="max-height: 100px; width: auto;">
+
+            <!-- Loading Text with Animated Ellipsis -->
+            <p class="mt-3 loading-text" style="font-size: 1.2rem; color: #333;">
+                Loading, please wait
+                <span class="dots">.</span><span class="dots">.</span><span class="dots">.</span>
+            </p>
+        </div>
+    </div>
+
 
     <header class="py-3 mb-3 border-bottom">
         <div class="container-fluid d-grid gap-3 align-items-center" style="grid-template-columns: 1fr;">
@@ -220,6 +285,34 @@
 </form>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const loadingScreen = document.getElementById('loadingScreen');
+
+        // Show loading screen during form submissions
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function () {
+                loadingScreen.classList.add('active');
+            });
+        });
+
+        // Show loading screen when links are clicked
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function (e) {
+                const href = link.getAttribute('href');
+
+                // Ensure it is not an anchor-only link
+                if (href && href !== '#' && !link.hasAttribute('data-no-loader')) {
+                    loadingScreen.classList.add('active');
+                }
+            });
+        });
+
+        // Hide the loading screen once the page fully loads
+        window.addEventListener('load', function () {
+            loadingScreen.classList.remove('active');
+        });
+    });
+
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/service-worker.js')
         .then(function(registration) {

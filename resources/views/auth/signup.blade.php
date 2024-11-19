@@ -99,33 +99,41 @@
                     @csrf
                     <div class="mb-3">
                         <label for="first_name" class="form-label required">First Name</label>
-                        <input type="text" class="form-control" id="first_name" name="first_name" maxlength="50" required>
+                        <input type="text" class="form-control" id="first_name" name="first_name" maxlength="50"
+                               value="{{ old('first_name') }}" required>
                     </div>
                     <div class="mb-3">
                         <label for="last_name" class="form-label required">Last Name</label>
-                        <input type="text" class="form-control" id="last_name" name="last_name" maxlength="50" required>
+                        <input type="text" class="form-control" id="last_name" name="last_name" maxlength="50"
+                               value="{{ old('last_name') }}" required>
                     </div>
                     <div class="mb-3">
                         <label for="phone" class="form-label required">Phone Number</label>
-                        <input type="text" class="form-control" id="phone" name="phone" maxlength="15" required>
-                        <div class="error-message" id="phoneError"></div>
+                        <input type="text" class="form-control" id="phone" name="phone" maxlength="15"
+                               value="{{ old('phone') }}" required>
+                        @if ($errors->has('phone'))
+                            <div class="error-message">{{ $errors->first('phone') }}</div>
+                        @endif
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label required">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" maxlength="100" required>
+                        <input type="email" class="form-control" id="email" name="email" maxlength="100"
+                               value="{{ old('email') }}" required>
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label required">Password</label>
                         <input type="password" class="form-control" id="password" name="password" minlength="8" required>
-                        <div class="error-message" id="passwordError"></div>
+                        @if ($errors->has('password'))
+                            <div class="error-message">{{ $errors->first('password') }}</div>
+                        @endif
                     </div>
                     <div class="mb-3">
                         <label for="confirm_password" class="form-label required">Confirm Password</label>
                         <input type="password" class="form-control" id="confirm_password" name="password_confirmation" required>
-                        <div class="error-message" id="confirmPasswordError"></div>
                     </div>
                     <button type="submit" class="btn btn-success w-100">Sign Up</button>
                 </form>
+
                 <div class="text-center mt-3">
                     <p>Already have an account? <a href="{{ route('signin') }}">Sign In</a></p>
                 </div>

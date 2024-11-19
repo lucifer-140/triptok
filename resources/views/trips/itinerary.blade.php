@@ -7,7 +7,7 @@
 <div class="container mt-5">
     <h2 class="text-center mb-4">Itinerary for Your Trip</h2>
     <p class="text-center mb-4">Plan your adventure day by day with details of activities, transport, accommodation, and more.</p>
-    <div class="mb-4 mb-4 border rounded p-3">
+    {{-- <div class="mb-4 mb-4 border rounded p-3">
         <p><strong>DEBUG</strong></p>
         <p><strong>Itinerary ID:</strong> {{ $itinerary->id  }}</p>
         <p><strong>Trip ID:</strong> {{ $trip_id }}</p>
@@ -15,7 +15,7 @@
             <label for="tripCurrency" class="form-label">Trip Currency:</label>
             <input type="text" class="form-control" id="tripCurrency" value="{{ $currency }}" readonly>
         </div>
-    </div>
+    </div> --}}
 
 
 
