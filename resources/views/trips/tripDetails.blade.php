@@ -10,6 +10,9 @@
                 <a href="{{ url('/trip/list') }}" class="btn btn-secondary btn-sm me-3"><i class="bi bi-arrow-left-circle"></i></a>
                 <h1 class="mb-0">{{ $trip->tripTitle }} - Trip Details</h1>
             </div>
+
+        </div>
+        <div class="">
             @if (session('error'))
                 <div class="alert alert-danger">
                     {{ session('error') }}
@@ -21,6 +24,7 @@
                 </div>
             @endif
         </div>
+
 
         <!-- Carousel for Days (No Indicator) -->
         <div class="card-body p-0">

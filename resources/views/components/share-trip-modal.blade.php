@@ -1,52 +1,57 @@
-<!-- Share Trip Modal -->
 <div class="modal fade" id="shareModal" tabindex="-1" role="dialog" aria-labelledby="shareModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content rounded-3 shadow-lg">
             <div class="modal-header">
                 <h5 class="modal-title" id="shareModalLabel">Share Trip with Friends</h5>
-                <!-- Close Button (No background color, smaller size) -->
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('trips.share', $trip->id) }}" method="POST">
-                    @csrf
-                    <!-- Search Bar with Spinner -->
-                    <div class="mb-4 position-relative">
-                        <input type="text" class="form-control form-control-lg" id="searchFriend" placeholder="Search friends...">
-                        <div id="spinner" class="spinner-border text-primary position-absolute end-0 top-50 translate-middle-y d-none" role="status">
-                            <span class="visually-hidden">Loading...</span>
+                @if(isset($trip))
+                    <form action="{{ route('trips.share', $trip->id) }}" method="POST">
+                        @csrf
+                        <!-- Search Bar with Spinner -->
+                        <div class="mb-4 position-relative">
+                            <input type="text" class="form-control form-control-lg" id="searchFriend" placeholder="Search friends...">
+                            <div id="spinner" class="spinner-border text-primary position-absolute end-0 top-50 translate-middle-y d-none" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- Friends List -->
-                    <div class="friend-list" id="friendsList">
-                        @foreach($friends as $friend)
-                            <div class="friend-card p-3 mb-3 rounded shadow-sm" data-name="{{ strtolower($friend->first_name . ' ' . $friend->last_name) }}" data-email="{{ strtolower($friend->email) }}">
-                                <div class="d-flex align-items-center">
-                                    <img src="{{ $friend->profile_image ? asset('storage/' . $friend->profile_image) : asset('assets/blankprofilepic.jpeg') }}" alt="{{ $friend->first_name }} {{ $friend->last_name }}" class="rounded-circle me-3" width="50" height="50">
-                                    <div class="flex-grow-1">
-                                        <div class="d-flex align-items-center justify-content-between">
-                                            <div>
-                                                <strong class="d-block">{{ $friend->first_name }} {{ $friend->last_name }}</strong>
-                                                <p class="mb-0 text-muted small">{{ $friend->email }}</p>
+                        <!-- Friends List -->
+                        <div class="friend-list" id="friendsList">
+                            @foreach($friends as $friend)
+                                <div class="friend-card p-3 mb-3 rounded shadow-sm" data-name="{{ strtolower($friend->first_name . ' ' . $friend->last_name) }}" data-email="{{ strtolower($friend->email) }}">
+                                    <div class="d-flex align-items-center">
+                                        <img src="{{ $friend->profile_image ? asset('storage/' . $friend->profile_image) : asset('assets/blankprofilepic.jpeg') }}" alt="{{ $friend->first_name }} {{ $friend->last_name }}" class="rounded-circle me-3" width="50" height="50">
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <div>
+                                                    <strong class="d-block">{{ $friend->first_name }} {{ $friend->last_name }}</strong>
+                                                    <p class="mb-0 text-muted small">{{ $friend->email }}</p>
+                                                </div>
+                                                <input type="checkbox" name="friends[]" value="{{ $friend->id }}" class="form-check-input">
                                             </div>
-                                            <input type="checkbox" name="friends[]" value="{{ $friend->id }}" class="form-check-input">
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        @endforeach
-                    </div>
+                            @endforeach
+                        </div>
 
-                    <!-- Submit Button -->
-                    <button type="submit" class="btn btn-primary w-100 mt-4">Share Trip</button>
-                </form>
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-primary w-100 mt-4">Share Trip</button>
+                    </form>
+                @else
+                    <div class="alert alert-danger">
+                        The trip does not exist or could not be loaded.
+                    </div>
+                @endif
             </div>
         </div>
     </div>
 </div>
+
 
 <!-- Bootstrap 4 JS and Popper -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

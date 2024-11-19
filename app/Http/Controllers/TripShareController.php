@@ -14,27 +14,42 @@ use Illuminate\Support\Facades\DB;
 
 class TripShareController extends Controller
 {
-    // Method to show the sharing modal
     public function create($trip_id)
     {
-        // Fetch the trip and user's friends
-        $trip = Trip::findOrFail($trip_id);
-        $friends = Auth::user()->friends;
+        // Attempt to find the trip
+        $trip = Trip::find($trip_id);
 
-        // Pass the trip data and friends to the modal view
+        // Initialize an error message if the trip is not found
+        $errorMessage = null;
+        if (!$trip) {
+            $errorMessage = 'The trip does not exist.';
+        }
+
+        // Fetch the user's friends, or an empty array if you prefer
+        $friends = Auth::user()->friends ?? [];
+
+        // Pass the trip, friends, and an optional error message to the modal view
         return view('components.share-trip-modal', [
             'trip' => $trip,
-            'friends' => $friends
+            'friends' => $friends,
+            'errorMessage' => $errorMessage,
         ]);
     }
 
+
     public function share(Request $request, $trip_id)
     {
-        $trip = Trip::findOrFail($trip_id);
-        $friends = User::find($request->friends);  // The friends selected to share the trip
+        \Log::info('Trip ID:', ['trip_id' => $trip_id]);
+        \Log::info('Friends:', ['friends' => $request->friends]);
+
+        $trip = Trip::find($trip_id);
+        if (!$trip) {
+            return back()->with('error', 'The trip does not exist.');
+        }
+
+        $friends = User::find($request->friends);
 
         foreach ($friends as $friend) {
-            // Create a new entry in the shared_trips table with the status "pending"
             SharedTrip::create([
                 'user_id' => $friend->id,
                 'trip_id' => $trip_id,
@@ -44,6 +59,9 @@ class TripShareController extends Controller
 
         return back()->with('success', 'Trip shared successfully!');
     }
+
+    
+
 
     public function accept($sharedTripId)
     {

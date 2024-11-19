@@ -73,11 +73,7 @@
                                             <div class="mt-2 mt-md-0">
                                                 <form action="{{ route('removeFriend', $friend->id) }}" method="POST" class="d-inline-block">
                                                     @csrf
-                                                    <button type="submit" class="btn btn-outline-danger btn-sm"><i class="bi bi-person-x"></i></button>
-                                                </form>
-                                                <form action="#" method="POST" class="d-inline-block">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-outline-info btn-sm"><i class="bi bi-chat-dots"></i></button>
+                                                    <button type="submit" class="btn btn-outline-danger btn-sm"><i class="bi bi-person-x"></i> Remove</button>
                                                 </form>
                                             </div>
                                         </div>
@@ -106,11 +102,11 @@
                                             <div class="mt-2 mt-md-0">
                                                 <form action="{{ route('acceptRequest', $request->sender->id) }}" method="POST" class="d-inline-block">
                                                     @csrf
-                                                    <button type="submit" class="btn btn-outline-success btn-sm"><i class="bi bi-check2"></i></button>
+                                                    <button type="submit" class="btn btn-outline-success btn-sm"><i class="bi bi-check2"></i> Accept</button>
                                                 </form>
                                                 <form action="{{ route('declineRequest', $request->sender->id) }}" method="POST" class="d-inline-block">
                                                     @csrf
-                                                    <button type="submit" class="btn btn-outline-danger btn-sm"><i class="bi bi-x-lg"></i></button>
+                                                    <button type="submit" class="btn btn-outline-danger btn-sm"><i class="bi bi-x-lg"></i> Decline</button>
                                                 </form>
                                             </div>
                                         </div>
@@ -169,7 +165,7 @@
                                             <div class="mt-2 mt-md-0">
                                                 <form action="{{ route('sendRequest', $user->id) }}" method="POST" class="d-inline-block">
                                                     @csrf
-                                                    <button type="submit" class="btn btn-outline-primary btn-sm"><i class="bi bi-person-plus"></i></button>
+                                                    <button type="submit" class="btn btn-outline-primary btn-sm"><i class="bi bi-person-plus"></i> Add Friend</button>
                                                 </form>
                                             </div>
                                         </div>
