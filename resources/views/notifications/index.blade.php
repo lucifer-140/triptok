@@ -21,7 +21,8 @@
             <div class="notification-card card mb-3">
                 <div class="card-body">
                     <div class="trip-info">
-                        <p><strong>Trip:</strong> {{ $sharedTrip->trip->tripTitle }}</p>
+                        <p><strong>From:</strong> {{ $sharedTrip->user->first_name }} {{ $sharedTrip->user->last_name }}</p>
+                        <p><strong>Trip title:</strong> {{ $sharedTrip->trip->tripTitle }}</p>
                         <p><strong>Status:</strong> {{ ucfirst($sharedTrip->status) }}</p>
                     </div>
                     <div class="trip-actions">

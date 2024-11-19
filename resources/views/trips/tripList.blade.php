@@ -211,8 +211,6 @@
             }, 500); // Adjust the timeout as needed
         });
 
-        
-
         // Show more functionality
         const showMoreButtons = document.querySelectorAll(".show-more");
         showMoreButtons.forEach(button => {

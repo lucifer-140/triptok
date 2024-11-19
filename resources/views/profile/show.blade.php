@@ -40,8 +40,8 @@
                 <div class="mt-4">
                     <hr>
                     <div class="d-grid gap-2">
-                        <a href="#" class="btn btn-outline-primary btn-action">View My Trips</a>
-                        <a href="#" class="btn btn-outline-info btn-action">Friend List</a>
+                        <a href="{{ url('/trip/list') }}" class="btn btn-outline-primary btn-action">View My Trips</a>
+                        <a href="{{ url('/user/friends') }}" class="btn btn-outline-info btn-action">Friend List</a>
                         <a href="{{ route('password.request') }}" class="btn btn-outline-secondary btn-action">Reset Password</a>
                         <a href="#" class="btn btn-danger btn-action" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Sign Out</a>
 
