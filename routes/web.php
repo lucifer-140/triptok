@@ -29,6 +29,7 @@ Route::prefix('user')->group(function () {
     // Authentication routes
     Route::get('/sign-in', [AuthController::class, 'showSignInForm'])->name('signin');
     Route::post('/signin', [AuthController::class, 'postSignIn'])->name('post.signin');
+    Route::get('/login', [AuthController::class, 'showSignInForm'])->name('login');
 
     Route::get('/sign-up', [AuthController::class, 'showSignUpForm'])->name('signup');
     Route::post('/signup', [AuthController::class, 'registerUser'])->name('signup.submit');
@@ -137,12 +138,6 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/', [GuestController::class, 'index'])->name('guest.home');
 
-
-Route::get('/send-email', function () {
-    $toEmail = 'davejansen140@gmail.com'; // Replace with the recipient's email
-    Mail::to($toEmail)->send(new TestEmail());
-    return 'Email sent!';
-});
 
 
 

@@ -7,8 +7,6 @@
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-
-
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -72,9 +70,69 @@
                 font-size: 1.5rem;
             }
         }
+
+        /* Loading screen styles */
+        #loadingScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            backdrop-filter: blur(10px);
+        }
+
+        .loading-text {
+            font-size: 1.2rem;
+            color: #333;
+        }
+
+        .dots {
+            display: inline-block;
+            animation: blink 1.5s infinite steps(1);
+        }
+
+        .dots:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .dots:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        .dots:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        /* Create the blinking dots animation */
+        @keyframes blink {
+            0%, 100% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
     </style>
 </head>
 <body class="bg-light">
+    <!-- Loading Screen -->
+    <div id="loadingScreen">
+        <div class="d-flex flex-column align-items-center">
+            <img src="{{ asset('assets/logo.png') }}" alt="Logo" class="logo-img mt-3" style="max-height: 100px; width: auto;">
+            <p class="mt-3 loading-text">
+                Loading, please wait<span class="dots">.</span><span class="dots">.</span><span class="dots">.</span>
+            </p>
+        </div>
+    </div>
+
+
     <div class="container d-flex justify-content-center align-items-center min-vh-100">
         <div class="card shadow" style="width: 400px;">
             <div class="card-body">
@@ -84,9 +142,7 @@
                 </div>
 
                 @if(session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
+                    <div class="alert alert-success">{{ session('success') }}</div>
                 @endif
 
                 @if(session('error'))
@@ -97,32 +153,24 @@
                     @csrf
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
-                        <input
-                            type="email"
-                            class="form-control"
-                            id="email"
-                            name="email"
-                            value="{{ old('email') }}"
-                            required>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required>
                         @if ($errors->has('email'))
                             <div class="error-message">{{ $errors->first('email') }}</div>
                         @endif
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
-                        <input
-                            type="password"
-                            class="form-control"
-                            id="password"
-                            name="password"
-                            required>
+                        <input type="password" class="form-control" id="password" name="password" required>
                         @if ($errors->has('password'))
                             <div class="error-message">{{ $errors->first('password') }}</div>
                         @endif
                     </div>
+                    <div class="mb-3 show-password-container">
+                        <input type="checkbox" id="showPassword">
+                        <label for="showPassword">Show Password</label>
+                    </div>
                     <button type="submit" class="btn btn-primary w-100">Sign In</button>
                 </form>
-
 
                 <div class="text-center mt-3">
                     <p><a href="{{ route('password.request') }}">Forgot Your Password?</a></p>
@@ -135,39 +183,39 @@
                 <div class="text-center mt-3">
                     <a href="{{ url('/') }}" class="btn btn-link">Back to Home</a>
                 </div>
-
             </div>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const emailInput = document.getElementById('email');
+            const signinForm = document.getElementById('signinForm');
+            const loadingScreen = document.getElementById('loadingScreen');
+
+            signinForm.addEventListener('submit', function () {
+                // Show the loading screen
+                loadingScreen.style.display = 'flex';
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            const showPasswordCheckbox = document.getElementById('showPassword');
             const passwordInput = document.getElementById('password');
 
-            emailInput.addEventListener('input', function () {
-                const emailError = document.getElementById('emailError');
-                const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-                if (!emailPattern.test(emailInput.value)) {
-                    emailError.textContent = "Please enter a valid email address.";
+            // Toggle the password visibility when the checkbox is clicked
+            showPasswordCheckbox.addEventListener('change', function () {
+                if (showPasswordCheckbox.checked) {
+                    passwordInput.type = 'text';  // Show password
                 } else {
-                    emailError.textContent = "";
+                    passwordInput.type = 'password';  // Hide password
                 }
             });
 
-            passwordInput.addEventListener('input', function () {
-                const passwordError = document.getElementById('passwordError');
-                if (passwordInput.value.trim() === "") {
-                    passwordError.textContent = "Password is required.";
-                } else {
-                    passwordError.textContent = "";
-                }
-            });
+            const signinForm = document.getElementById('signinForm');
+            const loadingScreen = document.getElementById('loadingScreen');
 
-            document.getElementById('signinForm').addEventListener('submit', function (e) {
-                if (!emailInput.value.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/) || passwordInput.value.trim() === "") {
-                    e.preventDefault();
-                }
+            signinForm.addEventListener('submit', function () {
+                // Show the loading screen
+                loadingScreen.style.display = 'flex';
             });
         });
     </script>

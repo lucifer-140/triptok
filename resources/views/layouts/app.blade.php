@@ -139,8 +139,8 @@
         }
 
         .dots {
-        display: inline-block;
-        animation: blink 1.5s infinite steps(1);
+            display: inline-block;
+            animation: blink 1.5s infinite steps(1);
         }
 
         .dots:nth-child(1) {
@@ -165,6 +165,11 @@
             }
         }
 
+        header.sticky-top {
+            z-index: 1030; /* Higher value to ensure it stays on top */
+        }
+
+
 
     </style>
 
@@ -187,11 +192,10 @@
     </div>
 
 
-    <header class="py-3 mb-3 border-bottom">
+    <header class="py-3 mb-3 border-bottom sticky-top" style="background-color: #ffffff;">
         <div class="container-fluid d-grid gap-3 align-items-center" style="grid-template-columns: 1fr;">
-            <!-- Larger Screens (Above Mobile) -->
+            <!-- Navbar content -->
             <div class="d-none d-md-flex justify-content-between align-items-center">
-                <!-- Logo and Navigation Links -->
                 <div class="d-flex align-items-center">
                     <a href="{{ url('/user/home') }}" class="link-body-emphasis text-decoration-none">
                         <img src="{{ asset('assets/logo.png') }}" alt="Logo" class="logo-img me-3" style="max-height: 70px; width: auto;">
@@ -204,25 +208,14 @@
                     <a href="{{ url('/trip/list') }}" class="link-body-emphasis text-decoration-none">Trips</a>
                     <a href="#" class="link-body-emphasis text-decoration-none">Destinations</a>
                     <a href="{{ url('/user/notifications') }}" class="notification link-body-emphasis text-decoration-none" aria-label="Notifications">
-                        <!-- Notification Icon -->
                         <i class="bi bi-bell notification-icon"></i>
-
-                        <!-- Display the notification counts -->
                         @if ($receivedRequestsCount > 0 || $sharedTripsCount > 0)
                             <span class="badge">{{ $receivedRequestsCount + $sharedTripsCount }}</span>
                         @endif
                     </a>
-
-
-
-
-
-
-                    <!-- Profile Dropdown (Only on Larger Screens) -->
                     <div class="dropdown">
                         <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            <!-- Display Profile Image -->
-                            <img src="{{ Auth::user()->profile_image ? Storage::url('public/' . Auth::user()->profile_image) : asset('assets/blankprofilepic.jpeg') }}" alt="Profile Picture" class="rounded-circle profile-img"  style="width: 50px !important; height: 50px !important; object-fit: cover !important; border: 2px solid #a0a0a0 !important">
+                            <img src="{{ Auth::user()->profile_image ? Storage::url('public/' . Auth::user()->profile_image) : asset('assets/blankprofilepic.jpeg') }}" alt="Profile Picture" class="rounded-circle profile-img">
                         </a>
                         <ul class="dropdown-menu text-small shadow">
                             <li><span class="dropdown-item text-muted">Hello, {{ Auth::user()->first_name }}</span></li>
@@ -235,6 +228,7 @@
                     </div>
                 </div>
             </div>
+
 
             <!-- Mobile/Small Screens (Below Medium Screens) -->
             <div class="d-md-none">
@@ -312,6 +306,42 @@
             loadingScreen.classList.remove('active');
         });
     });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const loadingScreen = document.getElementById('loadingScreen');
+
+        // Show loading screen during form submissions
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function () {
+                loadingScreen.classList.add('active');
+            });
+        });
+
+        // Show loading screen when links are clicked
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function (e) {
+                const href = link.getAttribute('href');
+
+                // Skip anchor-only links and links with data-no-loader
+                if (href && href !== '#' && !link.hasAttribute('data-no-loader')) {
+                    loadingScreen.classList.add('active');
+                }
+            });
+        });
+
+        // Hide the loading screen once the page fully loads
+        window.addEventListener('load', function () {
+            loadingScreen.classList.remove('active');
+        });
+
+        // Handle browser back/forward button to hide the loading screen
+        window.addEventListener('pageshow', function (event) {
+            if (event.persisted) {
+                loadingScreen.classList.remove('active');
+            }
+        });
+    });
+
 
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/service-worker.js')

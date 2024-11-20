@@ -35,18 +35,70 @@ class CalendarController extends Controller
             foreach ($day->activities as $activity) {
                 $startTime = Carbon::parse($activity->start_time)->format('His');
                 $endTime = Carbon::parse($activity->end_time)->format('His');
+                $startReminderTime = Carbon::parse($activity->start_time)->subMinutes(30)->format('His');
+                $endReminderTime = Carbon::parse($activity->end_time)->subMinutes(30)->format('His');
+
                 $summary = $this->generateGeminiSummary("Activity", $activity->title);
-                $icsContent .= $this->formatEvent($summary, $activity->description, $date, $startTime, $endTime);
+                $icsContent .= $this->formatEvent(
+                    $summary,
+                    $activity->description,
+                    $date,
+                    $startTime,
+                    $endTime
+                );
+
+                // Reminder 30 minutes before the start time
+                $startReminderSummary = $this->generateGeminiSummary("Reminder", "Activity Reminder: {$activity->title} (Start)");
+                $icsContent .= $this->formatEvent(
+                    $startReminderSummary,
+                    "Reminder: Your activity '{$activity->title}' starts in 30 minutes.",
+                    $date,
+                    $startReminderTime
+                );
+
+                // Reminder 30 minutes before the end time
+                $endReminderSummary = $this->generateGeminiSummary("Reminder", "Activity Reminder: {$activity->title} (End)");
+                $icsContent .= $this->formatEvent(
+                    $endReminderSummary,
+                    "Reminder: Your activity '{$activity->title}' ends in 30 minutes.",
+                    $date,
+                    $endReminderTime
+                );
             }
 
-            // Add each accommodation check-in/check-out as events
             foreach ($day->accommodations as $accommodation) {
-                $checkInTime = Carbon::parse($accommodation->check_in)->format('His');
-                $checkOutTime = Carbon::parse($accommodation->check_out)->format('His');
+                $checkInDate = Carbon::parse($accommodation->check_in)->format('Ymd');
+                $checkInTime = "130000"; // Fixed check-in time: 1 PM local time
+                $checkOutDate = Carbon::parse($accommodation->check_out)->format('Ymd');
+                $checkOutTime = Carbon::parse($accommodation->check_out_time)->format('His');
+
+                // Check-in reminder
                 $checkInSummary = $this->generateGeminiSummary("Accommodation Check-in", $accommodation->name);
+                $icsContent .= $this->formatEvent(
+                    $checkInSummary,
+                    "Check-in for accommodation at {$accommodation->name}.",
+                    $checkInDate,
+                    $checkInTime
+                );
+
+                // Check-out reminder
                 $checkOutSummary = $this->generateGeminiSummary("Accommodation Check-out", $accommodation->name);
-                $icsContent .= $this->formatEvent($checkInSummary, '', $date, $checkInTime);
-                $icsContent .= $this->formatEvent($checkOutSummary, '', $date, $checkOutTime);
+                $icsContent .= $this->formatEvent(
+                    $checkOutSummary,
+                    "Check-out from accommodation at {$accommodation->name}.",
+                    $checkOutDate,
+                    $checkOutTime
+                );
+
+                // Reminder 1 hour before check-out
+                $reminderTime = Carbon::parse($accommodation->check_out_time)->subHour()->format('His');
+                $reminderSummary = $this->generateGeminiSummary("Reminder", "Check-out Reminder: {$accommodation->name}");
+                $icsContent .= $this->formatEvent(
+                    $reminderSummary,
+                    "Reminder: Check-out from accommodation at {$accommodation->name} is in 1 hour.",
+                    $checkOutDate,
+                    $reminderTime
+                );
             }
 
             // Add each flight as an event
@@ -54,8 +106,25 @@ class CalendarController extends Controller
                 $flightDate = Carbon::parse($flight->date)->format('Ymd');
                 $departureTime = Carbon::parse($flight->departure_time)->format('His');
                 $arrivalTime = Carbon::parse($flight->arrival_time)->format('His');
+                $reminderTime = Carbon::parse($flight->departure_time)->subHour()->format('His');
+
                 $summary = $this->generateGeminiSummary("Flight", $flight->flight_number);
-                $icsContent .= $this->formatEvent($summary, '', $flightDate, $departureTime, $arrivalTime);
+                $icsContent .= $this->formatEvent(
+                    $summary,
+                    "Flight {$flight->flight_number} from {$flight->departure_airport} to {$flight->arrival_airport}.",
+                    $flightDate,
+                    $departureTime,
+                    $arrivalTime
+                );
+
+                // Reminder 1 hour before departure
+                $reminderSummary = $this->generateGeminiSummary("Reminder", "Flight Reminder: {$flight->flight_number}");
+                $icsContent .= $this->formatEvent(
+                    $reminderSummary,
+                    "Reminder: Your flight {$flight->flight_number} departs in 1 hour.",
+                    $flightDate,
+                    $reminderTime
+                );
             }
 
             // Add each transport as an event
@@ -63,9 +132,27 @@ class CalendarController extends Controller
                 $transportDate = Carbon::parse($transport->date)->format('Ymd');
                 $departureTime = Carbon::parse($transport->departure_time)->format('His');
                 $arrivalTime = Carbon::parse($transport->arrival_time)->format('His');
+                $reminderTime = Carbon::parse($transport->departure_time)->subHour()->format('His');
+
                 $summary = $this->generateGeminiSummary("Transport", $transport->type);
-                $icsContent .= $this->formatEvent($summary, '', $transportDate, $departureTime, $arrivalTime);
+                $icsContent .= $this->formatEvent(
+                    $summary,
+                    "Transport ({$transport->type}) from {$transport->departure_location} to {$transport->arrival_location}.",
+                    $transportDate,
+                    $departureTime,
+                    $arrivalTime
+                );
+
+                // Reminder 1 hour before departure
+                $reminderSummary = $this->generateGeminiSummary("Reminder", "Transport Reminder: {$transport->type}");
+                $icsContent .= $this->formatEvent(
+                    $reminderSummary,
+                    "Reminder: Your transport ({$transport->type}) departs in 1 hour.",
+                    $transportDate,
+                    $reminderTime
+                );
             }
+
         }
 
         // End calendar
@@ -95,14 +182,15 @@ class CalendarController extends Controller
         $event = "BEGIN:VEVENT\r\n";
         $event .= "SUMMARY:{$summary}\r\n";
         $event .= "DESCRIPTION:{$description}\r\n";
-        $event .= "DTSTART:{$date}T{$startTime}Z\r\n";
+        $event .= "DTSTART:{$date}T{$startTime}\r\n";
         if ($endTime) {
-            $event .= "DTEND:{$date}T{$endTime}Z\r\n";
+            $event .= "DTEND:{$date}T{$endTime}\r\n";
         }
         $event .= "END:VEVENT\r\n";
 
         return $event;
     }
+
 
     private function generateGeminiSummary($type, $title)
     {

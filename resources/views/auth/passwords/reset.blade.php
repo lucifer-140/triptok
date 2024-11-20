@@ -6,86 +6,125 @@
     <title>Reset Password - TripTock</title>
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-</head>
-<style>
-    /* Use a modern, clean font */
-    body {
-        font-family: 'Poppins', sans-serif;
-        background-color: #f8f9fa; /* Light background */
-    }
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+        }
 
-    /* Card Styling */
-    .card {
-        border-radius: 10px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    .card-body {
-        padding: 30px;
-    }
-
-    .text-center h4 {
-        font-size: 2rem;
-        font-weight: 700;
-        color: #343a40;
-        margin-bottom: 20px;
-    }
-
-    .error-message {
-        color: red;
-        font-size: 0.9em;
-    }
-
-    /* Input field styles */
-    .form-label {
-        font-weight: 600;
-    }
-
-    .form-control {
-        border-radius: 8px;
-        padding: 10px;
-        font-size: 1rem;
-    }
-
-    /* Loading spinner */
-    .spinner-border {
-        display: none;
-        width: 3rem;
-        height: 3rem;
-        border-width: 0.25em;
-    }
-
-    /* Link Styling */
-    .text-center a {
-        color: #007bff;
-        text-decoration: none;
-    }
-
-    .text-center a:hover {
-        text-decoration: underline;
-    }
-
-    /* Container styling */
-    .container {
-        margin-top: 60px;
-    }
-
-    /* Responsive design */
-    @media (max-width: 768px) {
-        .container {
-            margin-top: 20px;
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .card-body {
-            padding: 20px;
+            padding: 30px;
         }
 
         .text-center h4 {
-            font-size: 1.5rem;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #343a40;
+            margin-bottom: 20px;
         }
-    }
-</style>
+
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+        }
+
+        .form-label {
+            font-weight: 600;
+        }
+
+        .form-control {
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 1rem;
+        }
+
+        .text-center a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .text-center a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            margin-top: 60px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin-top: 20px;
+            }
+
+            .card-body {
+                padding: 20px;
+            }
+
+            .text-center h4 {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Loading Screen */
+        #loadingScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            backdrop-filter: blur(10px);
+            display: none;
+        }
+
+        .dots {
+            display: inline-block;
+            animation: blink 1.5s infinite steps(1);
+        }
+
+        .dots:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .dots:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        .dots:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        @keyframes blink {
+            0%, 100% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
 <body class="bg-light">
+    <!-- Loading Screen -->
+    <div id="loadingScreen">
+        <div class="d-flex flex-column align-items-center">
+            <img src="{{ asset('assets/logo.png') }}" alt="Logo" style="max-height: 100px; width: auto;">
+            <p class="mt-3" style="font-size: 1.2rem; color: #333;">
+                Processing<span class="dots">.</span><span class="dots">.</span><span class="dots">.</span>
+            </p>
+        </div>
+    </div>
+
     <div class="container d-flex justify-content-center align-items-center min-vh-100">
         <div class="card shadow" style="width: 400px;">
             <div class="card-header text-center">
@@ -94,7 +133,7 @@
 
             <div class="card-body">
                 @if (session('status'))
-                    <div class="alert alert-success" id="successMessage" style="display: none;">
+                    <div class="alert alert-success">
                         {{ session('status') }}
                     </div>
                 @endif
@@ -115,9 +154,6 @@
 
                     <div class="form-group text-center mt-3">
                         <button type="submit" class="btn btn-primary w-100" id="submitButton">{{ __('Send Password Reset Link') }}</button>
-                        <div class="spinner-border text-primary" id="loadingSpinner" role="status">
-                            <span class="sr-only">Loading...</span>
-                        </div>
                     </div>
                 </form>
             </div>
@@ -126,22 +162,10 @@
 
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
     <script>
-        document.getElementById('resetPasswordForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent the form from submitting immediately
-
-            // Show the loading spinner and hide the submit button
-            document.getElementById('loadingSpinner').style.display = 'inline-block';
+        document.getElementById('resetPasswordForm').addEventListener('submit', function (event) {
+            // Show the loading screen and disable the button
+            document.getElementById('loadingScreen').style.display = 'flex';
             document.getElementById('submitButton').disabled = true;
-
-            // Simulate a form submission process (you can remove this if using real backend logic)
-            setTimeout(function() {
-                // Hide the spinner and show the success message
-                document.getElementById('loadingSpinner').style.display = 'none';
-                document.getElementById('successMessage').style.display = 'block';
-
-                // Optionally reset the form or handle further UI updates here
-                // document.getElementById('resetPasswordForm').reset();
-            }, 2000); // Simulate a 2-second delay (you can adjust this as needed)
         });
     </script>
 </body>

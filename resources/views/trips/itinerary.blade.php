@@ -24,7 +24,7 @@
         <div class="mb-3">
             {{-- <label for="tripStatus" class="form-label text-muted">Trip Status</label> --}}
 
-            @if (is_object($tripStatus))  {{-- Check if it's an object --}}
+            @if (is_object($tripStatus))
                 <span class="badge rounded-pill px-3 py-2" style="
                     background-color:
                         {{ $tripStatus->status == 'ongoing' ? '#28a745' :
@@ -53,7 +53,9 @@
             <h3 class="text-dark fw-bold mb-2">Grand Total:</h3>
             <div class="card border-0 shadow-sm">
                 <div class="card-body p-4">
-                    <span class="h4 text-primary">{{ $grandTotal }} {{ $itinerary->trip->currency }}</span>
+                    <span class="h4 text-primary">
+                        {{ $itinerary->trip->currency }} {{ number_format($grandTotal, 2, '.', ',') }}
+                    </span>
                 </div>
             </div>
         </div>
@@ -64,11 +66,12 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-body p-4">
                     <span class="h4 {{ $leftover < 0 ? 'text-danger fw-bold' : 'text-success' }}">
-                        {{ $leftover }} {{ $currency }}
+                        {{ $currency }} {{ number_format($leftover, 2, '.', ',') }}
                     </span>
                 </div>
             </div>
         </div>
+
 
         <!-- Budget Exceeded Warning -->
         @if ($leftover < 0)
@@ -163,7 +166,7 @@
                 <input type="hidden" name="date" id="selectedDate">
             </div>
             <div class="d-flex justify-content-center mt-2">
-                <button type="submit" class="btn btn-outline-primary me-2">Create Day Plan</button>
+                <button type="submit" class="btn btn-outline-primary me-2">Edit Day Plan</button>
                 <button type="button" class="btn btn-outline-secondary me-2" data-bs-toggle="modal" data-bs-target="#breakdownModal">Show Breakdown</button>
                 <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#editTripModal">Edit Trip Details</button>
             </div>
@@ -171,52 +174,59 @@
     </form>
 
 
-    <div class="d-flex justify-content-center">
+    <div class="d-flex justify-content-center mt-3">
         <div class="btn-group">
             <!-- Save as Final (Ongoing) -->
-            <form action="{{ route('trip.updateStatus', ['trip' => $trip_id, 'status' => 'ongoing']) }}" method="POST" style="display:inline;">
+            <form action="{{ route('trip.updateStatus', ['trip' => $trip_id, 'status' => 'ongoing']) }}" method="POST" style="margin-right: 10px;">
                 @csrf
-                <button type="submit" class="btn btn-primary">Save as Final</button>
+                <button type="submit" class="btn btn-gradient btn-sm rounded shadow-sm" style="background: linear-gradient(90deg, #4CAF50 0%, #81C784 100%); border: none;">
+                    <i class="fas fa-play me-1"></i> Finalize Trip
+                </button>
             </form>
 
             <!-- Dropdown button for other actions -->
-            <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-                <span class="visually-hidden">Toggle Dropdown</span>
-            </button>
+            <div class="dropdown">
+                <button type="button" class="btn btn-light dropdown-toggle btn-sm rounded shadow-sm" data-bs-toggle="dropdown" aria-expanded="false" id="actionDropdown" style="border: 1px solid #dee2e6;">
+                    <i class="fas fa-ellipsis-v me-1"></i> More Actions
+                </button>
 
-            <ul class="dropdown-menu">
-                <!-- Save as Draft (Pending) -->
-                <li>
-                    <form action="{{ route('trip.updateStatus', ['trip' => $trip_id, 'status' => 'pending']) }}" method="POST" style="display:inline;">
-                        @csrf
-                        <button type="submit" class="dropdown-item">Save as Draft</button>
-                    </form>
-                </li>
-
-                <!-- Only show End Trip (Finished) if status is not null -->
-                @if($tripStatus !== null)
+                <ul class="dropdown-menu" aria-labelledby="actionDropdown" style="min-width: 200px;">
+                    <!-- Save as Draft (Pending) -->
                     <li>
-                        <form action="{{ route('trip.updateStatus', ['trip' => $trip_id, 'status' => 'finished']) }}" method="POST" style="display:inline;">
+                        <form action="{{ route('trip.updateStatus', ['trip' => $trip_id, 'status' => 'pending']) }}" method="POST" style="margin: 0;">
                             @csrf
-                            <button type="submit" class="dropdown-item">End Trip</button>
+                            <button type="submit" class="dropdown-item d-flex align-items-center">
+                                <i class="fas fa-file-alt text-secondary me-2"></i>
+                                Save as Draft
+                            </button>
                         </form>
                     </li>
 
-                    <!-- Additional actions (without status updates) -->
-                    <li><a class="dropdown-item" href="#">Duplicate Trip</a></li>
-                    <li><a class="dropdown-item" href="#" data-toggle="modal" data-target="#shareModal" data-trip-id="{{ $trip->id }}">Share Trip</a></li>
-                    <li><a class="dropdown-item" href="{{ route('trip.downloadICS', ['itineraryId' => $itinerary->id]) }}">Create Reminder</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">Delete Trip</a></li>
-                @endif
-            </ul>
+                    <!-- Only show End Trip (Finished) if status is not null -->
+                    @if($tripStatus !== null)
+                        <li>
+                            <form action="{{ route('trip.updateStatus', ['trip' => $trip_id, 'status' => 'finished']) }}" method="POST" style="margin: 0;">
+                                @csrf
+                                <button type="submit" class="dropdown-item d-flex align-items-center">
+                                    <i class="fas fa-stop-circle text-danger me-2"></i>
+                                    End Trip
+                                </button>
+                            </form>
+                        </li>
+
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item d-flex align-items-center" href="#"><i class="fas fa-copy text-primary me-2"></i> Duplicate Trip</a></li>
+                        <li><a class="dropdown-item d-flex align-items-center" href="#" data-toggle="modal" data-target="#shareModal" data-trip-id="{{ $trip->id }}"><i class="fas fa-share-alt text-info me-2"></i> Share Trip</a></li>
+                        <li><a class="dropdown-item d-flex align-items-center" href="{{ route('trip.downloadICS', ['itineraryId' => $itinerary->id]) }}" download data-no-loader><i class="fas fa-calendar-plus text-success me-2"></i> Create Reminder</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger d-flex align-items-center" href="#" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"><i class="fas fa-trash-alt me-2"></i> Delete Trip</a></li>
+                    @endif
+                </ul>
+            </div>
         </div>
     </div>
-{{--
-    <!-- Example of share button in your trip page -->
-    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#shareModal" data-trip-id="{{ $trip->id }}">
-        Share Trip
-    </button> --}}
+
+
 
     <!-- Include the modal component -->
     @include('components.share-trip-modal', ['friends' => $friends])
@@ -344,7 +354,7 @@
                                         <hr>
                                         <div class="d-flex justify-content-between align-items-center">
                                             <span class="font-weight-bold text-black">Total Cost:</span>
-                                            <span class="h5 mb-0 text-black">{{ $dayGrandTotals[$key] ?? 'N/A' }} {{ $trip->currency }}</span>
+                                            <span class="h5 mb-0 text-black">{{ number_format($dayGrandTotals[$key] ?? 0, 2) !== 0 ? $trip->currency . ' ' . number_format($dayGrandTotals[$key] ?? 0, 2) : 'N/A' }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -468,6 +478,22 @@
     .text-success {
         color: #28a745 !important; /* Green for success messages */
     }
+
+    .dropdown-item {
+        padding: 0.5rem 1rem; /* Adjust padding for better spacing */
+    }
+    .btn {
+        margin: 0 5px; /* Margin for buttons */
+    }
+
+    .btn:hover {
+       opacity: 0.9;
+    }
+    .dropdown-item:hover {
+        background-color: #f7f7f7;
+    }
+
+
 
 
 </style>
