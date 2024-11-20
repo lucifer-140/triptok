@@ -217,7 +217,7 @@
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item d-flex align-items-center" href="#"><i class="fas fa-copy text-primary me-2"></i> Duplicate Trip</a></li>
                         <li><a class="dropdown-item d-flex align-items-center" href="#" data-toggle="modal" data-target="#shareModal" data-trip-id="{{ $trip->id }}"><i class="fas fa-share-alt text-info me-2"></i> Share Trip</a></li>
-                        <li><a class="dropdown-item d-flex align-items-center" href="{{ route('trip.downloadICS', ['itineraryId' => $itinerary->id]) }}"><i class="fas fa-calendar-plus text-success me-2"></i> Create Reminder</a></li>
+                        <li><a class="dropdown-item d-flex align-items-center" href="{{ route('trip.downloadICS', ['itineraryId' => $itinerary->id]) }}" download data-no-loader><i class="fas fa-calendar-plus text-success me-2"></i> Create Reminder</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item text-danger d-flex align-items-center" href="#" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"><i class="fas fa-trash-alt me-2"></i> Delete Trip</a></li>
                     @endif

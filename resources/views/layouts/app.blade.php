@@ -307,6 +307,42 @@
         });
     });
 
+    document.addEventListener('DOMContentLoaded', function () {
+        const loadingScreen = document.getElementById('loadingScreen');
+
+        // Show loading screen during form submissions
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function () {
+                loadingScreen.classList.add('active');
+            });
+        });
+
+        // Show loading screen when links are clicked
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function (e) {
+                const href = link.getAttribute('href');
+
+                // Skip anchor-only links and links with data-no-loader
+                if (href && href !== '#' && !link.hasAttribute('data-no-loader')) {
+                    loadingScreen.classList.add('active');
+                }
+            });
+        });
+
+        // Hide the loading screen once the page fully loads
+        window.addEventListener('load', function () {
+            loadingScreen.classList.remove('active');
+        });
+
+        // Handle browser back/forward button to hide the loading screen
+        window.addEventListener('pageshow', function (event) {
+            if (event.persisted) {
+                loadingScreen.classList.remove('active');
+            }
+        });
+    });
+
+
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/service-worker.js')
         .then(function(registration) {

@@ -80,7 +80,7 @@
                 <a href="#" class="btn btn-success btn-lg flex-fill"  data-toggle="modal" data-target="#shareModal" data-trip-id="{{ $trip->id }}">
                     <i class="bi bi-share"></i> Share
                 </a>
-                <a href="{{ route('trip.downloadICS', ['itineraryId' => $itinerary->id]) }}" class="btn btn-warning btn-lg flex-fill" style="color: white">
+                <a href="{{ route('trip.downloadICS', ['itineraryId' => $itinerary->id]) }}" class="btn btn-warning btn-lg flex-fill" style="color: white" download data-no-loader>
                     <i class="bi bi-bell"></i> Reminder
                 </a>
                 <a href="#" class="btn btn-danger btn-lg flex-fill" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">
