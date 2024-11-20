@@ -165,6 +165,10 @@
                             <div class="error-message">{{ $errors->first('password') }}</div>
                         @endif
                     </div>
+                    <div class="mb-3 show-password-container">
+                        <input type="checkbox" id="showPassword">
+                        <label for="showPassword">Show Password</label>
+                    </div>
                     <button type="submit" class="btn btn-primary w-100">Sign In</button>
                 </form>
 
@@ -185,6 +189,27 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            const signinForm = document.getElementById('signinForm');
+            const loadingScreen = document.getElementById('loadingScreen');
+
+            signinForm.addEventListener('submit', function () {
+                // Show the loading screen
+                loadingScreen.style.display = 'flex';
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            const showPasswordCheckbox = document.getElementById('showPassword');
+            const passwordInput = document.getElementById('password');
+
+            // Toggle the password visibility when the checkbox is clicked
+            showPasswordCheckbox.addEventListener('change', function () {
+                if (showPasswordCheckbox.checked) {
+                    passwordInput.type = 'text';  // Show password
+                } else {
+                    passwordInput.type = 'password';  // Hide password
+                }
+            });
+
             const signinForm = document.getElementById('signinForm');
             const loadingScreen = document.getElementById('loadingScreen');
 

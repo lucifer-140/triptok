@@ -187,6 +187,12 @@
                         <label for="confirm_password" class="form-label required">Confirm Password</label>
                         <input type="password" class="form-control" id="confirm_password" name="password_confirmation" required>
                     </div>
+
+                    <div class="mb-3 show-password-container">
+                        <input type="checkbox" id="showPassword">
+                        <label for="showPassword">Show Password</label>
+                    </div>
+
                     <button type="submit" class="btn btn-success w-100">Sign Up</button>
                 </form>
 
@@ -203,6 +209,30 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            const signupForm = document.getElementById('signupForm');
+            const loadingScreen = document.getElementById('loadingScreen');
+
+            signupForm.addEventListener('submit', function () {
+                // Show the loading screen when the form is submitted
+                loadingScreen.style.display = 'flex';
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            const showPasswordCheckbox = document.getElementById('showPassword');
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirm_password');
+
+            // Toggle the password visibility when the checkbox is clicked
+            showPasswordCheckbox.addEventListener('change', function () {
+                if (showPasswordCheckbox.checked) {
+                    passwordInput.type = 'text';  // Show password
+                    confirmPasswordInput.type = 'text'; // Show confirm password
+                } else {
+                    passwordInput.type = 'password';  // Hide password
+                    confirmPasswordInput.type = 'password'; // Hide confirm password
+                }
+            });
+
             const signupForm = document.getElementById('signupForm');
             const loadingScreen = document.getElementById('loadingScreen');
 
