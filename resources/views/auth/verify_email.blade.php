@@ -6,6 +6,7 @@
     <title>Email Verification - TripTock</title>
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -52,9 +53,62 @@
                 margin-top: 20px;
             }
         }
+
+        /* Loading Screen */
+        #loadingScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            backdrop-filter: blur(10px);
+        }
+
+        .dots {
+            display: inline-block;
+            animation: blink 1.5s infinite steps(1);
+        }
+
+        .dots:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .dots:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        .dots:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        @keyframes blink {
+            0%, 100% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
     </style>
 </head>
 <body class="bg-light">
+    <!-- Loading Screen -->
+    <div id="loadingScreen" style="display: none;">
+        <div class="d-flex flex-column align-items-center">
+            <img src="{{ asset('assets/logo.png') }}" alt="Logo" class="logo-img mt-3" style="max-height: 100px; width: auto;">
+            <p class="mt-3 loading-text" style="font-size: 1.2rem; color: #333;">
+                Loading, please wait<span class="dots">.</span><span class="dots">.</span><span class="dots">.</span>
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
     <div class="container d-flex justify-content-center align-items-center min-vh-100">
         <div class="card shadow" style="width: 400px;">
             <div class="card-header text-center">
@@ -72,7 +126,7 @@
                     </div>
                 @endif
 
-                <form action="{{ route('verify-email.post') }}" method="POST">
+                <form action="{{ route('verify-email.post') }}" method="POST" onsubmit="showLoadingScreen()">
                     @csrf
                     <div class="form-group mb-3">
                         <label for="email" class="form-label">Email Address</label>
@@ -92,6 +146,11 @@
         </div>
     </div>
 
+    <script>
+        function showLoadingScreen() {
+            document.getElementById('loadingScreen').style.display = 'flex';
+        }
+    </script>
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
 </body>
 </html>

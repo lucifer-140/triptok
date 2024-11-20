@@ -13,10 +13,12 @@
             color: red;
             font-size: 0.9em;
         }
+
         .required:after {
             content: ' *';
             color: red;
         }
+
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #f8f9fa;
@@ -61,6 +63,27 @@
             margin-top: 60px;
         }
 
+        /* Loading screen styles */
+        #loadingScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            backdrop-filter: blur(10px);
+        }
+
+        .loading-text {
+            font-size: 1.2rem;
+            color: #333;
+        }
+
         @media (max-width: 768px) {
             .container {
                 margin-top: 20px;
@@ -74,9 +97,48 @@
                 font-size: 1.5rem;
             }
         }
+
+        .dots {
+            display: inline-block;
+            animation: blink 1.5s infinite steps(1);
+        }
+
+        .dots:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .dots:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        .dots:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        /* Create the blinking dots animation */
+        @keyframes blink {
+            0%, 100% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
     </style>
 </head>
 <body class="bg-light">
+    <!-- Loading Screen -->
+    <div id="loadingScreen">
+        <div class="d-flex flex-column align-items-center">
+            <img src="{{ asset('assets/logo.png') }}" alt="Logo" class="logo-img mt-3" style="max-height: 100px; width: auto;">
+            <p class="mt-3 loading-text">
+                Loading, please wait<span class="dots">.</span><span class="dots">.</span><span class="dots">.</span>
+            </p>
+        </div>
+    </div>
+
+
     <div class="container d-flex justify-content-center align-items-center min-vh-100">
         <div class="card shadow" style="width: 400px;">
             <div class="card-body">
@@ -111,9 +173,6 @@
                         <label for="phone" class="form-label required">Phone Number</label>
                         <input type="text" class="form-control" id="phone" name="phone" maxlength="15"
                                value="{{ old('phone') }}" required>
-                        @if ($errors->has('phone'))
-                            <div class="error-message">{{ $errors->first('phone') }}</div>
-                        @endif
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label required">Email</label>
@@ -123,9 +182,6 @@
                     <div class="mb-3">
                         <label for="password" class="form-label required">Password</label>
                         <input type="password" class="form-control" id="password" name="password" minlength="8" required>
-                        @if ($errors->has('password'))
-                            <div class="error-message">{{ $errors->first('password') }}</div>
-                        @endif
                     </div>
                     <div class="mb-3">
                         <label for="confirm_password" class="form-label required">Confirm Password</label>
@@ -147,41 +203,12 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const phoneInput = document.getElementById('phone');
-            const passwordInput = document.getElementById('password');
-            const confirmPasswordInput = document.getElementById('confirm_password');
+            const signupForm = document.getElementById('signupForm');
+            const loadingScreen = document.getElementById('loadingScreen');
 
-            phoneInput.addEventListener('input', function () {
-                const phoneError = document.getElementById('phoneError');
-                if (phoneInput.value.length > 15) {
-                    phoneError.textContent = "Phone number can't be longer than 15 characters.";
-                } else {
-                    phoneError.textContent = "";
-                }
-            });
-
-            passwordInput.addEventListener('input', function () {
-                const passwordError = document.getElementById('passwordError');
-                if (passwordInput.value.length < 8) {
-                    passwordError.textContent = "Password must be at least 8 characters long.";
-                } else {
-                    passwordError.textContent = "";
-                }
-            });
-
-            confirmPasswordInput.addEventListener('input', function () {
-                const confirmPasswordError = document.getElementById('confirmPasswordError');
-                if (confirmPasswordInput.value !== passwordInput.value) {
-                    confirmPasswordError.textContent = "Passwords do not match.";
-                } else {
-                    confirmPasswordError.textContent = "";
-                }
-            });
-
-            document.getElementById('signupForm').addEventListener('submit', function (e) {
-                if (phoneInput.value.length > 15 || passwordInput.value.length < 8 || confirmPasswordInput.value !== passwordInput.value) {
-                    e.preventDefault();
-                }
+            signupForm.addEventListener('submit', function () {
+                // Show the loading screen when the form is submitted
+                loadingScreen.style.display = 'flex';
             });
         });
     </script>
