@@ -354,7 +354,7 @@
                                         <hr>
                                         <div class="d-flex justify-content-between align-items-center">
                                             <span class="font-weight-bold text-black">Total Cost:</span>
-                                            <span class="h5 mb-0 text-black">{{ $dayGrandTotals[$key] ?? 'N/A' }} {{ $trip->currency }}</span>
+                                            <span class="h5 mb-0 text-black">{{ number_format($dayGrandTotals[$key] ?? 0, 2) !== 0 ? $trip->currency . ' ' . number_format($dayGrandTotals[$key] ?? 0, 2) : 'N/A' }}</span>
                                         </div>
                                     </div>
                                 </div>
