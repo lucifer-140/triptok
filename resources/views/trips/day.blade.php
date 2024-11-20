@@ -60,8 +60,9 @@
                                         @break
                                     @case('Accommodation')
                                         <th>Accommodation Name</th>
-                                        <th>Check-In</th>
-                                        <th>Check-Out</th>
+                                        <th>Check-In Date</th>
+                                        <th>Check-Out Date</th>
+                                        <th>Check-Out Time</th>
                                         <th>Cost</th>
                                         <th>Action</th>
                                         @break
@@ -104,6 +105,7 @@
                                                 <td>{{ $item->name }}</td>
                                                 <td>{{ $item->check_in }}</td>
                                                 <td>{{ $item->check_out }}</td>
+                                                <td>{{ $item->check_out_time }}</td>
                                                 <td>{{ $item->cost }} {{ $currency }}</td>
                                                 @break
                                             @case('Flights')

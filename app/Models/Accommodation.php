@@ -14,6 +14,7 @@ class Accommodation extends Model
         'name',
         'check_in',
         'check_out',
+        'check_out_time',
         'cost',
     ];
 
