@@ -16,6 +16,8 @@ use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\FriendController;
 use App\Http\Controllers\TripShareController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\TravelController;
+
 
 
 
@@ -133,6 +135,16 @@ Route::prefix('trip')->middleware('auth')->group(function () {
 
 
 });
+
+
+Route::prefix('travel')->group(function () {
+
+    Route::middleware('auth')->group(function () {
+        Route::get('/travel-guide', [TravelController::class, 'index'])->name('travel.guide');
+    });
+});
+
+
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 

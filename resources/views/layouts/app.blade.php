@@ -206,7 +206,7 @@
                 <div class="d-flex align-items-center gap-3">
                     <a href="{{ url('/user/home') }}" class="link-body-emphasis text-decoration-none">Home</a>
                     <a href="{{ url('/trip/list') }}" class="link-body-emphasis text-decoration-none">Trips</a>
-                    <a href="#" class="link-body-emphasis text-decoration-none">Destinations</a>
+                    <a href="{{ url('/travel/travel-guide') }}" class="link-body-emphasis text-decoration-none">Travel Guide</a>
                     <a href="{{ url('/user/notifications') }}" class="notification link-body-emphasis text-decoration-none" aria-label="Notifications">
                         <i class="bi bi-bell notification-icon"></i>
                         @if ($receivedRequestsCount > 0 || $sharedTripsCount > 0)
@@ -215,7 +215,11 @@
                     </a>
                     <div class="dropdown">
                         <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="{{ Auth::user()->profile_image ? Storage::url('public/' . Auth::user()->profile_image) : asset('assets/blankprofilepic.jpeg') }}" alt="Profile Picture" class="rounded-circle profile-img">
+                            <img
+                                src="{{ Auth::user()->profile_image ? Storage::url('public/' . Auth::user()->profile_image) : asset('assets/blankprofilepic.jpeg') }}"
+                                alt="Profile Picture"
+                                class="rounded-circle"
+                                style="width: 50px; height: 50px; object-fit: cover; border: 2px solid #a0a0a0;">
                         </a>
                         <ul class="dropdown-menu text-small shadow">
                             <li><span class="dropdown-item text-muted">Hello, {{ Auth::user()->first_name }}</span></li>
@@ -243,7 +247,7 @@
                         <!-- Navigation Links for Mobile -->
                         <li><a class="dropdown-item" href="{{ url('/user/home') }}" aria-current="page">Home</a></li>
                         <li><a class="dropdown-item" href="{{ url('/trip/list') }}">Trips</a></li>
-                        <li><a class="dropdown-item" href="#">Destinations</a></li>
+                        <li><a class="dropdown-item" href="{{ url('/travel/travel-guide') }}">Travel Guide</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <!-- Profile and Sign Out Options (Visible Only on Mobile) -->
                         <li><a class="dropdown-item" href="{{ url('/user/profile') }}">Profile</a></li>
