@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Day;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class DayController extends Controller
@@ -67,9 +68,14 @@ class DayController extends Controller
         $day->grand_total = $grandTotal;
         $day->save();
 
+        // Retrieve start and end dates of the trip if the trip exists
+        $startDate = Carbon::parse($trip->tripStartDate);
+        $endDate = Carbon::parse($trip->tripEndDate);
+
         // Pass the variables to the view
-        return view('trips.day', compact('day', 'itinerary', 'trip', 'currency', 'activities', 'accommodations', 'flights', 'transports', 'grandTotal'));
+        return view('trips.day', compact('day', 'itinerary', 'trip', 'currency', 'activities', 'accommodations', 'flights', 'transports', 'grandTotal', 'startDate', 'endDate'));
     }
+
 
 
 

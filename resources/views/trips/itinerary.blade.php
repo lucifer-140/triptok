@@ -177,9 +177,9 @@
     <div class="d-flex justify-content-center mt-3">
         <div class="btn-group">
             <!-- Save as Final (Ongoing) -->
-            <form action="{{ route('trip.updateStatus', ['trip' => $trip_id, 'status' => 'ongoing']) }}" method="POST" style="margin-right: 10px;">
+            <form action="{{ route('trip.updateStatus', ['trip' => $trip_id, 'status' => 'ongoing']) }}" method="POST" style="margin-right: 10px;" id="finalizeTripForm">
                 @csrf
-                <button type="submit" class="btn btn-gradient btn-sm rounded shadow-sm" style="background: linear-gradient(90deg, #4CAF50 0%, #81C784 100%); border: none;">
+                <button type="button" class="btn btn-gradient btn-sm rounded shadow-sm" style="background: linear-gradient(90deg, #4CAF50 0%, #81C784 100%); border: none;" id="finalizeButton">
                     <i class="fas fa-play me-1"></i> Finalize Trip
                 </button>
             </form>
@@ -226,6 +226,34 @@
         </div>
     </div>
 
+    <!-- Modal for Finalizing Trip -->
+    <div class="modal fade" id="finalizeModal" tabindex="-1" aria-labelledby="finalizeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 900px; max-height: 90vh;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="finalizeModalLabel">Finalize Trip Confirmation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to finalize the trip?</p>
+                    <p>Please make sure you have at least one activity scheduled for each day of your trip. If not, you can save it as a draft.</p>
+
+                    <div class="d-flex justify-content-between">
+                        <!-- Button to save as draft -->
+                        <form action="{{ route('trip.updateStatus', ['trip' => $trip_id, 'status' => 'pending']) }}" method="POST" style="margin: 0;">
+                            @csrf
+                            <button type="submit" class="btn btn-secondary btn-sm d-flex align-items-center">
+                                <i class="fas fa-file-alt me-2"></i> Save as Draft
+                            </button>
+                        </form>
+
+                        <!-- Button to confirm finalizing -->
+                        <button type="button" class="btn btn-primary btn-sm" id="confirmFinalize">Finalize Trip</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <!-- Include the modal component -->
@@ -519,7 +547,31 @@
         var modal = $(this);
         modal.find('#trip_id').val(tripId); // Set the trip_id input field with the trip ID
     });
+    document.getElementById('finalizeButton').addEventListener('click', function() {
+        // Show the modal when the "Finalize Trip" button is clicked
+        var myModal = new bootstrap.Modal(document.getElementById('finalizeModal'), {
+            keyboard: false
+        });
+        myModal.show();
+    });
 
+    document.getElementById('confirmFinalize').addEventListener('click', function() {
+        // Check if each day has at least one activity before finalizing
+        var hasActivities = true;  // This should be dynamically set based on the trip's schedule
+
+        // Example check (you should replace this with your actual logic)
+        if (!hasActivities) {
+            alert("Please make sure you have at least one activity scheduled for each day of your trip.");
+            return; // Prevent form submission if there are no activities
+        }
+
+        // If all checks pass, submit the form
+        document.getElementById('finalizeTripForm').submit();
+
+        // Close the modal after submission
+        var myModal = bootstrap.Modal.getInstance(document.getElementById('finalizeModal'));
+        myModal.hide();
+    });
     // Initialize scrollspy
     const dataSpyList = document.querySelector('#dayTabs');
                     const scrollSpy = new bootstrap.ScrollSpy(document.body, {
