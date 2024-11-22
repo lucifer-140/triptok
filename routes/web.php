@@ -138,11 +138,11 @@ Route::prefix('trip')->middleware('auth')->group(function () {
 
 
 Route::prefix('travel')->group(function () {
-
     Route::middleware('auth')->group(function () {
-        Route::get('/travel-guide', [TravelController::class, 'index'])->name('travel.guide');
+        Route::get('/travel-guide', [TravelController::class, 'index'])->name('travel.index');
     });
 });
+
 
 
 
