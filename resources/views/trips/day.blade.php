@@ -7,19 +7,23 @@
 <div class="container mt-5">
 
     <!-- Compact Header Section -->
-    <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="d-flex justify-content-between align-items-center mb-4">
         <a href="{{ route('itinerary.create', $itinerary->trip_id) }}" class="btn btn-secondary btn-sm">
             <i class="bi bi-arrow-left"></i>
         </a>
     </div>
-    <h2 class="h4 text-center">Day Plan for Day {{ $day->day }}</h2>
 
-    <p class="text-center mb-4">Plan your adventure day by day with details of activities, transport, accommodation, and more.</p>
+    <h2 class="h4 text-center text-dark mb-3">Day Plan for Day {{ $day->day }}</h2>
 
-    <div class="mb-4 border rounded p-3 bg-light">
-        <p class="mb-1">Date: <strong>{{ \Carbon\Carbon::parse($day->date)->format('Y-m-d') }}</strong></p>
-        <div class="mb-4 border-top pt-4">
-            <h5 class="text-center fw-bold">Grand Total: {{ $grandTotal }} {{ $currency }}</h5>
+    <p class="text-center mb-5 text-muted">Plan your adventure day by day with details of activities, transport, accommodation, and more.</p>
+
+    <div class="mb-4 border rounded-3 p-4 bg-light shadow-sm">
+        <p class="mb-2 text-muted">Date: <strong class="text-dark">{{ \Carbon\Carbon::parse($day->date)->format('l, F j, Y') }}</strong></p>
+
+        <div class="mt-4 border-top pt-3">
+            <h5 class="text-center fw-bold text-dark" style="font-size: 1.5rem;">
+                Grand Total: <span class="text-success">{{ $currency }} {{ number_format($grandTotal, 2) }}</span>
+            </h5>
         </div>
     </div>
 
