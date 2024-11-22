@@ -113,7 +113,15 @@
         overflow: hidden;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         transition: transform 0.3s ease, box-shadow 0.3s ease;
+        height: 100%;
     }
+
+    .destination-card img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+    }
+
     .destination-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
@@ -131,14 +139,26 @@
 
     .explore-btn {
         margin-top: 15px;
+        color: #246351;
+        border-color: #246351;
     }
 
-    /* Feature Cards */
+    .explore-btn:hover {
+        background-color: #246351;
+        color: white;
+    }
+
+    /* Plan Your Trip Features */
     .feature-card {
         background-color: #f8f9fa;
         border-radius: 8px;
         padding: 20px;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
+        height: 300px; /* Set a consistent height for feature cards */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        text-align: center;
     }
 
     .feature-card:hover {
@@ -148,7 +168,12 @@
 
     .feature-card .icon {
         font-size: 2.5rem;
-        color: #007bff;
+        color: #246351;
+    }
+
+    .feature-card h4 {
+        margin-top: 20px;
+        font-weight: bold;
     }
 
     /* Inspiration Cards */
@@ -156,6 +181,19 @@
         border-radius: 10px;
         overflow: hidden;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        height: 100%;
+    }
+
+    .inspiration-card img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+    }
+
+    .inspiration-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
     }
 
     .inspiration-info {
@@ -168,4 +206,43 @@
         font-size: 1.25rem;
         font-weight: 700;
     }
+
+    .inspiration-info p {
+        font-size: 1rem;
+        margin-bottom: 20px;
+    }
+
+    .btn-outline-primary {
+        border-color: #246351;
+        color: #246351;
+    }
+
+    .btn-outline-primary:hover {
+        background-color: #246351;
+        color: #fff;
+    }
+
+    /* Consistent image size across the sections */
+    .destination-card, .inspiration-card {
+        height: 100%;
+    }
+
+    /* Ensure all feature cards have consistent height */
+    .feature-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 300px; /* Keeps feature card size consistent */
+    }
+
+    .feature-card .icon {
+        font-size: 3rem;
+        color: #246351;
+    }
+
+    .feature-card h4 {
+        margin-top: 20px;
+        font-weight: bold;
+    }
+
 </style>
