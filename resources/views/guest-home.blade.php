@@ -54,23 +54,35 @@
     </div>
 
     <!-- Testimonials Section -->
-    <div class="container my-5 testimonials-section">
+    <div id="testimonialsCarousel" class="carousel slide my-5 testimonials-section" data-bs-ride="carousel" data-bs-interval="2000">
         <h3 class="section-title text-center mb-4">What Our Users Say</h3>
-        <div class="row">
-            @foreach ([
+        <div class="carousel-inner">
+            @foreach (array_chunk([
                 ['quote' => 'TripTock made planning my trip so much easier! I loved the ability to create a custom itinerary.', 'author' => 'John Doe'],
                 ['quote' => 'I was amazed by how many destinations and activities TripTock had to offer.', 'author' => 'Jane Smith'],
                 ['quote' => 'TripTock is the perfect tool for stress-free vacation planning!', 'author' => 'David Lee'],
-            ] as $testimonial)
-                <div class="col-md-4 mb-4">
-                    <div class="testimonial-card p-3">
-                        <p>"{{ $testimonial['quote'] }}"</p>
-                        <p class="testimonial-author">- {{ $testimonial['author'] }}</p>
+                ['quote' => 'Planning trips with TripTock saved me so much time.', 'author' => 'Alice Brown'],
+                ['quote' => 'Highly recommend TripTock for any traveler!', 'author' => 'Michael Green'],
+                ['quote' => 'TripTock helped us plan a family vacation with ease.', 'author' => 'Emily White']
+            ], 3) as $index => $testimonialGroup)
+                <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                    <div class="row">
+                        @foreach ($testimonialGroup as $testimonial)
+                            <div class="col-md-4">
+                                <div class="testimonial-card p-4 text-center mx-auto">
+                                    <p>"{{ $testimonial['quote'] }}"</p>
+                                    <p class="testimonial-author">- {{ $testimonial['author'] }}</p>
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
             @endforeach
         </div>
     </div>
+
+
+
 
     <!-- Call to Action -->
     <div class="container-fluid cta-section text-white">
@@ -82,104 +94,173 @@
 @endsection
 
 <style>
-    /* Hero Section */
-    .hero-section {
-        background-image: url("{{ asset('assets/hero-banner.jpg') }}");
-        background-size: cover;
-        background-position: center;
-        min-height: 400px;
-        display: flex;
-        align-items: center;
-    }
+/* Hero Section */
+.hero-section {
+    background-image: url("{{ asset('assets/hero-banner.jpg') }}");
+    background-size: cover;
+    background-position: center;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
 
-    .hero-content {
-        padding: 3rem;
-        text-align: center;
+.hero-content {
+    padding: 3rem;
+    color: #fff;
+}
+
+.hero-text-wrapper h1 {
+    font-size: 3.5rem;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.hero-text-wrapper .welcome-subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.create-trip-btn {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    padding: 12px 24px;
+    background-color: #246351;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.create-trip-btn:hover {
+    background-color: #1d5244;
+    transform: translateY(-3px);
+}
+
+/* Destination Cards */
+.destination-card {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.destination-card img {
+    height: 250px;
+    object-fit: cover;
+    width: 100%; /* Ensure the image covers the card width */
+}
+
+.destination-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+}
+
+.destination-info {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 15px;
+}
+
+.destination-name {
+    font-weight: 600;
+}
+
+/* Features Section */
+.feature-card {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.feature-card .icon {
+    font-size: 3rem;
+    color: #246351;
+}
+
+.feature-card h4 {
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+/* Testimonials Section */
+.testimonial-card {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    height: 250px; /* Fixed height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 10px; /* Add some spacing between cards */
+}
+
+.carousel-inner .row {
+    justify-content: center; /* Center the row content */
+}
+
+.testimonial-author {
+    font-style: italic;
+    margin-top: 1rem;
+    color: #555;
+}
+
+.carousel-inner {
+    text-align: center;
+    width: 100%;
+}
+
+.carousel-item {
+    transition: transform 0.5s ease-in-out;
+}
+
+/* Responsiveness */
+@media (min-width: 768px) {
+    .testimonial-card {
+        max-width: 800px; /* Increase width for wider screens */
+        height: 300px; /* Adjust height for better proportions */
     }
 
     .hero-text-wrapper h1 {
-        font-size: 3.5rem;
-        font-weight: 600;
+        font-size: 4.5rem;
     }
 
     .hero-text-wrapper .welcome-subtitle {
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
+        font-size: 1.75rem;
     }
+}
 
-    .create-trip-btn {
-        margin-top: 20px;
-        font-size: 1.2rem;
-        padding: 12px 24px;
-    }
-
-    /* Destination Cards */
-    .destination-card {
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .destination-card img {
-        height: 250px;
-        object-fit: cover;
-    }
-
-    .destination-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
-    }
-
-    .destination-info {
-        background-color: rgba(255, 255, 255, 0.9);
-        padding: 15px;
-    }
-
-    .destination-name {
-        font-weight: 600;
-    }
-
-    /* Features Section */
-    .feature-card {
-        background-color: #f8f9fa;
-        border-radius: 8px;
-        padding: 20px;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .feature-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .feature-card .icon {
-        font-size: 3rem;
-        color: #246351;
-    }
-
-    .feature-card h4 {
-        margin-top: 20px;
-        font-weight: bold;
-    }
-
-    /* Testimonials Section */
+@media (min-width: 1200px) {
     .testimonial-card {
-        background-color: #f8f9fa;
-        border-radius: 8px;
-        padding: 20px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        max-width: 900px; /* Larger width for very wide screens */
+        height: 350px; /* Adjust height accordingly */
     }
 
-    .testimonial-author {
-        font-style: italic;
-        text-align: right;
-        margin-top: 10px;
+    .hero-section {
+        min-height: 500px;
     }
 
-    /* CTA Section */
-    .cta-section {
-        background-color: #f8f9fa;
-        border-radius: 8px;
+    .hero-text-wrapper h1 {
+        font-size: 5rem;
     }
+}
+
+/* CTA Section */
+.cta-section {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
 </style>

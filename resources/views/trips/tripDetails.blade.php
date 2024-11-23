@@ -72,7 +72,7 @@
             </div>
         </div>
 
-        <div class="fixed-bottom d-flex justify-content-center p-3">
+        <div class="d-flex justify-content-center p-3">
             <div class="btn-group w-100">
                 <a href="{{ route('itinerary.create', $trip->id) }}" class="btn btn-primary btn-lg flex-fill">
                     <i class="bi bi-pencil"></i> Edit
