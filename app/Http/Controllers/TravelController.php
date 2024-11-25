@@ -26,4 +26,13 @@ class TravelController extends Controller
         // Return the view with the destinations
         return view('travel.travel-guide', compact('destinations'));
     }
+
+    public function show($id)
+    {
+        // Fetch the destination by ID
+        $destination = Destination::findOrFail($id);  // Find by ID
+
+        // Return the destination detail view with the data
+        return view('travel.destination-detail', compact('destination'));
+    }
 }

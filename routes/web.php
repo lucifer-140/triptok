@@ -122,6 +122,7 @@ Route::prefix('trip')->middleware('auth')->group(function () {
 // Travel routes
 Route::prefix('travel')->middleware('auth')->group(function () {
     Route::get('/travel-guide', [TravelController::class, 'index'])->name('travel.index');
+    Route::get('destination/{id}', [TravelController::class, 'show'])->name('destination.show');
 });
 
 // Authentication routes

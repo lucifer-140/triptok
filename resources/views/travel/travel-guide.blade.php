@@ -36,7 +36,7 @@
                         <p class="destination-description mb-3">{{ $destination->description }}</p>
 
                         <!-- Explore Button -->
-                        <a href="#" class="btn btn-outline-primary explore-btn">Explore</a>
+                        <a href="{{ route('destination.show', $destination->id) }}" class="btn btn-outline-primary explore-btn">Explore</a>
                     </div>
                 </div>
             </div>
