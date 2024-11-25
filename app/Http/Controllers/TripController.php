@@ -82,32 +82,53 @@ class TripController extends Controller
 
     public function updateStatus($trip_id, $status)
     {
+        \Log::debug('Fetching trip with ID: ' . $trip_id);
         $trip = Trip::findOrFail($trip_id);
+        \Log::debug('Trip retrieved: ', $trip->toArray());
+
         $validStatuses = ['ongoing', 'pending', 'finished'];
 
+        \Log::debug('Validating status: ' . $status);
         // Step 1: Validate the provided status
         if (!in_array($status, $validStatuses)) {
             return redirect()->back()->with('error', 'Invalid status.');
         }
 
         // Step 2: Ensure the trip has an associated itinerary
+        \Log::debug('Checking if trip has an itinerary');
         $itinerary = $trip->itineraries->first();  // Assumes one itinerary per trip
         if (!$itinerary) {
+            \Log::debug('No itinerary found for trip');
             return redirect()->back()->with('error', 'No itinerary found for this trip.');
         }
+        \Log::debug('Itinerary retrieved: ', $itinerary->toArray());
 
         // Step 3: Handle 'finished' status requirements
+        \Log::debug('Checking if trip can end with status "finished"');
         if ($status === 'finished' && (!$trip->status || $trip->status->status === 'pending')) {
+            \Log::debug('Cannot end trip: Status is either pending or not set');
             return redirect()->back()->with('error', 'Trip cannot end while status is pending or not set.');
         }
 
         // Step 4: For 'ongoing' or 'finished' status, validate days and activities
         if (in_array($status, ['ongoing', 'finished'])) {
+            \Log::debug('Validating days and activities for status: ' . $status);
+
             $days = $itinerary->days->sortBy('day');
+            \Log::debug('Days: ', $days->toArray());
+
+            if ($days->isEmpty()) {
+                \Log::debug('No days found in itinerary');
+                return redirect()->back()->with('error', 'The itinerary must contain at least one day.');
+            }
+
             $totalDays = $itinerary->totalDays ?? $days->count(); // Fallback to days count if totalDays is null
+            \Log::debug('Total days: ' . $totalDays);
 
             // Ensure all days are present and sequential
             $missingDays = $this->getMissingDays($days, $totalDays);
+            \Log::debug('Missing days: ', $missingDays);
+
             if (!empty($missingDays)) {
                 return redirect()->back()->with('error', 'Missing day(s): ' . implode(', ', $missingDays) . '. All days must be present.');
             }
@@ -115,25 +136,31 @@ class TripController extends Controller
             // Verify each day has at least one activity
             foreach ($days as $day) {
                 if ($day->activities->isEmpty()) {
+                    \Log::debug('Day has no activities: ', $day->toArray());
                     return redirect()->back()->with('error', 'Each day must have at least one activity.');
                 }
             }
 
             // Ensure 'finished' status can only be set from 'ongoing'
             if ($status === 'finished' && $trip->status->status !== 'ongoing') {
+                \Log::debug('Cannot mark trip as finished: Status is not "ongoing"');
                 return redirect()->back()->with('error', 'Trip must be ongoing to mark it as finished.');
             }
         }
 
         // Step 5: Update or create the trip status
+        \Log::debug('Updating or creating trip status');
         TripStatus::updateOrCreate(
             ['trip_id' => $trip->id],
             ['status' => $status]
         );
+        \Log::debug('Trip status updated to: ' . $status);
 
         // Redirect back with success message
+        \Log::debug('Redirecting to trip list with success message');
         return redirect()->route('tripList')->with('success', 'Trip status updated to ' . ucfirst($status));
     }
+
 
     /**
      * Helper function to check for missing days in the itinerary.
@@ -320,7 +347,7 @@ class TripController extends Controller
         return redirect()->back()->with('success', 'Trip successfully shared with your friends!');
     }
 
-
+    
 
 
 }

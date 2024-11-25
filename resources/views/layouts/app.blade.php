@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -110,9 +110,65 @@
             display: none;
         }
 
+        /* Footer Styling */
+        footer {
+            background-color: #f8f9fa;
+            /* padding: 3rem 0; */
+            border-top: 1px solid #e0e0e0;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        footer .footer-logo {
+            width: 120px;
+            margin-bottom: 1rem;
+        }
+
+        footer .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        footer .footer-links li {
+            display: inline;
+            margin: 0 15px;
+        }
+
+        footer .footer-links a {
+            color: #6c757d;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer .footer-links a:hover {
+            color: #007bff;
+        }
+
+        footer .social-icons a {
+            margin: 0 10px;
+            color: #6c757d;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        footer .social-icons a:hover {
+            color: #007bff;
+        }
+
+        footer .footer-bottom {
+            text-align: center;
+            font-size: 0.8rem;
+            margin-top: 2rem;
+        }
+
         @media (max-width: 768px) {
             .page-heading {
                 font-size: 2rem;
+            }
+            footer .footer-links li {
+                display: block;
+                text-align: center;
+                margin-bottom: 10px;
             }
         }
 
@@ -206,7 +262,7 @@
                 <div class="d-flex align-items-center gap-3">
                     <a href="{{ url('/user/home') }}" class="link-body-emphasis text-decoration-none">Home</a>
                     <a href="{{ url('/trip/list') }}" class="link-body-emphasis text-decoration-none">Trips</a>
-                    <a href="#" class="link-body-emphasis text-decoration-none">Destinations</a>
+                    <a href="{{ url('/travel/travel-guide') }}" class="link-body-emphasis text-decoration-none">Travel Guide</a>
                     <a href="{{ url('/user/notifications') }}" class="notification link-body-emphasis text-decoration-none" aria-label="Notifications">
                         <i class="bi bi-bell notification-icon"></i>
                         @if ($receivedRequestsCount > 0 || $sharedTripsCount > 0)
@@ -215,7 +271,11 @@
                     </a>
                     <div class="dropdown">
                         <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="{{ Auth::user()->profile_image ? Storage::url('public/' . Auth::user()->profile_image) : asset('assets/blankprofilepic.jpeg') }}" alt="Profile Picture" class="rounded-circle profile-img">
+                            <img
+                                src="{{ Auth::user()->profile_image ? Storage::url('public/' . Auth::user()->profile_image) : asset('assets/blankprofilepic.jpeg') }}"
+                                alt="Profile Picture"
+                                class="rounded-circle"
+                                style="width: 50px; height: 50px; object-fit: cover; border: 2px solid #a0a0a0;">
                         </a>
                         <ul class="dropdown-menu text-small shadow">
                             <li><span class="dropdown-item text-muted">Hello, {{ Auth::user()->first_name }}</span></li>
@@ -223,7 +283,7 @@
                             <li><a class="dropdown-item" href="{{ url('/user/profile') }}">Profile</a></li>
                             <li><a class="dropdown-item" href="{{ url('/user/friends') }}">Friends</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Sign out</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" style="color: rgb(230, 0, 0)">Sign out</a></li>
                         </ul>
                     </div>
                 </div>
@@ -243,7 +303,7 @@
                         <!-- Navigation Links for Mobile -->
                         <li><a class="dropdown-item" href="{{ url('/user/home') }}" aria-current="page">Home</a></li>
                         <li><a class="dropdown-item" href="{{ url('/trip/list') }}">Trips</a></li>
-                        <li><a class="dropdown-item" href="#">Destinations</a></li>
+                        <li><a class="dropdown-item" href="{{ url('/travel/travel-guide') }}">Travel Guide</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <!-- Profile and Sign Out Options (Visible Only on Mobile) -->
                         <li><a class="dropdown-item" href="{{ url('/user/profile') }}">Profile</a></li>
@@ -260,7 +320,7 @@
                             </a>
                         </li>
 
-                        <li><a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Sign out</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" style="color: rgb(230, 0, 0)">Sign out</a></li>
                     </ul>
                 </div>
             </div>
@@ -273,6 +333,32 @@
 <div class="container mt-5">
     @yield('content')
 </div>
+
+<!-- Footer Section -->
+<footer>
+    <div class="container text-center">
+        <div>
+            <img src="{{ asset('assets/logo.png') }}" alt="Logo" class="footer-logo">
+        </div>
+        <div>
+            <ul class="footer-links">
+                <li><a href="{{ url('/about') }}" class="text-decoration-none text-muted">About Us</a></li>
+                <li><a href="{{ url('/contact') }}" class="text-decoration-none text-muted">Contact</a></li>
+                <li><a href="{{ url('/privacy-policy') }}" class="text-decoration-none text-muted">Privacy Policy</a></li>
+                <li><a href="{{ url('/terms-of-service') }}" class="text-decoration-none text-muted">Terms of Service</a></li>
+                <li><a href="{{ url('/help') }}" class="text-decoration-none text-muted">Help</a></li>
+            </ul>
+        </div>
+        <div class="social-icons">
+            <a href="#" target="_blank" class="bi bi-facebook"></a>
+            <a href="#" target="_blank" class="bi bi-twitter"></a>
+            <a href="#" target="_blank" class="bi bi-instagram"></a>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 TripTock.    All rights reserved.</p>
+        </div>
+    </div>
+</footer>
 
 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
     @csrf

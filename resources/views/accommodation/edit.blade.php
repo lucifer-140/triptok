@@ -34,12 +34,12 @@
         <div class="form-group">
             <label for="check_out">Check-Out Date</label>
             <input type="date" name="check_out" id="check_out" class="form-control" value="{{ old('check_out', $accommodation->check_out) }}" required>
-            <small id="check_out_error" class="form-text text-danger" style="display: none;">Check-Out Date must be after Check-In Date.</small>
+            <small id="check_out_error" class="form-text text-danger" style="display: none;">Check-Out Date must be after Check-In Date and within trip's date range.</small>
         </div>
 
         <div class="form-group">
             <label for="check_out_time">Check-Out Time</label>
-            <input type="time" name="check_out_time" id="check_out_time" class="form-control" value="{{ old('check_out_time', $accommodation->check_out_time) }}" required>
+            <input type="time" name="check_out_time" id="check_out_time" class="form-control" required>
         </div>
 
         <div class="form-group">
@@ -52,28 +52,37 @@
 </div>
 
 <script>
-    // Function to check if the Check-Out Date is after the Check-In Date
+    // Function to check if the Check-Out Date is after the Check-In Date and within trip's date range
     function validateCheckOutDate() {
         const checkInDate = document.getElementById('check_in').value;
         const checkOutDate = document.getElementById('check_out').value;
         const checkOutError = document.getElementById('check_out_error');
 
-        if (checkOutDate) {
-            const checkIn = new Date(checkInDate);
-            const checkOut = new Date(checkOutDate);
+        // Make sure Check-Out Date is within the selected range
+        const checkIn = new Date(checkInDate);
+        const checkOut = new Date(checkOutDate);
+        const tripStartDate = new Date("{{ $tripStartDate }}"); // Pass trip start date
+        const tripEndDate = new Date("{{ $tripEndDate }}"); // Pass trip end date
 
-            // If Check-Out Date is before or equal to Check-In Date
-            if (checkOut <= checkIn) {
-                checkOutError.style.display = 'block'; // Show error message
-                document.getElementById('check_out').classList.add('is-invalid'); // Add Bootstrap invalid class
-                return false;
-            } else {
-                checkOutError.style.display = 'none'; // Hide error message
-                document.getElementById('check_out').classList.remove('is-invalid'); // Remove Bootstrap invalid class
-                return true;
-            }
+        // Check if the Check-Out Date is within the trip's date range
+        if (checkOut < tripStartDate || checkOut > tripEndDate) {
+            checkOutError.textContent = 'Check-Out Date must be between trip start and end dates.';
+            checkOutError.style.display = 'block';
+            document.getElementById('check_out').classList.add('is-invalid');
+            return false;
         }
-        return true;
+
+        // Check if the Check-Out Date is after the Check-In Date
+        if (checkOut <= checkIn) {
+            checkOutError.textContent = 'Check-Out Date must be after Check-In Date.';
+            checkOutError.style.display = 'block';
+            document.getElementById('check_out').classList.add('is-invalid');
+            return false;
+        } else {
+            checkOutError.style.display = 'none';
+            document.getElementById('check_out').classList.remove('is-invalid');
+            return true;
+        }
     }
 
     // Real-time check for Check-Out Date
@@ -87,6 +96,14 @@
         if (!checkOutDateIsValid) {
             event.preventDefault(); // Prevent form submission if validation fails
         }
+    });
+
+    // Set min and max attributes dynamically for the Check-Out Date
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkInDate = document.getElementById('check_in').value;
+        const checkOutDate = document.getElementById('check_out');
+        checkOutDate.setAttribute('min', checkInDate);
+        checkOutDate.setAttribute('max', "{{ $tripEndDate }}");
     });
 </script>
 

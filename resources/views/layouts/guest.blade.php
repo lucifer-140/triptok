@@ -44,6 +44,68 @@
         .navbar-nav .nav-item + .nav-item {
             margin-left: 20px;
         }
+
+
+        footer {
+            background-color: #f8f9fa;
+            /* padding: 3rem 0; */
+            border-top: 1px solid #e0e0e0;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        footer .footer-logo {
+            width: 120px;
+            margin-bottom: 1rem;
+        }
+
+        footer .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        footer .footer-links li {
+            display: inline;
+            margin: 0 15px;
+        }
+
+        footer .footer-links a {
+            color: #6c757d;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer .footer-links a:hover {
+            color: #007bff;
+        }
+
+        footer .social-icons a {
+            margin: 0 10px;
+            color: #6c757d;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        footer .social-icons a:hover {
+            color: #007bff;
+        }
+
+        footer .footer-bottom {
+            text-align: center;
+            font-size: 0.8rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .page-heading {
+                font-size: 2rem;
+            }
+            footer .footer-links li {
+                display: block;
+                text-align: center;
+                margin-bottom: 10px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -87,6 +149,33 @@
     <div class="container mt-5">
         @yield('content')
     </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="container text-center">
+            <div>
+                <img src="{{ asset('assets/logo.png') }}" alt="Logo" class="footer-logo">
+            </div>
+            <div>
+                <ul class="footer-links">
+                    <li><a href="{{ url('/about') }}" class="text-decoration-none text-muted">About Us</a></li>
+                    <li><a href="{{ url('/contact') }}" class="text-decoration-none text-muted">Contact</a></li>
+                    <li><a href="{{ url('/privacy-policy') }}" class="text-decoration-none text-muted">Privacy Policy</a></li>
+                    <li><a href="{{ url('/terms-of-service') }}" class="text-decoration-none text-muted">Terms of Service</a></li>
+                    <li><a href="{{ url('/help') }}" class="text-decoration-none text-muted">Help</a></li>
+                </ul>
+            </div>
+            <div class="social-icons">
+                <a href="#" target="_blank" class="bi bi-facebook"></a>
+                <a href="#" target="_blank" class="bi bi-twitter"></a>
+                <a href="#" target="_blank" class="bi bi-instagram"></a>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 TripTock.    All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
     <script>
         if ('serviceWorker' in navigator) {
           navigator.serviceWorker.register('/service-worker.js')
