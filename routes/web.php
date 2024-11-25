@@ -16,6 +16,7 @@ use App\Http\Controllers\{
     CalendarController,
     FriendController,
     TripShareController,
+    TripDuplicateController,
     NotificationController,
     TravelController
 };
@@ -142,3 +143,5 @@ Route::get('/trips/{trip_id}/share', [TripShareController::class, 'create'])->na
 Route::post('/trips/{trip_id}/share', [TripShareController::class, 'share'])->name('trips.share');
 Route::get('/trips/share/accept/{sharedTrip}', [TripShareController::class, 'accept'])->name('trips.share.accept');
 Route::get('/trips/share/reject/{sharedTrip}', [TripShareController::class, 'reject'])->name('trips.share.reject');
+
+Route::get('/trips/{trip}/duplicate', [TripDuplicateController::class, 'duplicate'])->name('trips.duplicate');

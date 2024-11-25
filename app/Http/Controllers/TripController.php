@@ -347,7 +347,7 @@ class TripController extends Controller
         return redirect()->back()->with('success', 'Trip successfully shared with your friends!');
     }
 
-
+    
 
 
 }

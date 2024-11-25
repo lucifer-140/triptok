@@ -113,7 +113,7 @@
         /* Footer Styling */
         footer {
             background-color: #f8f9fa;
-            padding: 3rem 0;
+            /* padding: 3rem 0; */
             border-top: 1px solid #e0e0e0;
             color: #6c757d;
             font-size: 0.9rem;
@@ -283,7 +283,7 @@
                             <li><a class="dropdown-item" href="{{ url('/user/profile') }}">Profile</a></li>
                             <li><a class="dropdown-item" href="{{ url('/user/friends') }}">Friends</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Sign out</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" style="color: rgb(230, 0, 0)">Sign out</a></li>
                         </ul>
                     </div>
                 </div>
@@ -320,7 +320,7 @@
                             </a>
                         </li>
 
-                        <li><a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Sign out</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" style="color: rgb(230, 0, 0)">Sign out</a></li>
                     </ul>
                 </div>
             </div>

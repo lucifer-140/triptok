@@ -45,10 +45,10 @@
             margin-left: 20px;
         }
 
-        
+
         footer {
             background-color: #f8f9fa;
-            padding: 3rem 0;
+            /* padding: 3rem 0; */
             border-top: 1px solid #e0e0e0;
             color: #6c757d;
             font-size: 0.9rem;
