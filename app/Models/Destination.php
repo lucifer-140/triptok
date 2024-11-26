@@ -10,4 +10,10 @@ class Destination extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'description', 'image', 'rating'];
+
+    public function tripTemplates()
+    {
+        return $this->hasMany(TripTemplate::class);
+    }
+
 }

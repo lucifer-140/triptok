@@ -29,10 +29,7 @@ class TravelController extends Controller
 
     public function show($id)
     {
-        // Fetch the destination by ID
-        $destination = Destination::findOrFail($id);  // Find by ID
-
-        // Return the destination detail view with the data
+        $destination = Destination::with('tripTemplates')->findOrFail($id);
         return view('travel.destination-detail', compact('destination'));
     }
 }

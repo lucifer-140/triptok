@@ -345,11 +345,11 @@
         </div>
         <div>
             <ul class="footer-links">
-                <li><a href="{{ url('/about') }}" class="text-decoration-none text-muted">About Us</a></li>
-                <li><a href="{{ url('/contact') }}" class="text-decoration-none text-muted">Contact</a></li>
-                <li><a href="{{ url('/privacy-policy') }}" class="text-decoration-none text-muted">Privacy Policy</a></li>
-                <li><a href="{{ url('/terms-of-service') }}" class="text-decoration-none text-muted">Terms of Service</a></li>
-                <li><a href="{{ url('/help') }}" class="text-decoration-none text-muted">Help</a></li>
+                <li><a href="{{ route('about') }}" class="text-decoration-none text-muted">About Us</a></li>
+                <li><a href="{{ route('contact') }}" class="text-decoration-none text-muted">Contact</a></li>
+                <li><a href="{{ route('privacy') }}" class="text-decoration-none text-muted">Privacy Policy</a></li>
+                <li><a href="{{ route('terms') }}" class="text-decoration-none text-muted">Terms of Service</a></li>
+                <li><a href="{{ route('help') }}" class="text-decoration-none text-muted">Help</a></li>
             </ul>
         </div>
         <div class="social-icons">
