@@ -44,6 +44,23 @@
                         <p><strong>Votes:</strong> <span id="up-votes" style="color: green">123</span> <i class="fas fa-thumbs-up"></i> / <span id="down-votes" style="color: red">45</span> <i class="fas fa-thumbs-down"></i></p>
                     </div>
 
+                    <!-- Trip Templates -->
+                    <h5 class="mt-5 mb-3">Suggested Itineraries</h5>
+                    <div class="row">
+                        @foreach ($destination->tripTemplates as $trip)
+                            <div class="col-md-4 mb-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="card-title">{{ $trip->name }}</h6>
+                                        <p class="card-text">{{ Str::limit($trip->description, 100) }}</p>
+                                        <p><strong>Duration:</strong> {{ $trip->duration }} days</p>
+                                        <p><strong>Price:</strong> ${{ number_format($trip->price, 2) }}</p>
+                                        <a href="#" class="btn btn-primary">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
 
                 </div>
             </div>

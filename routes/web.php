@@ -148,3 +148,9 @@ Route::get('/trips/share/reject/{sharedTrip}', [TripShareController::class, 'rej
 Route::get('/trips/{trip}/duplicate', [TripDuplicateController::class, 'duplicate'])->name('trips.duplicate');
 
 
+
+Route::view('/about-us', 'pages.about')->name('about');
+Route::view('/contact', 'pages.contact')->name('contact');
+Route::view('/privacy-policy', 'pages.privacy')->name('privacy');
+Route::view('/terms-of-service', 'pages.terms')->name('terms');
+Route::view('/help', 'pages.help')->name('help');
