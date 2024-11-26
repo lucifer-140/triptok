@@ -27,7 +27,7 @@
                         <div class="destination-info py-3">
                             <h5 class="destination-name fs-5 mb-2">{{ ucfirst($city) }}</h5>
                             <p class="destination-description">Discover the beauty of {{ ucfirst($city) }}. Explore its iconic landmarks and hidden gems.</p>
-                            <a href="#" class="btn btn-outline-primary explore-btn">Explore</a>
+                            {{-- <a href="#" class="btn btn-outline-primary explore-btn">Explore</a> --}}
                         </div>
                     </div>
                 </div>
@@ -69,7 +69,7 @@
                         <div class="inspiration-info p-3">
                             <h5 class="fw-bold">{{ $inspiration['title'] }}</h5>
                             <p>{{ $inspiration['text'] }}</p>
-                            <a href="#" class="btn btn-outline-primary">Read More</a>
+                            {{-- <a href="#" class="btn btn-outline-primary">Read More</a> --}}
                         </div>
                     </div>
                 </div>
