@@ -17,7 +17,7 @@
                 <div class="destination-card">
                     <!-- Image Container -->
                     <div class="image-container">
-                        <img src="{{ $destination->image }}" class="img-fluid rounded-top" alt="{{ $destination->name }}" loading="lazy">
+                        <img src="{{ asset($destination->image) }}" class="img-fluid rounded-top" alt="{{ $destination->name }}" loading="lazy">
                     </div>
 
                     <div class="destination-info py-3">

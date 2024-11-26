@@ -146,3 +146,5 @@ Route::get('/trips/share/accept/{sharedTrip}', [TripShareController::class, 'acc
 Route::get('/trips/share/reject/{sharedTrip}', [TripShareController::class, 'reject'])->name('trips.share.reject');
 
 Route::get('/trips/{trip}/duplicate', [TripDuplicateController::class, 'duplicate'])->name('trips.duplicate');
+
+

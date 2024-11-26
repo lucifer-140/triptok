@@ -11,9 +11,9 @@
         <div class="col-md-8">
             <div class="destination-detail-card card">
                 <!-- Image Container -->
-                <div class="image-container">
-                    <img src="{{ asset($destination->image) }}" class="img-fluid rounded-top" alt="{{ $destination->name }}">
-                </div>
+                    <div class="image-container">
+                        <img src="{{ asset($destination->image) }}" class="img-fluid rounded-top" alt="{{ $destination->name }}" loading="lazy">
+                    </div>
 
                 <div class="card-body">
                     <!-- Destination Name -->
@@ -46,8 +46,8 @@
 
                     <!-- Other Additional Features (Static) -->
                     <div class="other-features mt-3">
-                        <p><strong>Best Time to Visit:</strong> May - September</p>
-                        <p><strong>Nearby Attractions:</strong> The Great Wall, Forbidden City, Summer Palace</p>
+                        {{-- <p><strong>Best Time to Visit:</strong> May - September</p>
+                        <p><strong>Nearby Attractions:</strong> The Great Wall, Forbidden City, Summer Palace</p> --}}
                     </div>
 
                 </div>

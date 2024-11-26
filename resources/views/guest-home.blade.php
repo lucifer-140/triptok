@@ -25,7 +25,7 @@
                         <div class="destination-info py-3">
                             <h5 class="destination-name fs-5 mb-2">{{ ucfirst($city) }}</h5>
                             <p class="destination-description">Explore the wonders of {{ ucfirst($city) }}.</p>
-                            <a href="#" class="btn btn-outline-primary explore-btn">Explore</a>
+                            {{-- <a href="#" class="btn btn-outline-primary explore-btn">Explore</a> --}}
                         </div>
                     </div>
                 </div>
@@ -85,7 +85,7 @@
 
 
     <!-- Call to Action -->
-    <div class="container-fluid cta-section text-white">
+    <div class="container-fluid cta-section text-white" style="margin-bottom: 50px;">
         <div class="container text-center py-4">
             <h3>Ready to start planning your adventure?</h3>
             <a href="{{ route('signup') }}" class="btn btn-primary btn-lg mt-3">Sign Up Now</a>
