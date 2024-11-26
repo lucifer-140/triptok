@@ -122,7 +122,7 @@
 
                 <div class="d-flex align-items-center gap-3">
                     <a href="{{ url('/') }}" class="link-body-emphasis text-decoration-none">Home</a>
-                    <a href="#" class="link-body-emphasis text-decoration-none">Destinations</a>
+                    {{-- <a href="#" class="link-body-emphasis text-decoration-none">Destinations</a> --}}
                     <a href="{{ route('signin') }}" class="link-body-emphasis text-decoration-none">Login</a>
                     <a href="{{ route('signup') }}" class="link-body-emphasis text-decoration-none btn btn-primary text-white">Register</a>
                 </div>
@@ -136,7 +136,7 @@
                     </a>
                     <ul class="dropdown-menu text-small shadow">
                         <li><a class="dropdown-item" href="{{ url('/') }}" aria-current="page">Home</a></li>
-                        <li><a class="dropdown-item" href="#">Destinations</a></li>
+                        {{-- <li><a class="dropdown-item" href="#">Destinations</a></li> --}}
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="{{ route('signin') }}">Login</a></li>
                         <li><a class="dropdown-item" href="{{ route('signup') }}">Register</a></li>

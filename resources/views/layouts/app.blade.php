@@ -170,6 +170,9 @@
                 text-align: center;
                 margin-bottom: 10px;
             }
+            footer {
+                margin-top: 100px;
+            }
         }
 
         /* Loading screen styling */

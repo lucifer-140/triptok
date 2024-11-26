@@ -7,7 +7,7 @@
     <div class="container-fluid hero-section">
         <div class="container hero-content text-white">
             <div class="hero-text-wrapper">
-                <h1 class="welcome-message">Adventure Awaits, {{ Auth::user()->first_name }}!</h1>
+                <h1 class="welcome-message" style="text-transform: uppercase;">Adventure Awaits, {{ Auth::user()->first_name }}!</h1>
                 <p class="welcome-subtitle">Start planning your dream trip today. Discover new places and experiences.</p>
             </div>
             <div class="hero-button-wrapper">
