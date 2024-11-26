@@ -67,13 +67,16 @@ class ItineraryController extends Controller
             $startMonth = $startDate->format('F'); // Full month name (e.g., "March")
             $endMonth = $endDate->format('F'); // Full month name (e.g., "May")
 
+            // Determine if the date range spans multiple months
+            $dateRange = $startMonth === $endMonth
+                ? $startMonth
+                : "{$startMonth} to {$endMonth}";
+
+            // Generate weather prompt
             return Gemini::geminiPro()->generateContent(
-                "Give the expected weather conditions for {$destination} in the {$destination} hemisphere from {$startMonth} to {$endMonth}, based on your own data."
+                "What are the main weather conditions someone traveling to {$destination} during {$dateRange} should know about? Provide necessary details only."
             )->text();
         });
-
-
-
 
 
         $cultureTips = Cache::remember("culture_tips_{$cacheKey}", 60, function () use ($destination) {

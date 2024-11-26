@@ -3,9 +3,9 @@
 @section('content')
 <div class="container my-5">
     <!-- Back Button -->
-    <a href="{{ route('travel.index') }}" class="btn btn-outline-secondary mb-3">Back to Travel Guide</a>
+    <a href="{{ route('travel.index') }}" class="btn btn-outline-secondary mb-3"><</a>
 
-    <h2 class="text-center">{{ $destination->name }}</h2>
+    {{-- <h2 class="text-center">{{ $destination->name }}</h2> --}}
 
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -44,11 +44,6 @@
                         <p><strong>Votes:</strong> <span id="up-votes" style="color: green">123</span> <i class="fas fa-thumbs-up"></i> / <span id="down-votes" style="color: red">45</span> <i class="fas fa-thumbs-down"></i></p>
                     </div>
 
-                    <!-- Other Additional Features (Static) -->
-                    <div class="other-features mt-3">
-                        {{-- <p><strong>Best Time to Visit:</strong> May - September</p>
-                        <p><strong>Nearby Attractions:</strong> The Great Wall, Forbidden City, Summer Palace</p> --}}
-                    </div>
 
                 </div>
             </div>
