@@ -14,6 +14,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap" rel="stylesheet">
 
     <style>
+        html, body {
+            height: 100%;  /* Make sure the body and html elements take up the full height of the viewport */
+            margin: 0;     /* Remove default margin */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            flex: 1;  /* This ensures that the main content takes up all available space */
+        }
         /* Custom font */
         body {
             font-family: 'Poppins', sans-serif;
@@ -117,6 +127,7 @@
             border-top: 1px solid #e0e0e0;
             color: #6c757d;
             font-size: 0.9rem;
+            margin-top: auto;
         }
 
         footer .footer-logo {

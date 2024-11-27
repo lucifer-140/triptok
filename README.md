@@ -114,7 +114,7 @@ TripTok/
 - **Backend**: PHP, Laravel
 - **Database**: MySQL
 - **JavaScript**: Vanilla JS for interactivity
-- **Server**: Apache (XAMPP or similar for local development)
+- **Server**: XAMPP for local development
 
 ---
 
