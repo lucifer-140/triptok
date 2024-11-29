@@ -162,22 +162,22 @@
                     <div class="mb-3">
                         <label for="first_name" class="form-label required">First Name</label>
                         <input type="text" class="form-control" id="first_name" name="first_name" maxlength="50"
-                               value="{{ old('first_name') }}" required>
+                            value="{{ old('first_name') }}" required>
                     </div>
                     <div class="mb-3">
                         <label for="last_name" class="form-label required">Last Name</label>
                         <input type="text" class="form-control" id="last_name" name="last_name" maxlength="50"
-                               value="{{ old('last_name') }}" required>
+                            value="{{ old('last_name') }}" required>
                     </div>
                     <div class="mb-3">
                         <label for="phone" class="form-label required">Phone Number</label>
                         <input type="text" class="form-control" id="phone" name="phone" maxlength="15"
-                               value="{{ old('phone') }}" required>
+                            value="{{ old('phone') }}" required>
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label required">Email</label>
                         <input type="email" class="form-control" id="email" name="email" maxlength="100"
-                               value="{{ old('email') }}" required>
+                            value="{{ old('email') }}" required>
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label required">Password</label>
@@ -240,6 +240,13 @@
                 // Show the loading screen when the form is submitted
                 loadingScreen.style.display = 'flex';
             });
+        });
+        document.getElementById("phone").addEventListener("input", function(event) {
+            let value = this.value;
+            if (value.length > 0 && value[0] !== '0') {
+            value = '0' + value;
+            }
+            this.value = value.replace(/[^0-9]/g, '');
         });
     </script>
 </body>
