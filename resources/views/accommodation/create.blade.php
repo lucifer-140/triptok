@@ -17,8 +17,6 @@
         </div>
     @endif
 
-    <p>Trip Start Date: {{ $tripStartDate }}</p>
-    <p>Trip End Date: {{ $tripEndDate }}</p>
 
     <form action="{{ route('accommodation.store', $day) }}" method="POST" id="accommodation-form">
         @csrf
@@ -35,7 +33,7 @@
         <div class="form-group">
             <label for="check_out">Check-Out Date</label>
             <input type="date" name="check_out" id="check_out" class="form-control" value="{{ old('check_out') }}" required
-                   min="{{ $tripStartDate }}" max="{{ $tripEndDate }}">
+                min="{{ $tripStartDate }}" max="{{ $tripEndDate }}">
             <small id="check_out_error" class="form-text text-danger" style="display: none;">Check-Out Date must be after Check-In Date.</small>
         </div>
 

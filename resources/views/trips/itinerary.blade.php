@@ -243,9 +243,10 @@
     </div>
 
 
+
+
     <!-- Include the modal component -->
     @include('components.share-trip-modal', ['friends' => $friends])
-
 
     <!-- Modal for Confirming Deletion -->
     <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">

@@ -11,33 +11,33 @@ class TripDuplicateController extends Controller
 {
     public function duplicate($trip_id)
     {
-        // Find the trip to duplicate
+
         $originalTrip = Trip::find($trip_id);
 
-        // Check if the trip exists
+
         if (!$originalTrip) {
             return back()->with('error', 'The trip does not exist.');
         }
 
-        // Begin transaction for data consistency
+
         DB::beginTransaction();
 
         try {
-            // Duplicate the trip
+
             $newTrip = $originalTrip->replicate();
-            $newTrip->user_id = Auth::id(); // Assign to the current user
-            $newTrip->tripTitle .= ' (Copy)'; // Append 'Copy' to the name
+            $newTrip->user_id = Auth::id();
+            $newTrip->tripTitle .= ' (Copy)';
             $newTrip->save();
 
-            // Duplicate the status from the TripStatus table
-            $originalStatus = $originalTrip->status; // Get the associated status
+
+            $originalStatus = $originalTrip->status;
             if ($originalStatus) {
-                $newStatus = $originalStatus->replicate(); // Duplicate the status
-                $newStatus->trip_id = $newTrip->id; // Link it to the new trip
+                $newStatus = $originalStatus->replicate();
+                $newStatus->trip_id = $newTrip->id;
                 $newStatus->save();
             }
 
-            // Duplicate the itinerary and related data
+
             $originalItinerary = Itinerary::where('trip_id', $originalTrip->id)->first();
             if ($originalItinerary) {
                 $newItinerary = $originalItinerary->replicate();
@@ -49,7 +49,7 @@ class TripDuplicateController extends Controller
                     $newDay->itinerary_id = $newItinerary->id;
                     $newDay->save();
 
-                    // Duplicate activities, transports, accommodations, flights
+
                     foreach ($originalDay->activities as $activity) {
                         $newActivity = $activity->replicate();
                         $newActivity->day_id = $newDay->id;
@@ -76,12 +76,12 @@ class TripDuplicateController extends Controller
                 }
             }
 
-            // Commit the transaction
+
             DB::commit();
 
             return back()->with('success', 'Trip duplicated successfully!');
         } catch (\Exception $e) {
-            // Rollback on error
+
             DB::rollBack();
             \Log::error('Error duplicating trip: ' . $e->getMessage(), ['exception' => $e]);
             return back()->with('error', 'There was an error duplicating the trip.');

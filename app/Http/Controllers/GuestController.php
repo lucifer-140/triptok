@@ -8,6 +8,6 @@ class GuestController extends Controller
 {
     public function index()
     {
-        return view('guest-home'); // Return the guest homepage view
+        return view('guest-home');
     }
 }

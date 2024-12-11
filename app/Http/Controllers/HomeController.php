@@ -9,6 +9,6 @@ class HomeController extends Controller
 {
     public function index()
     {
-        return view('home'); // Ensure 'home' corresponds to a view file in your resources/views directory
+        return view('home');
     }
 }

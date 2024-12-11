@@ -14,5 +14,4 @@ class TripStatus extends Model
         return $this->belongsTo(Trip::class);
     }
 
-
 }
