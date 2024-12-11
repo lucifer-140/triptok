@@ -21,23 +21,30 @@
 
                         <!-- Friends List -->
                         <div class="friend-list" id="friendsList">
-                            @foreach($friends as $friend)
-                                <div class="friend-card p-3 mb-3 rounded shadow-sm" data-name="{{ strtolower($friend->first_name . ' ' . $friend->last_name) }}" data-email="{{ strtolower($friend->email) }}">
-                                    <div class="d-flex align-items-center">
-                                        <img src="{{ $friend->profile_image ? asset('storage/' . $friend->profile_image) : asset('assets/blankprofilepic.jpeg') }}" alt="{{ $friend->first_name }} {{ $friend->last_name }}" class="rounded-circle me-3" width="50" height="50">
-                                        <div class="flex-grow-1">
-                                            <div class="d-flex align-items-center justify-content-between">
-                                                <div>
-                                                    <strong class="d-block">{{ $friend->first_name }} {{ $friend->last_name }}</strong>
-                                                    <p class="mb-0 text-muted small">{{ $friend->email }}</p>
+                            @if($friends->isEmpty())
+                                <div class="alert alert-info text-center">
+                                    No friends available to share this trip.
+                                </div>
+                            @else
+                                @foreach($friends as $friend)
+                                    <div class="friend-card p-3 mb-3 rounded shadow-sm" data-name="{{ strtolower($friend->first_name . ' ' . $friend->last_name) }}" data-email="{{ strtolower($friend->email) }}">
+                                        <div class="d-flex align-items-center">
+                                            <img src="{{ $friend->profile_image ? asset('storage/' . $friend->profile_image) : asset('assets/blankprofilepic.jpeg') }}" alt="{{ $friend->first_name }} {{ $friend->last_name }}" class="rounded-circle me-3" width="50" height="50">
+                                            <div class="flex-grow-1">
+                                                <div class="d-flex align-items-center justify-content-between">
+                                                    <div>
+                                                        <strong class="d-block">{{ $friend->first_name }} {{ $friend->last_name }}</strong>
+                                                        <p class="mb-0 text-muted small">{{ $friend->email }}</p>
+                                                    </div>
+                                                    <input type="checkbox" name="friends[]" value="{{ $friend->id }}" class="form-check-input">
                                                 </div>
-                                                <input type="checkbox" name="friends[]" value="{{ $friend->id }}" class="form-check-input">
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            @endforeach
+                                @endforeach
+                            @endif
                         </div>
+
 
                         <!-- Submit Button -->
                         <button type="submit" class="btn btn-primary w-100 mt-4">Share Trip</button>

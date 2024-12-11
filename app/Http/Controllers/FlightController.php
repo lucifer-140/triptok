@@ -28,7 +28,7 @@ class FlightController extends Controller
 
         $validated['day_id'] = $day;
 
-        Flight::create($validated); // This should work if all fields are provided
+        Flight::create($validated);
 
         return redirect()->route('day.show', $day)->with('success', 'Flight added successfully.');
     }
@@ -53,7 +53,7 @@ class FlightController extends Controller
             'cost' => 'required|numeric',
         ]);
 
-        // Convert times to 24-hour format using Carbon
+
         $validated['departure_time'] = Carbon::createFromFormat('H:i', $validated['departure_time'])->format('H:i');
         $validated['arrival_time'] = Carbon::createFromFormat('H:i', $validated['arrival_time'])->format('H:i');
 

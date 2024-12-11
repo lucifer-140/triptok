@@ -11,13 +11,13 @@ use App\Models\User;
 
 class PasswordResetController extends Controller
 {
-    // Show the form to request a password reset link
+
     public function showLinkRequestForm()
     {
         return view('auth.passwords.email');
     }
 
-    // Send the reset link email
+
     public function sendResetLinkEmail(Request $request)
     {
         $request->validate(['email' => 'required|email']);
@@ -31,13 +31,13 @@ class PasswordResetController extends Controller
         return back()->withErrors(['email' => trans($response)]);
     }
 
-    // Show the form to reset the password
+
     public function showResetForm($token)
     {
         return view('auth.passwords.reset')->with(['token' => $token]);
     }
 
-    // Handle the password reset
+
     public function reset(Request $request)
     {
         $request->validate([

@@ -24,7 +24,7 @@ class ItineraryController extends Controller
 
     public function create($trip_id)
     {
-        // Fetch the trip and itinerary details as before
+
         $trip = Trip::findOrFail($trip_id);
         $itinerary = Itinerary::firstOrCreate(['trip_id' => $trip_id], ['trip_id' => $trip_id]);
         $days = $itinerary->days->sortBy('date');
@@ -40,14 +40,14 @@ class ItineraryController extends Controller
         $statusMessage = $tripStatus ? $tripStatus : 'Status not set yet';
         $friends = Auth::user()->friends;
 
-        // Gemini API call for trip suggestions
+
         $destination = $trip->tripDestination;
         $tripDuration = $totalDays;
 
-        // Cache key for the Gemini API calls
+
         $cacheKey = "trip_suggestions_{$trip_id}_{$destination}_{$totalDays}_{$tripGoals}";
 
-        // Check if the suggestion data is cached, otherwise, generate it
+
         $budgetTips = Cache::remember("budget_tips_{$cacheKey}", 60, function () use ($trip, $tripDuration, $destination, $tripGoals) {
             return Gemini::geminiPro()->generateContent(
                 "If {$trip->currency}{$trip->totalBudget} is not enough for a {$tripDuration}-day trip to {$destination}, with the goal of {$tripGoals}, provide a concise short budget breakdown like this:
@@ -63,16 +63,16 @@ class ItineraryController extends Controller
         });
 
         $weatherInfo = Cache::remember("weather_info_{$cacheKey}", 60, function () use ($startDate, $endDate, $destination) {
-            // Get the month from the start and end dates
-            $startMonth = $startDate->format('F'); // Full month name (e.g., "March")
-            $endMonth = $endDate->format('F'); // Full month name (e.g., "May")
 
-            // Determine if the date range spans multiple months
+            $startMonth = $startDate->format('F');
+            $endMonth = $endDate->format('F');
+
+
             $dateRange = $startMonth === $endMonth
                 ? $startMonth
                 : "{$startMonth} to {$endMonth}";
 
-            // Generate weather prompt
+
             return Gemini::geminiPro()->generateContent(
                 "What are the main weather conditions someone traveling to {$destination} during {$dateRange} should know about? Provide necessary details only."
             )->text();
@@ -85,12 +85,12 @@ class ItineraryController extends Controller
             )->text();
         });
 
-        // Fetch the grand_total values for each day
+
         $dayGrandTotals = $days->map(function($day) {
-            return $day->grand_total; // Return the grand_total for each day
+            return $day->grand_total;
         });
 
-        // Pass all data, including suggestions, to the view
+
         return view('trips.itinerary', [
             'itinerary' => $itinerary,
             'trip' => $trip,
@@ -123,10 +123,10 @@ class ItineraryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'trip_id' => 'required|exists:trips,id', // Ensure the trip exists
+            'trip_id' => 'required|exists:trips,id',
         ]);
 
-        // Create a new itinerary
+
         $itinerary = Itinerary::create([
             'trip_id' => $request->trip_id,
         ]);
@@ -137,12 +137,12 @@ class ItineraryController extends Controller
 
     public function save(Request $request)
     {
-        // Log incoming request data for debugging
+
         \Log::info('Incoming request data:', $request->all());
 
-        // Validate the incoming data
+
         $request->validate([
-            'itinerary_id' => 'required|exists:itineraries,id', // Ensure itinerary_id exists in itineraries table
+            'itinerary_id' => 'required|exists:itineraries,id',
             'days' => 'required|array',
             'activities' => 'required|array',
             'transports' => 'required|array',
@@ -150,16 +150,16 @@ class ItineraryController extends Controller
             'flights' => 'required|array',
         ]);
 
-        // Assuming itinerary_id is passed in the request
+
         foreach ($request->days as $dayData) {
-            // Create a new Day entry
+
             $day = Day::create([
-                'itinerary_id' => $request->itinerary_id, // Make sure to pass itinerary_id from your frontend
+                'itinerary_id' => $request->itinerary_id,
                 'day' => $dayData['day'],
                 'date' => $dayData['date'],
             ]);
 
-            // Save associated data
+
             foreach ($request->activities as $activity) {
                 $day->activities()->create($activity);
             }

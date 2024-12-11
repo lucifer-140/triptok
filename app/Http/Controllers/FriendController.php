@@ -13,7 +13,7 @@ class FriendController extends Controller
             return redirect()->back()->with('error', 'You cannot send a friend request to yourself.');
         }
 
-        // Check if a friend request exists with "declined" status
+
         $existingRequest = FriendRequest::where('sender_id', auth()->id())
                                         ->where('receiver_id', $receiver->id)
                                         ->first();
@@ -22,12 +22,12 @@ class FriendController extends Controller
             if ($existingRequest->status === 'pending') {
                 return redirect()->back()->with('error', 'Friend request already sent.');
             } elseif ($existingRequest->status === 'declined') {
-                // Update status to "pending" if previously declined
+
                 $existingRequest->update(['status' => 'pending']);
                 return redirect()->back()->with('success', 'Friend request resent.');
             }
         } else {
-            // Create a new friend request if none exists
+
             FriendRequest::create([
                 'sender_id' => auth()->id(),
                 'receiver_id' => $receiver->id,
@@ -70,7 +70,7 @@ class FriendController extends Controller
             return redirect()->back()->with('error', 'Friend request not found.');
         }
 
-        // Delete the friend request entirely
+
         $request->delete();
 
         return redirect()->back()->with('success', 'Friend request declined.');
@@ -81,11 +81,11 @@ class FriendController extends Controller
     {
         $user = auth()->user();
 
-        // Remove the friend relationship for both users
+
         $user->friends()->detach($friend->id);
         $friend->friends()->detach($user->id);
 
-        // Delete any friend requests between the users
+
         FriendRequest::where(function ($query) use ($user, $friend) {
             $query->where('sender_id', $user->id)
                   ->where('receiver_id', $friend->id);
@@ -103,16 +103,16 @@ class FriendController extends Controller
     {
         $user = auth()->user();
 
-        // Fetch friends where status is accepted in the friends table
+
         $friends = $user->friends;
 
-        // Fetch received friend requests that are pending
+
         $receivedRequests = $user->receivedRequests()->where('status', 'pending')->get();
 
-        // Fetch sent friend requests that are pending
+
         $sentRequests = $user->sentRequests()->where('status', 'pending')->get();
 
-        // Find users who are not friends and haven't received/sent a friend request
+
         $nonFriends = User::where('id', '!=', $user->id)
             ->whereDoesntHave('friends', function ($query) use ($user) {
                 $query->where('friend_id', $user->id);
@@ -125,7 +125,7 @@ class FriendController extends Controller
             })
             ->get();
 
-        // Return the view and pass the data for each section
+
         return view('friends.index', compact('friends', 'receivedRequests', 'sentRequests', 'nonFriends'));
     }
 
